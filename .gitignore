@@ -1,0 +1,14 @@
+.vs/
+bin/
+obj/
+
+*.csproj
+*.log
+*~
+*.pptx
+*.txt
+*.mdf
+*.ldf
+
+thumbs.db
+.DS_Store
