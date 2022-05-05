@@ -5,6 +5,8 @@ namespace GoodsSupply.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Security.Cryptography;
+    using System.Text;
 
     public partial class USERS
     {
@@ -29,11 +31,17 @@ namespace GoodsSupply.Models
         public USERS(string login, string password, int linkAccountId, string isAdmin = "N")
         {
             this.Login = login;
-            this.Password = password;
+            this.Password = getHash(password);
             this.LinkAccountId = linkAccountId;
             this.IsAdmin = isAdmin;
         }
 
+        public static string getHash(string password)
+        {
+            var md5 = MD5.Create();
+            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(hash);
+        }
         public virtual PERSONAL_ACCOUNTS PERSONAL_ACCOUNTS { get; set; }
     }
 }

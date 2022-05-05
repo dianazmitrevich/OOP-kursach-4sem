@@ -107,7 +107,8 @@ namespace GoodsSupply.ViewModels
         private void OnLoginCommandExecuted(object p)
         {
             var window = Application.Current.Windows[0];
-            if (context.USERS.FirstOrDefault(u => u.Login == Login && u.Password == Password) != null)
+            string hashPassword = USERS.getHash(Password);
+            if (context.USERS.FirstOrDefault(u => u.Login == Login && u.Password == hashPassword) != null)
             {
                 var MainWindow = new MainWindow();
                 MainWindow.Show();
