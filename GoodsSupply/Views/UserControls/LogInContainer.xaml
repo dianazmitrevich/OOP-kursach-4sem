@@ -30,7 +30,7 @@
         <Label Grid.Row="2" Margin="25 10">
             <TextBlock Text="Нет аккаунта? Давайте перейдем к" FontSize="10"></TextBlock>
         </Label>
-        <Button Grid.Row="2" Background="Transparent"  Width="60" Height="14" Margin="15 0 0 0" BorderThickness="0">
+        <Button Grid.Row="2" Command="{Binding SignUpWindowCommand}" Background="Transparent"  Width="60" Height="14" Margin="15 0 0 0" BorderThickness="0">
             <TextBlock FontSize="10" Text="регистрации" TextDecorations="Underline"></TextBlock>
         </Button>
         <Button Grid.Row="4" Command="{Binding LoginCommand}" Height="30" Margin="25 10" Content="Войти" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>

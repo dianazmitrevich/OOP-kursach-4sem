@@ -17,6 +17,7 @@ namespace GoodsSupply.ViewModels
         private string password;
         private string name;
         private string email;
+        private object selectedAuthorizationWindow = new LogInContainer();
 
         public string Login
         {
@@ -38,17 +39,42 @@ namespace GoodsSupply.ViewModels
             get => email;
             set => Set(ref email, value);
         }
+        public object SelectedAuthorizationWindow
+        {
+            get => selectedAuthorizationWindow;
+            set => Set(ref selectedAuthorizationWindow, value);
+        }
 
         public ICommand LoginCommand { get; }
         private bool CanLoginCommandExecute(object p) => Login?.Length > 0 && Password?.Length > 0;
         private void OnLoginCommandExecuted(object p)
         {
-            MessageBox.Show(Password);
+            var window = Application.Current.Windows[0];
+            if (context.USERS.FirstOrDefault(u => u.Login == Login && u.Password == Password) != null)
+            {
+                var MainWindow = new MainWindow();
+                MainWindow.Show();
+                window.Close();
+            }
+            else
+                MessageBox.Show(Password);
         }
+
+        public ICommand CloseWindowCommand { get; }
+        private void OnCloseWindowCommandExecuted(object p) => Application.Current.Shutdown();
+
+        public ICommand SignUpWindowCommand { get; }
+        private void OnSignUpWindowCommandExecuted(object p) => SelectedAuthorizationWindow = new SignUpContainer();
+
+        public ICommand LogInWindowCommand { get; }
+        private void OnLogInWindowExecuted(object p) => SelectedAuthorizationWindow = new LogInContainer();
 
         public AuthorizationViewModel()
         {
             LoginCommand = new DelegateCommand(OnLoginCommandExecuted, CanLoginCommandExecute);
+            CloseWindowCommand = new DelegateCommand(OnCloseWindowCommandExecuted);
+            SignUpWindowCommand = new DelegateCommand(OnSignUpWindowCommandExecuted);
+            LogInWindowCommand = new DelegateCommand(OnLogInWindowExecuted);
         }
     }
 }
