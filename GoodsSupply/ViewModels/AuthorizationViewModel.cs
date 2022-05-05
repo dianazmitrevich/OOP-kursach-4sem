@@ -180,6 +180,7 @@ namespace GoodsSupply.ViewModels
                                                         USERS newElement = new USERS(Login, Password, elementId);
                                                         context.USERS.Add(newElement); context.SaveChanges();
                                                         MessageBox.Show("Аккаунт создан, попробуйте войти в него");
+                                                        SelectedAuthorizationWindow = new LogInContainer();
                                                     }
                                                     else
                                                     {
@@ -237,8 +238,6 @@ namespace GoodsSupply.ViewModels
                 }
                 else
                     FailedNameFlag = Visibility.Visible;
-
-                SelectedAuthorizationWindow = new LogInContainer();
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
             {
