@@ -129,6 +129,10 @@ namespace GoodsSupply.Models
             modelBuilder.Entity<USERS>()
                 .Property(e => e.Password)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<USERS>()
+                .Property(e => e.IsAdmin)
+                .IsUnicode(false);
         }
     }
 }

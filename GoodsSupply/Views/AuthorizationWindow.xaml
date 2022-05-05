@@ -30,7 +30,7 @@
         <Button Width="20" Command="{Binding CloseWindowCommand}" Height="15" HorizontalAlignment="Left" Margin="20 0" Background="Transparent" BorderBrush="Transparent">
             <Image Source="/Assets/backArrow.png" Width="20"></Image>
         </Button>
-        <Label Grid.Row="1" Content="Войдите в свой личный кабинет" FontSize="20" FontWeight="SemiBold" Margin="20 0"></Label>
+        <ContentControl Grid.Row="1" Content="{Binding AuthorizationWindowTitle}" FontSize="20" FontWeight="SemiBold" Margin="20 0"></ContentControl>
         <Label Grid.Row="2" Margin="20 0">
             <TextBlock TextWrapping="Wrap" FontSize="12" Text="Миссия ИКЕА — изменить к лучшему повседневную жизнь многих людей по всему миру. Эта миссия лежит в основе нашей стратегии устойчивого развития «Да — людям и планете»."></TextBlock>
         </Label>

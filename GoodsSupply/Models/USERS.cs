@@ -21,6 +21,19 @@ namespace GoodsSupply.Models
 
         public int? LinkAccountId { get; set; }
 
+        [Required]
+        [StringLength(5)]
+        public string IsAdmin { get; set; }
+
+        public USERS() { }
+        public USERS(string login, string password, int linkAccountId, string isAdmin = "N")
+        {
+            this.Login = login;
+            this.Password = password;
+            this.LinkAccountId = linkAccountId;
+            this.IsAdmin = isAdmin;
+        }
+
         public virtual PERSONAL_ACCOUNTS PERSONAL_ACCOUNTS { get; set; }
     }
 }
