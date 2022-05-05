@@ -23,8 +23,7 @@ namespace GoodsSupply.ViewModels
         private string email;
         private object selectedAuthorizationWindow = new LogInContainer();
         private string authorizationWindowTitle = "Войдите в свой личный кабинет";
-        private string failedEmailLabel = "";
-        private string failedLoginLabel = "";
+        private string failedSignupLabel = "";
         private Visibility failedAuthorizationFlag = Visibility.Hidden;
         private Visibility failedNameFlag = Visibility.Hidden;
         private Visibility failedEmailFlag = Visibility.Hidden;
@@ -67,15 +66,10 @@ namespace GoodsSupply.ViewModels
             get => authorizationWindowTitle;
             set => Set(ref authorizationWindowTitle, value);
         }
-        public string FailedEmailLabel
+        public string FailedSignupLabel
         {
-            get => failedEmailLabel;
-            set => Set(ref failedEmailLabel, value);
-        }
-        public string FailedLoginLabel
-        {
-            get => failedLoginLabel;
-            set => Set(ref failedLoginLabel, value);
+            get => failedSignupLabel;
+            set => Set(ref failedSignupLabel, value);
         }
         public Visibility FailedAuthorizationFlag
         {
@@ -142,7 +136,7 @@ namespace GoodsSupply.ViewModels
             AuthorizationWindowTitle = "Войдите в свой личный кабинет";
         }
 
-        private string namePattern = @"^\D+$";
+        private string namePattern = @"^\D*$";
         private string emailPattern = @"^[\w!#$%&'*+\-/=?\^_`{|}~]+(\.[\w!#$%&'*+\-/=?\^_`{|}~]+)*@((([\-\w]+\.)+[a-zA-Z]{2,4})|(([0-9]{1,3}\.){3}[0-9]{1,3}))$";
         private string loginPattern = @"^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$";
         private string passwordPattern = @"^\S+$";
@@ -159,7 +153,7 @@ namespace GoodsSupply.ViewModels
                 FailedPasswordFlag = Visibility.Hidden;
                 FailedPasswordCheckFlag = Visibility.Hidden;
 
-                if (Regex.IsMatch(Name, namePattern))
+                if (Regex.IsMatch(Name, namePattern) && Regex.IsMatch(Name, @"\S+"))
                 {
                     if (Regex.IsMatch(Email, emailPattern, RegexOptions.IgnoreCase))
                     {
@@ -167,59 +161,83 @@ namespace GoodsSupply.ViewModels
                         {
                             if (Regex.IsMatch(Login, loginPattern))
                             {
-                                if (Regex.Matches(Login, @"\S*admin\S*", RegexOptions.IgnoreCase).Count == 0)
+                                if (Login.Length > 2)
                                 {
-                                    if (context.USERS.FirstOrDefault(u => u.Login == Login) == null)
+                                    if (Regex.Matches(Login, @"\S*admin\S*", RegexOptions.IgnoreCase).Count == 0)
                                     {
-                                        if (Regex.IsMatch(Password, passwordPattern))
+                                        if (context.USERS.FirstOrDefault(u => u.Login == Login) == null)
                                         {
-                                            if (Equals(Password, PasswordCheck))
+                                            if (Password.Length > 3)
                                             {
-                                                PERSONAL_ACCOUNTS element = new PERSONAL_ACCOUNTS(Name, Email);
-                                                context.PERSONAL_ACCOUNTS.Add(element); context.SaveChanges();
-                                                int elementId = context.PERSONAL_ACCOUNTS.FirstOrDefault(u => u.Email == Email).AccountId;
-                                                USERS newElement = new USERS(Login, Password, elementId);
-                                                context.USERS.Add(newElement); context.SaveChanges();
-                                                MessageBox.Show("Аккаунт создан, попробуйте войти в него");
+                                                if (Regex.IsMatch(Password, passwordPattern))
+                                                {
+                                                    if (Equals(Password, PasswordCheck))
+                                                    {
+                                                        PERSONAL_ACCOUNTS element = new PERSONAL_ACCOUNTS(Regex.Replace(Name, @"^\s+|\s+$", ""), Email);
+                                                        context.PERSONAL_ACCOUNTS.Add(element); context.SaveChanges();
+                                                        int elementId = context.PERSONAL_ACCOUNTS.FirstOrDefault(u => u.Email == Email).AccountId;
+                                                        USERS newElement = new USERS(Login, Password, elementId);
+                                                        context.USERS.Add(newElement); context.SaveChanges();
+                                                        MessageBox.Show("Аккаунт создан, попробуйте войти в него");
+                                                    }
+                                                    else
+                                                    {
+                                                        FailedPasswordCheckFlag = Visibility.Visible;
+                                                        FailedSignupLabel = "Пароли не совпадают";
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    FailedPasswordFlag = Visibility.Visible;
+                                                    FailedSignupLabel = "Неверный формат пароля";
+                                                }
                                             }
                                             else
-                                                FailedPasswordCheckFlag = Visibility.Visible;
+                                            {
+                                                FailedPasswordFlag = Visibility.Visible;
+                                                FailedSignupLabel = "Пароль не может быть короче четырех символов";
+                                            }
                                         }
                                         else
-                                            FailedPasswordFlag = Visibility.Visible;
+                                        {
+                                            FailedLoginFlag = Visibility.Visible;
+                                            FailedSignupLabel = "Уже существует аккаунт с таким логином";
+                                        }
                                     }
                                     else
                                     {
                                         FailedLoginFlag = Visibility.Visible;
-                                        FailedLoginLabel = "Уже существует аккаунт с таким логином";
+                                        FailedSignupLabel = "Аккаунт с таким логином не может быть создан";
                                     }
                                 }
                                 else
                                 {
                                     FailedLoginFlag = Visibility.Visible;
-                                    FailedLoginLabel = "Аккаунт с таким логином не может быть создан";
+                                    FailedSignupLabel = "Логин не может быть короче трех символов";
                                 }
                             }
                             else
                             {
                                 FailedLoginFlag = Visibility.Visible;
-                                FailedLoginLabel = "Неверный формат логина";
+                                FailedSignupLabel = "Неверный формат логина";
                             }
                         }
                         else
                         {
                             FailedEmailFlag = Visibility.Visible;
-                            FailedEmailLabel = "Уже существует аккаунт с этой почтой";
+                            FailedSignupLabel = "Уже существует аккаунт с этой почтой";
                         }
                     }
                     else
                     {
                         FailedEmailFlag = Visibility.Visible;
-                        FailedEmailLabel = "Неверный формат почты";
+                        FailedSignupLabel = "Неверный формат почты";
                     }
                 }
                 else
                     FailedNameFlag = Visibility.Visible;
+
+                SelectedAuthorizationWindow = new LogInContainer();
             }
             catch (System.Data.Entity.Validation.DbEntityValidationException dbEx)
             {
@@ -231,8 +249,6 @@ namespace GoodsSupply.ViewModels
                         string message = string.Format("{0}:{1}",
                             validationErrors.Entry.Entity.ToString(),
                             validationError.ErrorMessage);
-                        // raise a new exception nesting
-                        // the current instance as InnerException
                         raise = new InvalidOperationException(message, raise);
                     }
                 }
