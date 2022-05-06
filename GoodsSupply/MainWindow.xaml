@@ -5,8 +5,179 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GoodsSupply"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Height="580" Width="965"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        Icon="/Assets/whiteRectangle.png"
+        FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="59"></RowDefinition>
+            <RowDefinition Height="56"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="112"></ColumnDefinition>
+            <ColumnDefinition Width="141"></ColumnDefinition>
+            <ColumnDefinition Width="267"></ColumnDefinition>
+            <ColumnDefinition Width="220"></ColumnDefinition>
+            <ColumnDefinition Width="210"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Rectangle Width="740" Height="59" Grid.Row="0" Grid.ColumnSpan="4" Fill="#FBD914"></Rectangle>
+        <Rectangle Grid.Row="0" Grid.Column="4" Grid.RowSpan="3" Width="210" Fill="#0058A3"/>
+        <Image Source="Assets/ikeaLogo.jpg" Width="80" Grid.Column="3" HorizontalAlignment="Right" Margin="12 0"></Image>
+        <StackPanel Grid.Column="0" Grid.RowSpan="3" VerticalAlignment="Top" Margin="0 30">
+            <Rectangle Width="50" Height="50" Fill="#E8C600" RadiusX="100" RadiusY="100"></Rectangle>
+            <Label Content="Диана" FontSize="12" HorizontalAlignment="Center" Margin="0 -3"></Label>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="2" Width="32">
+            <Button Background="Transparent" BorderBrush="Transparent">
+                <Image Source="Assets/catalogAButton.jpg"></Image>
+            </Button>
+            <Button Background="Transparent" BorderBrush="Transparent" Margin="0 20">
+                <Image Source="Assets/couponsButton.jpg"></Image>
+            </Button>
+            <Button Background="Transparent" BorderBrush="Transparent">
+                <Image Source="Assets/reviewsButton.jpg"></Image>
+            </Button>
+            <Button Background="Transparent" BorderBrush="Transparent" Margin="0 20">
+                <Image Source="Assets/logOutButton.jpg"></Image>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="0 17 30 0">
+            <Label Content="КАТЕГОРИИ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
+            <!--<ListView>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content=""></Label>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>-->
+            <TextBlock Text="Товары для дома" FontSize="10" Margin="0 0 0 10" TextWrapping="Wrap"></TextBlock>
+            <TextBlock Text="Кухонные принадлежности" FontSize="10" Margin="0 0 0 10" TextWrapping="Wrap"></TextBlock>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Margin="0 17 30 0">
+            <Label Content="ТОВАРЫ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 -50 0 0">
+                <Button Background="Transparent" BorderBrush="Transparent" Height="14">
+                    <Image Source="Assets/sortAsc.png" Height="10"></Image>
+                </Button>
+                <Button Margin="10 0 0 0" Background="Transparent" BorderBrush="Transparent" Height="14">
+                    <Image Source="Assets/sortDesc.png" Height="10"></Image>
+                </Button>
+                <Button Margin="10 0 0 0" Background="Transparent" BorderBrush="Transparent" Height="14">
+                    <Image Source="Assets/sortAlphabet.png" Height="10"></Image>
+                </Button>
+            </StackPanel>
+            <!--<ListView>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content=""></Label>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>-->
+            <Border BorderBrush="#E6E6E6" Width="237" BorderThickness="1" Margin="0 0 0 5">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Assets/test.PNG" Width="43" Margin="10"></Image>
+                    <StackPanel Margin="0 10">
+                        <Label Content="004.278.42 ВОРКРАГЕ" FontSize="12" Padding="0" Margin="0 0 0 2"></Label>
+                        <TextBlock Text="Плед, бежевый, 110x170 см" FontSize="10" MaxWidth="130" TextWrapping="Wrap"></TextBlock>
+                    </StackPanel>
+                    <Label Content="559 ₽" Padding="0" VerticalContentAlignment="Bottom" Margin="5 0 0 10" FontWeight="SemiBold"></Label>
+                </StackPanel>
+            </Border>
+            <Border BorderBrush="#E6E6E6" Width="237" BorderThickness="1" Margin="0 0 0 5">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="Assets/test.PNG" Width="43" Margin="10"></Image>
+                    <StackPanel Margin="0 10">
+                        <Label Content="004.278.42 ВОРКРАГЕ" FontSize="12" Padding="0" Margin="0 0 0 2"></Label>
+                        <TextBlock Text="Плед, бежевый, 110x170 см" FontSize="10" MaxWidth="130" TextWrapping="Wrap"></TextBlock>
+                    </StackPanel>
+                    <Label Content="559 ₽" Padding="0" VerticalContentAlignment="Bottom" Margin="5 0 0 10" FontWeight="SemiBold"></Label>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="3" Margin="0 17 20 0">
+            <Label Content="ПОДРОБНЕЕ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
+            <!--<ListView> здесь не листвью а что то другое
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content=""></Label>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>-->
+            <StackPanel Margin="0 0 0 10">
+                <StackPanel Margin="0 0 0 10" HorizontalAlignment="Left" Orientation="Horizontal">
+                    <Rectangle Fill="#E21D1D" Width="10" Height="10" RadiusX="100" RadiusY="100"></Rectangle>
+                    <Label Padding="10 0 0 0" Content="&lt;10 на складе" FontSize="12"></Label>
+                </StackPanel>
+                <TextBlock Text="Можно уютно укутаться лежа на диване или накинуть на себя, когда прохладно." FontSize="10" Margin="0 0 0 10" Width="200" TextWrapping="Wrap"></TextBlock>
+                <StackPanel Margin="0 0 0 10" Orientation="Horizontal">
+                    <Label Padding="0" Content="Артикул —" FontSize="10"></Label>
+                    <Label Padding="4 0 0 0" Content="004.278.42" FontSize="10"></Label>
+                </StackPanel>
+                <StackPanel Margin="0 0 0 10" Orientation="Horizontal">
+                    <Label Padding="0" Content="Материал —" FontSize="10"></Label>
+                    <TextBlock Padding="3 0 0 0" Text="100% полиэстер" FontSize="10" Width="135" TextWrapping="Wrap"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Margin="0 0 0 30">
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel>
+                        <Button Background="Transparent" BorderBrush="Transparent">
+                            <Image Source="Assets/arrowUp.png" Width="9"></Image>
+                        </Button>
+                        <Button Background="Transparent" BorderBrush="Transparent">
+                            <Image Source="Assets/arrowDown.png" Width="9"></Image>
+                        </Button>
+                    </StackPanel>
+                    <Label Content="0 шт." FontSize="12" Padding="5 0 0 0"></Label>
+                </StackPanel>
+                <Button Background="Transparent" Margin="0 -22 0 10" BorderBrush="#0058A3" Width="130" Height="26" Content="Добавить в корзину" FontSize="10" HorizontalAlignment="Right"></Button>
+                <Button Background="Transparent" BorderBrush="#0058A3" Width="200" Height="26" Content="Оставить отзыв/вопрос" FontSize="10" HorizontalAlignment="Right"></Button>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="ОТЗЫВЫ И ВОПРОСЫ" Padding="0" FontWeight="SemiBold" FontSize="16" Margin="0 0 0 10"></Label>
+                <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                    <Rectangle Fill="#C8D794" Width="20" Height="20" RadiusX="100" RadiusY="100"></Rectangle>
+                    <Label Padding="10 0 0 0" Content="Диана"></Label>
+                </StackPanel>
+                <TextBlock Width="201" TextWrapping="Wrap" FontSize="10" Margin="0 0 0 10" Text="Фильм «Текст» это черная краска на черной кисточке по черному холсту. Скучно, банально, монотонно."></TextBlock>
+                <StackPanel Margin="30 0 0 20">
+                    <Label Padding="0 0 0 5" FontWeight="SemiBold" Content="Администратор"></Label>
+                    <TextBlock Width="171" TextWrapping="Wrap" Text="Диана, спасибо за развернутый отзыв!" FontSize="10" FontStyle="Italic"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom" Margin="0 0 0 13">
+            <TextBox Padding="10 7" Text="Поиск по артикулу" BorderBrush="Transparent" FontSize="10"></TextBox>
+            <Button Width="18" Height="18" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Right" Margin="0 -30 10 0">
+                <Image Source="Assets/searchCode.png" Width="12" Height="12"></Image>
+            </Button>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="4">
+            <StackPanel MinHeight="100" Background="#fff" Margin="15 15 15 0">
+                <StackPanel Margin="5">
+                    <Label Content="КОРЗИНА" FontWeight="SemiBold" FontSize="16"></Label>
+                    <StackPanel>
+                        <Label Content="004.278.42"></Label>
+                        <Label Content="1 × 559 ₽" HorizontalAlignment="Right" Margin="0 -26"></Label>
+                        <Label Content="004.278.42"></Label>
+                        <Label Content="1 × 559 ₽" HorizontalAlignment="Right" Margin="0 -26"></Label>
+                        <Label Content="004.278.42"></Label>
+                        <Label Content="1 × 559 ₽" HorizontalAlignment="Right" Margin="0 -26"></Label>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel MinHeight="47" Background="#fff" Margin="15 -1 15 0">
+                <StackPanel Margin="10">
+                    <Button Content="Перейти" Background="#fff" BorderBrush="#0058A3" FontSize="10" Width="85" Height="26" HorizontalAlignment="Left"></Button>
+                    <Label Content="1277 ₽" Margin="0 -30" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Right"></Label>
+                </StackPanel>
+            </StackPanel>
+            <Image Source="Assets/checkEnd.png" Width="180" Margin="0 -1"></Image>
+            <Rectangle Height="1" Width="180" Fill="#E6E6E6" Margin="0 -141 0 0"></Rectangle>
+        </StackPanel>
     </Grid>
 </Window>
