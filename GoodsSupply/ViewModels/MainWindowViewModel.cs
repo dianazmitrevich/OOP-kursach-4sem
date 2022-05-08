@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GoodsSupply.ViewModels
 {
@@ -17,8 +18,15 @@ namespace GoodsSupply.ViewModels
 
         private ObservableCollection<CATEGORIES> categoriesList;
         private ObservableCollection<PRODUCTS> productsList = null;
-        private CATEGORIES selectedItemIndex;
-        private Visibility selectedCategoryFlag = Visibility.Visible;
+        private ObservableCollection<PRODUCTS_DETAIL> productsDetail = null;
+        private CATEGORIES selectedItem;
+        private PRODUCTS selectedProductItem;
+        private Visibility noCategoryselectedFlag = Visibility.Visible;
+        private Visibility noProductSelectedFlag = Visibility.Visible;
+        private Visibility isCategorySelectedFlag = Visibility.Hidden;
+
+        private string quantityLabel;
+        private Brush brushQuantity;
 
         public ObservableCollection<CATEGORIES> CategoriesList
         {
@@ -30,29 +38,88 @@ namespace GoodsSupply.ViewModels
             get => productsList;
             set => Set(ref productsList, value);
         }
-        public CATEGORIES SelectedItemIndex
+        public CATEGORIES SelectedItem
         {
-            get => selectedItemIndex;
+            get => selectedItem;
             set
             {
-                Set(ref selectedItemIndex, value);
+                Set(ref selectedItem, value);
                 ShowProducts();
             }
         }
-        public Visibility SelectedCategoryFlag
+        public PRODUCTS SelectedProductItem
         {
-            get => selectedCategoryFlag;
-            set => Set(ref selectedCategoryFlag, value);
+            get => selectedProductItem;
+            set
+            {
+                Set(ref selectedProductItem, value);
+                ShowProductsDetail();
+            }
+        }
+        public Visibility NoCategoryselectedFlag
+        {
+            get => noCategoryselectedFlag;
+            set => Set(ref noCategoryselectedFlag, value);
+        }
+        public Visibility NoProductSelectedFlag
+        {
+            get => noProductSelectedFlag;
+            set => Set(ref noProductSelectedFlag, value);
+        }
+        public Visibility IsCategorySelectedFlag
+        {
+            get => isCategorySelectedFlag;
+            set => Set(ref isCategorySelectedFlag, value);
+        }
+        public ObservableCollection<PRODUCTS_DETAIL> ProductsDetail
+        {
+            get => productsDetail;
+            set => Set(ref productsDetail, value);
+        }
+        public string QuantityLabel
+        {
+            get => quantityLabel;
+            set => Set(ref quantityLabel, value);
+        }
+        public Brush BrushQuantity
+        {
+            get => brushQuantity;
+            set => Set(ref brushQuantity, value);
         }
 
-        public void ShowProducts()
+        void ShowProducts()
         {
-            ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(selectedItemIndex.CategoryId)));
-            SelectedCategoryFlag = Visibility.Collapsed;
+            ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(SelectedItem.CategoryId)));
+            NoCategoryselectedFlag = Visibility.Collapsed;
+            NoProductSelectedFlag = Visibility.Visible;
+            IsCategorySelectedFlag = Visibility.Visible;
         }
+        void ShowProductsDetail()
+        {
+            int quantity = SelectedProductItem.Quantity;
+            if (quantity < 5)
+            {
+                QuantityLabel = "<5 на складе";
+                BrushQuantity = Brushes.Red;
+            }
+            else if (quantity >= 5 && quantity < 10)
+            {
+                QuantityLabel = "<10 на складе";
+                BrushQuantity = Brushes.Orange;
+            }
+            else if (quantity >= 10)
+            {
+                QuantityLabel = ">10 на складе";
+                BrushQuantity = Brushes.Green;
+            }
+
+            ProductsDetail = new ObservableCollection<PRODUCTS_DETAIL>(context.PRODUCTS_DETAIL.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
+            NoProductSelectedFlag = Visibility.Collapsed;
+        }
+
         public MainWindowViewModel()
         {
-            categoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
+            CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
         }
     }
 }
