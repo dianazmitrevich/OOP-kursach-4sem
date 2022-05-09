@@ -25,11 +25,9 @@ namespace GoodsSupply.Models
 
         public double FinalOrderPrice { get; set; }
 
-        [Required]
         [StringLength(100)]
         public string PaymentMethod { get; set; }
 
-        [Required]
         [StringLength(10)]
         public string Adress { get; set; }
 

@@ -23,6 +23,20 @@
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int LinkToOrderId { get; set; }
 
+        [Key]
+        [Column(Order = 3)]
+        public double OrderedProductPrice { get; set; }
+
         public virtual ORDERS ORDERS { get; set; }
+
+        public ORDERED_PRODUCTS(int orderedProductCode, int orderedQuantity, int orderId, float orderedProductPrice)
+        {
+            this.OrderedProductId = orderedProductCode;
+            this.OrderedQuantity = orderedQuantity;
+            this.LinkToOrderId = orderId;
+            this.OrderedProductPrice = orderedProductPrice;
+        }
+
+        public ORDERED_PRODUCTS() { }
     }
 }

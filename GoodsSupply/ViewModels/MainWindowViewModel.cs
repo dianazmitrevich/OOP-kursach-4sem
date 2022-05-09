@@ -21,6 +21,7 @@ namespace GoodsSupply.ViewModels
         private ObservableCollection<PRODUCTS> productsList = null;
         private ObservableCollection<PRODUCTS_DETAIL> productsDetail = null;
         private ObservableCollection<REVIEWS> productReviews = null;
+        private ObservableCollection<ORDERED_PRODUCTS> cartItems = null;
         private CATEGORIES selectedItem;
         private PRODUCTS selectedProductItem;
         private Visibility noCategoryselectedFlag = Visibility.Visible;
@@ -28,6 +29,10 @@ namespace GoodsSupply.ViewModels
         private Visibility isCategorySelectedFlag = Visibility.Hidden;
         private Visibility isProductSelectedFlag = Visibility.Collapsed;
         private Visibility isReviewsEmpty = Visibility.Visible;
+        private Visibility isCartEmpty = Visibility.Visible;
+
+        private int selectedQuantity = 0;
+        private int selectedItemQuantity = 0;
 
         private string quantityLabel;
         private Brush brushQuantity;
@@ -46,6 +51,11 @@ namespace GoodsSupply.ViewModels
         {
             get => productsList;
             set => Set(ref productsList, value);
+        }
+        public ObservableCollection<ORDERED_PRODUCTS> CartItems
+        {
+            get => cartItems;
+            set => Set(ref cartItems, value);
         }
         public CATEGORIES SelectedItem
         {
@@ -90,6 +100,11 @@ namespace GoodsSupply.ViewModels
             get => isReviewsEmpty;
             set => Set(ref isReviewsEmpty, value);
         }
+        public Visibility IsCartEmpty
+        {
+            get => isCartEmpty;
+            set => Set(ref isCartEmpty, value);
+        }
         public ObservableCollection<PRODUCTS_DETAIL> ProductsDetail
         {
             get => productsDetail;
@@ -105,6 +120,16 @@ namespace GoodsSupply.ViewModels
             get => quantityLabel;
             set => Set(ref quantityLabel, value);
         }
+        public int SelectedQuantity
+        {
+            get => selectedQuantity;
+            set => Set(ref selectedQuantity, value);
+        }
+        public int SelectedItemQuantity
+        {
+            get => selectedItemQuantity;
+            set => Set(ref selectedItemQuantity, value);
+        }
         public Brush BrushQuantity
         {
             get => brushQuantity;
@@ -119,7 +144,9 @@ namespace GoodsSupply.ViewModels
             IsCategorySelectedFlag = Visibility.Visible;
             IsProductSelectedFlag = Visibility.Collapsed;
             IsReviewsEmpty = Visibility.Visible;
+            SelectedQuantity = 0;
         }
+
         void ShowProductsDetail()
         {
             if (SelectedProductItem != null)
@@ -145,12 +172,46 @@ namespace GoodsSupply.ViewModels
                 ProductReviews = new ObservableCollection<REVIEWS>(context.REVIEWS.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
             }
 
+            SelectedQuantity = 0;
+            SelectedItemQuantity = SelectedProductItem.Quantity;
             IsReviewsEmpty = Visibility.Visible;
             IsProductSelectedFlag = Visibility.Visible;
             NoProductSelectedFlag = Visibility.Collapsed;
 
             if (ProductReviews.Count > 0)
                 IsReviewsEmpty = Visibility.Collapsed;
+        }
+
+        public ICommand AddQuantityCommand { get; }
+        private bool CanAddQuantityCommandExecute(object p) => SelectedItemQuantity > SelectedQuantity;
+        private void OnAddQuantityCommandExecuted(object p)
+        {
+            SelectedQuantity++;
+        }
+
+        public ICommand RemoveQuantityCommand { get; }
+        private bool CanRemoveQuantityCommandExecute(object p) => SelectedQuantity > 0;
+        private void OnRemoveQuantityCommandExecuted(object p)
+        {
+            SelectedQuantity--;
+        }
+
+        public ICommand AddToCartCommand { get; }
+        private bool CanAddToCartCommandExecute(object p) => SelectedQuantity > 0;
+        private void OnAddToCartCommandExecuted(object p)
+        {
+            int elementCount = context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3 && context.PRODUCTS_DETAIL.FirstOrDefault(t => t.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode == f.OrderedProductId).Count();
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.LinkToOrderId == 3 && context.PRODUCTS_DETAIL.FirstOrDefault(t => t.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode == f.OrderedProductId);
+            int previousQuantity = 0;
+            if (elementCount > 0)
+            {
+                previousQuantity = element.OrderedQuantity;
+                context.ORDERED_PRODUCTS.Remove(element);
+            }
+            ORDERED_PRODUCTS newelement = new ORDERED_PRODUCTS(context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode, SelectedQuantity + previousQuantity, 3, (float)this.SelectedProductItem.Price);
+            context.ORDERED_PRODUCTS.Add(newelement); context.SaveChanges();
+
+            CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
         }
 
         public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter)
@@ -162,6 +223,16 @@ namespace GoodsSupply.ViewModels
         public MainWindowViewModel()
         {
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
+            CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+
+            if (CartItems.Count > 0)
+                IsCartEmpty = Visibility.Collapsed;
+            else
+                IsCartEmpty = Visibility.Visible;
+
+            AddQuantityCommand = new DelegateCommand(OnAddQuantityCommandExecuted, CanAddQuantityCommandExecute);
+            RemoveQuantityCommand = new DelegateCommand(OnRemoveQuantityCommandExecuted, CanRemoveQuantityCommandExecute);
+            AddToCartCommand = new DelegateCommand(OnAddToCartCommandExecuted, CanAddToCartCommandExecute);
         }
     }
 }

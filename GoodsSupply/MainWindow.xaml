@@ -80,10 +80,10 @@
                     <Image Source="Assets/sortAlphabet.png" Height="10"></Image>
                 </Button>
             </StackPanel>
-            <!--<StackPanel Grid.Row="2" Margin="0 100" Visibility="{Binding NoCategoryselectedFlag}">
+            <StackPanel Grid.Row="2" Margin="0 100" Visibility="{Binding NoCategoryselectedFlag}">
                 <Image Source="Assets/notSelected.png" Width="85"></Image>
                 <TextBlock Text="Здесь пока пусто! Для начала выберите категорию" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
-            </StackPanel>-->
+            </StackPanel>
             <ListView ItemsSource="{Binding ProductsList}" SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}"  Width="247" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -108,9 +108,9 @@
             <StackPanel Margin="0 17 20 0" Visibility="{Binding IsCategorySelectedFlag}">
                 <Label Content="ПОДРОБНЕЕ" FontWeight="SemiBold" FontSize="16" Margin="-1 0 0 10"></Label>
                 <!--<StackPanel Grid.Row="2" Margin="0 100" Visibility="{Binding NoProductSelectedFlag}">
-                <Image Source="Assets/notSelected.png" Width="85"></Image>
-                <TextBlock Text="Здесь пока пусто! Для начала выберите товар" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
-            </StackPanel>-->
+                    <Image Source="Assets/notSelected.png" Width="85"></Image>
+                    <TextBlock Text="Здесь пока пусто! Для начала выберите товар" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
+                </StackPanel>-->
                 <StackPanel Margin="4 0 0 10" HorizontalAlignment="Left" Orientation="Horizontal" Visibility="{Binding IsProductSelectedFlag}">
                     <Rectangle Fill="{Binding BrushQuantity}" Width="10" Height="10" RadiusX="100" RadiusY="100"></Rectangle>
                     <Label Padding="5 0 0 0" Content="{Binding QuantityLabel}" FontSize="12"></Label>
@@ -134,28 +134,29 @@
                                         <TextBlock Padding="3 0 0 0" Text="{Binding Package}" FontSize="10" Width="135" TextWrapping="Wrap"></TextBlock>
                                     </StackPanel>
                                 </StackPanel>
-                                <StackPanel Margin="0 0 0 30">
-                                    <StackPanel Orientation="Horizontal">
-                                        <StackPanel>
-                                            <Button Background="Transparent" BorderBrush="Transparent">
-                                                <Image Source="Assets/arrowUp.png" Width="9"></Image>
-                                            </Button>
-                                            <Button Background="Transparent" BorderBrush="Transparent">
-                                                <Image Source="Assets/arrowDown.png" Width="9"></Image>
-                                            </Button>
-                                        </StackPanel>
-                                        <Label Content="0 шт." FontSize="12" Padding="5 0 0 0"></Label>
-                                    </StackPanel>
-                                    <Button Background="Transparent" Margin="0 -22 8 10" BorderBrush="#0058A3" Width="130" Height="26" Content="Добавить в корзину" FontSize="10" HorizontalAlignment="Right"></Button>
-                                    <Button Background="Transparent" Margin="0 0 8 0" Style="{DynamicResource DefaultButtonStyle}" BorderBrush="#0058A3" Width="200" Height="26" Content="Оставить отзыв/вопрос" FontSize="10" HorizontalAlignment="Right"></Button>
-                                </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </ContentControl.ContentTemplate>
                 </ContentControl>
+                <StackPanel Margin="0 0 -6 30" Visibility="{Binding IsProductSelectedFlag}">
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <Button Command="{Binding AddQuantityCommand}" Background="Transparent" BorderBrush="Transparent">
+                                <Image Source="Assets/arrowUp.png" Width="9"></Image>
+                            </Button>
+                            <Button Command="{Binding RemoveQuantityCommand}" Background="Transparent" BorderBrush="Transparent">
+                                <Image Source="Assets/arrowDown.png" Width="9"></Image>
+                            </Button>
+                        </StackPanel>
+                        <Label Content="{Binding SelectedQuantity}" FontSize="12" Padding="5 0 0 0"></Label>
+                        <Label Content="шт." FontSize="12" Padding="5 0 0 0"></Label>
+                    </StackPanel>
+                    <Button Command="{Binding AddToCartCommand}" Background="Transparent" Margin="0 -22 8 10" BorderBrush="#0058A3" Width="130" Height="26" Content="Добавить в корзину" FontSize="10" HorizontalAlignment="Right"></Button>
+                    <Button Background="Transparent" Margin="0 0 5 0" Style="{DynamicResource DefaultButtonStyle}" BorderBrush="#0058A3" Width="200" Height="26" Content="Оставить отзыв/вопрос" FontSize="10" HorizontalAlignment="Right"></Button>
+                </StackPanel>
                 <StackPanel Visibility="{Binding IsProductSelectedFlag}">
                     <Label Content="ОТЗЫВЫ И ВОПРОСЫ" Padding="0" FontWeight="SemiBold" FontSize="16" Margin="0 0 0 10"></Label>
-                    <StackPanel Grid.Row="2" Margin="0 5" Visibility="{Binding IsReviewsEmpty}">
+                    <StackPanel Grid.Row="2" Margin="0 20" Visibility="{Binding IsReviewsEmpty}">
                         <Image Source="Assets/questionIcon.png" Width="35"></Image>
                         <TextBlock Text="Здесь пока пусто! Будьте первым кто оставит свой отзыв" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
                     </StackPanel>
@@ -189,16 +190,23 @@
             <StackPanel MinHeight="100" Background="#fff" Margin="15 15 15 0">
                 <StackPanel Margin="5 5 5 20">
                     <Label Content="КОРЗИНА" FontWeight="SemiBold" FontSize="16"></Label>
-                    <ListView BorderBrush="Transparent" BorderThickness="0" Background="Transparent">
-                        <StackPanel Margin="0 0 0 5">
-                            <Label Content="004.278.42" Padding="5 0"></Label>
-                            <Label Content="1 × 559 ₽" HorizontalAlignment="Right" Padding="5 0" Margin="0 -16"></Label>
-                        </StackPanel>
-                    </ListView>
-                    <StackPanel Margin="0 0 0 5">
-                        <Label Content="004.278.42" Padding="5 0"></Label>
-                        <Label Content="1 × 559 ₽" HorizontalAlignment="Right" Padding="5 0" Margin="0 -16"></Label>
+                    <StackPanel Grid.Row="2" Margin="0 20" Visibility="{Binding IsCartEmpty}">
+                        <Image Source="Assets/questionIcon.png" Width="35"></Image>
+                        <TextBlock Text="Здесь пока пусто! Добавьте какой-нибудь товар к себе в корзину" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
                     </StackPanel>
+                    <ListView ItemsSource="{Binding CartItems}" BorderBrush="Transparent" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0 0 0 -10" Orientation="Horizontal">
+                                    <Label Content="{Binding OrderedProductId}"></Label>
+                                    <Label Content="{Binding OrderedQuantity}"></Label>
+                                    <Label Content="×"></Label>
+                                    <Label Content="{Binding OrderedProductPrice}"></Label>
+                                    <Label Content="₽"></Label>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </StackPanel>
             </StackPanel>
             <StackPanel MinHeight="47" Background="#fff" Margin="15 -1 15 0">
