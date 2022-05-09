@@ -24,6 +24,9 @@ namespace GoodsSupply.Models
         [StringLength(200)]
         public string AdminText { get; set; }
 
+        [StringLength(100)]
+        public string AdminName{ get; set; }
+
         public virtual PRODUCTS PRODUCTS { get; set; }
 
         public virtual USERS USERS { get; set; }

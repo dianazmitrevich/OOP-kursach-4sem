@@ -127,6 +127,10 @@ namespace GoodsSupply.Models
                 .Property(e => e.AdminText)
                 .IsUnicode(false);
 
+            modelBuilder.Entity<REVIEWS>()
+                .Property(e => e.AdminName)
+                .IsUnicode(false);
+
             modelBuilder.Entity<USERS>()
                 .Property(e => e.Login)
                 .IsUnicode(false);

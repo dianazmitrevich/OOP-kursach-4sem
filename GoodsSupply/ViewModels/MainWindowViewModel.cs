@@ -27,7 +27,7 @@ namespace GoodsSupply.ViewModels
         private Visibility noProductSelectedFlag = Visibility.Visible;
         private Visibility isCategorySelectedFlag = Visibility.Hidden;
         private Visibility isProductSelectedFlag = Visibility.Collapsed;
-        private Visibility isReviewSeenByAdmin = Visibility.Collapsed;
+        private Visibility isReviewsEmpty = Visibility.Visible;
 
         private string quantityLabel;
         private Brush brushQuantity;
@@ -85,10 +85,10 @@ namespace GoodsSupply.ViewModels
             get => isProductSelectedFlag;
             set => Set(ref isProductSelectedFlag, value);
         }
-        public Visibility IsReviewSeenByAdmin
+        public Visibility IsReviewsEmpty
         {
-            get => isReviewSeenByAdmin;
-            set => Set(ref isReviewSeenByAdmin, value);
+            get => isReviewsEmpty;
+            set => Set(ref isReviewsEmpty, value);
         }
         public ObservableCollection<PRODUCTS_DETAIL> ProductsDetail
         {
@@ -118,6 +118,7 @@ namespace GoodsSupply.ViewModels
             NoProductSelectedFlag = Visibility.Visible;
             IsCategorySelectedFlag = Visibility.Visible;
             IsProductSelectedFlag = Visibility.Collapsed;
+            IsReviewsEmpty = Visibility.Visible;
         }
         void ShowProductsDetail()
         {
@@ -140,19 +141,16 @@ namespace GoodsSupply.ViewModels
                     BrushQuantity = Brushes.Green;
                 }
 
-                IsReviewSeenByAdmin = Visibility.Collapsed;
                 ProductsDetail = new ObservableCollection<PRODUCTS_DETAIL>(context.PRODUCTS_DETAIL.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
                 ProductReviews = new ObservableCollection<REVIEWS>(context.REVIEWS.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
-            
-                /*foreach (var item in ProductReviews)
-                {
-                    if (item.AdminText != "")
-                        IsReviewSeenByAdmin = Visibility.Visible;
-                }*/
             }
 
+            IsReviewsEmpty = Visibility.Visible;
             IsProductSelectedFlag = Visibility.Visible;
             NoProductSelectedFlag = Visibility.Collapsed;
+
+            if (ProductReviews.Count > 0)
+                IsReviewsEmpty = Visibility.Collapsed;
         }
 
         public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter)
