@@ -24,5 +24,10 @@ namespace GoodsSupply
         {
             InitializeComponent();
         }
+        public MainWindow(object dataContextViewModel)
+        {
+            DataContext = dataContextViewModel;
+            InitializeComponent();
+        }
     }
 }

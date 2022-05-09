@@ -12,6 +12,7 @@
         WindowStyle="SingleBorderWindow"
         Icon="/Assets/whiteRectangle.png"
         FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans">
+    <!--:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"-->
     <Window.DataContext>
         <vm:MainWindowViewModel></vm:MainWindowViewModel>
     </Window.DataContext>
@@ -87,13 +88,16 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="#E6E6E6" Width="235" BorderThickness="1" Margin="-5 0 0 5">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="Assets/test.PNG" Width="43" Margin="10"></Image>
-                                <StackPanel Margin="0 10">
-                                    <Label Content="{Binding Name}" FontSize="12" Padding="0" Margin="0 0 0 2"></Label>
-                                    <TextBlock Text="Плед, бежевый, 110x170 см" FontSize="10" MaxWidth="130" TextWrapping="Wrap"></TextBlock>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="Assets/test.PNG" Width="43" Margin="10"></Image>
+                                    <StackPanel Margin="0 10">
+                                        <Label Content="{Binding Name}" FontSize="12" Padding="0" Margin="0 0 0 2"></Label>
+                                        <TextBlock Text="Плед, бежевый, 110x170 см" FontSize="10" MaxWidth="110" TextWrapping="Wrap"></TextBlock>
+                                    </StackPanel>
                                 </StackPanel>
-                                <TextBlock Text="{Binding Price}" Padding="0" VerticalAlignment="Bottom" TextAlignment="Right" Margin="5 0 0 10" FontWeight="SemiBold"></TextBlock>
+                                <TextBlock Text="{Binding Price}" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="5 -35 20 10" FontWeight="SemiBold"></TextBlock>
+                                <TextBlock Text="₽" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0 -35 10 10" FontWeight="SemiBold"></TextBlock>
                             </StackPanel>
                         </Border>
                     </DataTemplate>
@@ -106,11 +110,11 @@
                 <Image Source="Assets/notSelected.png" Width="85"></Image>
                 <TextBlock Text="Здесь пока пусто! Для начала выберите товар" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
             </StackPanel>-->
-            <StackPanel Margin="0 0 0 10" HorizontalAlignment="Left" Orientation="Horizontal">
+            <StackPanel Margin="0 0 0 10" HorizontalAlignment="Left" Orientation="Horizontal" Visibility="{Binding IsProductSelectedFlag}">
                 <Rectangle Fill="{Binding BrushQuantity}" Width="10" Height="10" RadiusX="100" RadiusY="100"></Rectangle>
                 <Label Padding="5 0 0 0" Content="{Binding QuantityLabel}" FontSize="12"></Label>
             </StackPanel>
-            <ContentControl Content="{Binding ProductsDetail}" Margin="-5 0 0 0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
+            <ContentControl Content="{Binding ProductsDetail}" Visibility="{Binding IsProductSelectedFlag}" Margin="-5 0 0 0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
                 <ContentControl.ContentTemplate>
                     <DataTemplate>
                         <StackPanel>
@@ -123,6 +127,10 @@
                                 <StackPanel Margin="0 0 0 10" Orientation="Horizontal">
                                     <Label Padding="0" Content="Материал —" FontSize="10"></Label>
                                     <TextBlock Padding="3 0 0 0" Text="{Binding Material}" FontSize="10" Width="135" TextWrapping="Wrap"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Margin="0 0 0 10" Orientation="Horizontal">
+                                    <Label Padding="0" Content="Упаковка —" FontSize="10"></Label>
+                                    <TextBlock Padding="3 0 0 0" Text="{Binding Package}" FontSize="10" Width="135" TextWrapping="Wrap"></TextBlock>
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Margin="0 0 0 30">
@@ -137,23 +145,46 @@
                                     </StackPanel>
                                     <Label Content="0 шт." FontSize="12" Padding="5 0 0 0"></Label>
                                 </StackPanel>
-                                <Button Background="Transparent" Margin="0 -22 10 10" BorderBrush="#0058A3" Width="130" Height="26" Content="Добавить в корзину" FontSize="10" HorizontalAlignment="Right"></Button>
-                                <Button Background="Transparent" Margin="0 0 10 0" Style="{DynamicResource DefaultButtonStyle}" BorderBrush="#0058A3" Width="200" Height="26" Content="Оставить отзыв/вопрос" FontSize="10" HorizontalAlignment="Right"></Button>
+                                <Button Background="Transparent" Margin="0 -22 8 10" BorderBrush="#0058A3" Width="130" Height="26" Content="Добавить в корзину" FontSize="10" HorizontalAlignment="Right"></Button>
+                                <Button Background="Transparent" Margin="0 0 8 0" Style="{DynamicResource DefaultButtonStyle}" BorderBrush="#0058A3" Width="200" Height="26" Content="Оставить отзыв/вопрос" FontSize="10" HorizontalAlignment="Right"></Button>
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
                 </ContentControl.ContentTemplate>
             </ContentControl>
-            <StackPanel>
+            <StackPanel Visibility="{Binding IsProductSelectedFlag}">
                 <Label Content="ОТЗЫВЫ И ВОПРОСЫ" Padding="0" FontWeight="SemiBold" FontSize="16" Margin="0 0 0 10"></Label>
-                <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                    <Rectangle Fill="#C8D794" Width="20" Height="20" RadiusX="100" RadiusY="100"></Rectangle>
-                    <Label Padding="10 0 0 0" Content="Диана"></Label>
-                </StackPanel>
-                <TextBlock Width="201" TextWrapping="Wrap" FontSize="10" Margin="0 0 0 10" Text="Фильм «Текст» это черная краска на черной кисточке по черному холсту. Скучно, банально, монотонно."></TextBlock>
-                <StackPanel Margin="30 0 0 20">
-                    <Label Padding="0 0 0 5" FontWeight="SemiBold" Content="Администратор" FontSize="10"></Label>
-                    <TextBlock Width="171" TextWrapping="Wrap" Text="Диана, спасибо за развернутый отзыв!" FontSize="10" FontStyle="Italic"></TextBlock>
+                <!--<StackPanel Grid.Row="2" Margin="0 5">
+                    <Image Source="Assets/questionIcon.png" Width="35"></Image>
+                    <TextBlock Text="Здесь пока пусто! Будьте первым кто оставит свой отзыв" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
+                </StackPanel>-->
+                <ListView Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                                    <Rectangle Fill="#C8D794" Width="20" Height="20" RadiusX="100" RadiusY="100"></Rectangle>
+                                    <Label Padding="10 0 0 0" Content="gtg"></Label>
+                                </StackPanel>
+                                <TextBlock Width="201" TextWrapping="Wrap" FontSize="10" Margin="0 0 0 10" Text="{Binding ReviewText}"></TextBlock>
+                                <StackPanel Margin="30 0 0 20">
+                                    <Label Padding="0 0 0 5" FontWeight="SemiBold" Content="Администратор" FontSize="10"></Label>
+                                    <TextBlock Width="171" TextWrapping="Wrap" Text="Диана, спасибо за развернутый отзыв!" FontSize="10" FontStyle="Italic"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
+                        <Rectangle Fill="#C8D794" Width="20" Height="20" RadiusX="100" RadiusY="100"></Rectangle>
+                        <Label Padding="10 0 0 0" Content="Диана"></Label>
+                    </StackPanel>
+                    <TextBlock Width="201" TextWrapping="Wrap" FontSize="10" Margin="0 0 0 10" Text="Фильм «Текст» это черная краска на черной кисточке по черному холсту. Скучно, банально, монотонно."></TextBlock>
+                    <StackPanel Margin="30 0 0 20">
+                        <Label Padding="0 0 0 5" FontWeight="SemiBold" Content="Администратор" FontSize="10"></Label>
+                        <TextBlock Width="171" TextWrapping="Wrap" Text="Диана, спасибо за развернутый отзыв!" FontSize="10" FontStyle="Italic"></TextBlock>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

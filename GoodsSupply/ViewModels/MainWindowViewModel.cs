@@ -16,18 +16,26 @@ namespace GoodsSupply.ViewModels
     {
         private readonly GoodsSupplyContext context = new GoodsSupplyContext();
 
+        private PERSONAL_ACCOUNTS account;
         private ObservableCollection<CATEGORIES> categoriesList;
         private ObservableCollection<PRODUCTS> productsList = null;
         private ObservableCollection<PRODUCTS_DETAIL> productsDetail = null;
+        private ObservableCollection<REVIEWS> productReviews = null;
         private CATEGORIES selectedItem;
         private PRODUCTS selectedProductItem;
         private Visibility noCategoryselectedFlag = Visibility.Visible;
         private Visibility noProductSelectedFlag = Visibility.Visible;
         private Visibility isCategorySelectedFlag = Visibility.Hidden;
+        private Visibility isProductSelectedFlag = Visibility.Collapsed;
 
         private string quantityLabel;
         private Brush brushQuantity;
 
+        public PERSONAL_ACCOUNTS Account
+        {
+            get => account;
+            set => Set(ref account, value);
+        }
         public ObservableCollection<CATEGORIES> CategoriesList
         {
             get => categoriesList;
@@ -71,10 +79,20 @@ namespace GoodsSupply.ViewModels
             get => isCategorySelectedFlag;
             set => Set(ref isCategorySelectedFlag, value);
         }
+        public Visibility IsProductSelectedFlag
+        {
+            get => isProductSelectedFlag;
+            set => Set(ref isProductSelectedFlag, value);
+        }
         public ObservableCollection<PRODUCTS_DETAIL> ProductsDetail
         {
             get => productsDetail;
             set => Set(ref productsDetail, value);
+        }
+        public ObservableCollection<REVIEWS> ProductReviews
+        {
+            get => productReviews;
+            set => Set(ref productReviews, value);
         }
         public string QuantityLabel
         {
@@ -93,6 +111,7 @@ namespace GoodsSupply.ViewModels
             NoCategoryselectedFlag = Visibility.Collapsed;
             NoProductSelectedFlag = Visibility.Visible;
             IsCategorySelectedFlag = Visibility.Visible;
+            IsProductSelectedFlag = Visibility.Collapsed;
         }
         void ShowProductsDetail()
         {
@@ -114,7 +133,15 @@ namespace GoodsSupply.ViewModels
             }
 
             ProductsDetail = new ObservableCollection<PRODUCTS_DETAIL>(context.PRODUCTS_DETAIL.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
+            ProductReviews = new ObservableCollection<REVIEWS>(context.REVIEWS.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
+            IsProductSelectedFlag = Visibility.Visible;
             NoProductSelectedFlag = Visibility.Collapsed;
+        }
+
+        public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter)
+        {
+            this.Account = accountParameter;
+            CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
         }
 
         public MainWindowViewModel()

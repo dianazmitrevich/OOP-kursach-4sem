@@ -14,6 +14,7 @@ namespace GoodsSupply.Models
 
         public virtual DbSet<CATEGORIES> CATEGORIES { get; set; }
         public virtual DbSet<COUPONS> COUPONS { get; set; }
+        public virtual DbSet<ORDERED_PRODUCTS> ORDERED_PRODUCTS { get; set; }
         public virtual DbSet<ORDERS> ORDERS { get; set; }
         public virtual DbSet<PERSONAL_ACCOUNTS> PERSONAL_ACCOUNTS { get; set; }
         public virtual DbSet<PRODUCTS> PRODUCTS { get; set; }
@@ -42,16 +43,22 @@ namespace GoodsSupply.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<ORDERS>()
-                .Property(e => e.OrderedProducts)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<ORDERS>()
                 .Property(e => e.Coupon)
                 .IsUnicode(false);
 
             modelBuilder.Entity<ORDERS>()
                 .Property(e => e.PaymentMethod)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<ORDERS>()
+                .Property(e => e.Adress)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ORDERS>()
+                .HasMany(e => e.ORDERED_PRODUCTS)
+                .WithRequired(e => e.ORDERS)
+                .HasForeignKey(e => e.LinkToOrderId)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<PERSONAL_ACCOUNTS>()
                 .Property(e => e.Name)
@@ -111,7 +118,7 @@ namespace GoodsSupply.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<PRODUCTS_DETAIL>()
-                .Property(e => e.IsPopular)
+                .Property(e => e.BigDescription)
                 .IsUnicode(false);
 
             modelBuilder.Entity<REVIEWS>()

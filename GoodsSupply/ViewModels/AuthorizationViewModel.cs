@@ -110,7 +110,8 @@ namespace GoodsSupply.ViewModels
             string hashPassword = USERS.getHash(Password);
             if (context.USERS.FirstOrDefault(u => u.Login == Login && u.Password == hashPassword) != null)
             {
-                var MainWindow = new MainWindow();
+                MainWindowViewModel model = new MainWindowViewModel(context.PERSONAL_ACCOUNTS.FirstOrDefault(f => context.USERS.FirstOrDefault(u => u.Login == Login).LinkAccountId == f.AccountId));
+                var MainWindow = new MainWindow(model);
                 MainWindow.Show();
                 window.Close();
             }

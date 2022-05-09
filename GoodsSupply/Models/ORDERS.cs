@@ -8,14 +8,15 @@ namespace GoodsSupply.Models
 
     public partial class ORDERS
     {
+        public ORDERS()
+        {
+            ORDERED_PRODUCTS = new HashSet<ORDERED_PRODUCTS>();
+        }
+
         [Key]
         public int OrderId { get; set; }
 
         public int LinkAccountId { get; set; }
-
-        [Required]
-        [StringLength(100)]
-        public string OrderedProducts { get; set; }
 
         public double OrderPrice { get; set; }
 
@@ -28,6 +29,12 @@ namespace GoodsSupply.Models
         [StringLength(100)]
         public string PaymentMethod { get; set; }
 
+        [Required]
+        [StringLength(10)]
+        public string Adress { get; set; }
+
         public virtual PERSONAL_ACCOUNTS PERSONAL_ACCOUNTS { get; set; }
+
+        public virtual ICollection<ORDERED_PRODUCTS> ORDERED_PRODUCTS { get; set; }
     }
 }

@@ -15,18 +15,21 @@ namespace GoodsSupply.Models
 
         public int ProductCode { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string Material { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string Package { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string Size { get; set; }
 
         [Required]
-        [StringLength(5)]
-        public string IsPopular { get; set; }
+        [StringLength(200)]
+        public string BigDescription { get; set; }
 
         public virtual PRODUCTS PRODUCTS { get; set; }
     }
