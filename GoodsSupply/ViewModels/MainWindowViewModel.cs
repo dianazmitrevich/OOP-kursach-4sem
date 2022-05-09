@@ -27,6 +27,7 @@ namespace GoodsSupply.ViewModels
         private Visibility noProductSelectedFlag = Visibility.Visible;
         private Visibility isCategorySelectedFlag = Visibility.Hidden;
         private Visibility isProductSelectedFlag = Visibility.Collapsed;
+        private Visibility isReviewSeenByAdmin = Visibility.Collapsed;
 
         private string quantityLabel;
         private Brush brushQuantity;
@@ -84,6 +85,11 @@ namespace GoodsSupply.ViewModels
             get => isProductSelectedFlag;
             set => Set(ref isProductSelectedFlag, value);
         }
+        public Visibility IsReviewSeenByAdmin
+        {
+            get => isReviewSeenByAdmin;
+            set => Set(ref isReviewSeenByAdmin, value);
+        }
         public ObservableCollection<PRODUCTS_DETAIL> ProductsDetail
         {
             get => productsDetail;
@@ -115,25 +121,36 @@ namespace GoodsSupply.ViewModels
         }
         void ShowProductsDetail()
         {
-            int quantity = SelectedProductItem.Quantity;
-            if (quantity < 5)
+            if (SelectedProductItem != null)
             {
-                QuantityLabel = "<5 на складе";
-                BrushQuantity = Brushes.Red;
-            }
-            else if (quantity >= 5 && quantity < 10)
-            {
-                QuantityLabel = "<10 на складе";
-                BrushQuantity = Brushes.Orange;
-            }
-            else if (quantity >= 10)
-            {
-                QuantityLabel = ">10 на складе";
-                BrushQuantity = Brushes.Green;
+                int quantity = SelectedProductItem.Quantity;
+                if (quantity < 5)
+                {
+                    QuantityLabel = "<5 на складе";
+                    BrushQuantity = Brushes.Red;
+                }
+                else if (quantity >= 5 && quantity < 10)
+                {
+                    QuantityLabel = "<10 на складе";
+                    BrushQuantity = Brushes.Orange;
+                }
+                else if (quantity >= 10)
+                {
+                    QuantityLabel = ">10 на складе";
+                    BrushQuantity = Brushes.Green;
+                }
+
+                IsReviewSeenByAdmin = Visibility.Collapsed;
+                ProductsDetail = new ObservableCollection<PRODUCTS_DETAIL>(context.PRODUCTS_DETAIL.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
+                ProductReviews = new ObservableCollection<REVIEWS>(context.REVIEWS.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
+            
+                /*foreach (var item in ProductReviews)
+                {
+                    if (item.AdminText != "")
+                        IsReviewSeenByAdmin = Visibility.Visible;
+                }*/
             }
 
-            ProductsDetail = new ObservableCollection<PRODUCTS_DETAIL>(context.PRODUCTS_DETAIL.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
-            ProductReviews = new ObservableCollection<REVIEWS>(context.REVIEWS.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
             IsProductSelectedFlag = Visibility.Visible;
             NoProductSelectedFlag = Visibility.Collapsed;
         }

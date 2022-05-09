@@ -10,10 +10,16 @@ namespace GoodsSupply.Models
 
     public partial class USERS
     {
-        [Key]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public USERS()
+        {
+            REVIEWS = new HashSet<REVIEWS>();
+        }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
 
-        [Required]
+        [Key]
         [StringLength(100)]
         public string Login { get; set; }
 
@@ -27,7 +33,11 @@ namespace GoodsSupply.Models
         [StringLength(5)]
         public string IsAdmin { get; set; }
 
-        public USERS() { }
+        public virtual PERSONAL_ACCOUNTS PERSONAL_ACCOUNTS { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<REVIEWS> REVIEWS { get; set; }
+
         public USERS(string login, string password, int linkAccountId, string isAdmin = "N")
         {
             this.Login = login;
@@ -42,6 +52,5 @@ namespace GoodsSupply.Models
             var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(hash);
         }
-        public virtual PERSONAL_ACCOUNTS PERSONAL_ACCOUNTS { get; set; }
     }
 }

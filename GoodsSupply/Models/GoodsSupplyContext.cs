@@ -75,12 +75,6 @@ namespace GoodsSupply.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<PERSONAL_ACCOUNTS>()
-                .HasMany(e => e.REVIEWS)
-                .WithRequired(e => e.PERSONAL_ACCOUNTS)
-                .HasForeignKey(e => e.LinkAccountId)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<PERSONAL_ACCOUNTS>()
                 .HasMany(e => e.USERS)
                 .WithOptional(e => e.PERSONAL_ACCOUNTS)
                 .HasForeignKey(e => e.LinkAccountId);
@@ -122,6 +116,10 @@ namespace GoodsSupply.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<REVIEWS>()
+                .Property(e => e.LinkUserLogin)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<REVIEWS>()
                 .Property(e => e.ReviewText)
                 .IsUnicode(false);
 
@@ -140,6 +138,12 @@ namespace GoodsSupply.Models
             modelBuilder.Entity<USERS>()
                 .Property(e => e.IsAdmin)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<USERS>()
+                .HasMany(e => e.REVIEWS)
+                .WithRequired(e => e.USERS)
+                .HasForeignKey(e => e.LinkUserLogin)
+                .WillCascadeOnDelete(false);
         }
     }
 }

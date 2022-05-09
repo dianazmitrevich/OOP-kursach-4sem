@@ -13,7 +13,9 @@ namespace GoodsSupply.Models
 
         public int LinkToProductId { get; set; }
 
-        public int LinkAccountId { get; set; }
+        [Required]
+        [StringLength(100)]
+        public string LinkUserLogin { get; set; }
 
         [Required]
         [StringLength(200)]
@@ -22,8 +24,8 @@ namespace GoodsSupply.Models
         [StringLength(200)]
         public string AdminText { get; set; }
 
-        public virtual PERSONAL_ACCOUNTS PERSONAL_ACCOUNTS { get; set; }
-
         public virtual PRODUCTS PRODUCTS { get; set; }
+
+        public virtual USERS USERS { get; set; }
     }
 }

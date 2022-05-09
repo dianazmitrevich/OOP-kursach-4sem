@@ -12,8 +12,13 @@ namespace GoodsSupply.Models
         public PERSONAL_ACCOUNTS()
         {
             ORDERS = new HashSet<ORDERS>();
-            REVIEWS = new HashSet<REVIEWS>();
             USERS = new HashSet<USERS>();
+        }
+
+        public PERSONAL_ACCOUNTS(string name, string email)
+        {
+            this.Name = name;
+            this.Email = email;
         }
 
         [Key]
@@ -27,17 +32,8 @@ namespace GoodsSupply.Models
         [StringLength(100)]
         public string Email { get; set; }
 
-        public PERSONAL_ACCOUNTS(string name, string email)
-        {
-            this.Name = name;
-            this.Email = email;
-        }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ORDERS> ORDERS { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<REVIEWS> REVIEWS { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<USERS> USERS { get; set; }
