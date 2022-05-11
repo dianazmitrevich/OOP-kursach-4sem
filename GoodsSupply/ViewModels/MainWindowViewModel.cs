@@ -30,9 +30,12 @@ namespace GoodsSupply.ViewModels
         private Visibility isProductSelectedFlag = Visibility.Collapsed;
         private Visibility isReviewsEmpty = Visibility.Visible;
         private Visibility isCartEmpty = Visibility.Visible;
+        private Visibility isEmptySearch = Visibility.Collapsed;
 
         private int selectedQuantity = 0;
         private int selectedItemQuantity = 0;
+        private double cartPrice = 0;
+        private int searchProductCode;
 
         private string quantityLabel;
         private Brush brushQuantity;
@@ -105,6 +108,11 @@ namespace GoodsSupply.ViewModels
             get => isCartEmpty;
             set => Set(ref isCartEmpty, value);
         }
+        public Visibility IsEmptySearch
+        {
+            get => isEmptySearch;
+            set => Set(ref isEmptySearch, value);
+        }
         public ObservableCollection<PRODUCTS_DETAIL> ProductsDetail
         {
             get => productsDetail;
@@ -120,6 +128,11 @@ namespace GoodsSupply.ViewModels
             get => quantityLabel;
             set => Set(ref quantityLabel, value);
         }
+        public int SearchProductCode
+        {
+            get => searchProductCode;
+            set => Set(ref searchProductCode, value);
+        }
         public int SelectedQuantity
         {
             get => selectedQuantity;
@@ -129,6 +142,11 @@ namespace GoodsSupply.ViewModels
         {
             get => selectedItemQuantity;
             set => Set(ref selectedItemQuantity, value);
+        }
+        public double CartPrice
+        {
+            get => cartPrice;
+            set => Set(ref cartPrice, value);
         }
         public Brush BrushQuantity
         {
@@ -144,6 +162,7 @@ namespace GoodsSupply.ViewModels
             IsCategorySelectedFlag = Visibility.Visible;
             IsProductSelectedFlag = Visibility.Collapsed;
             IsReviewsEmpty = Visibility.Visible;
+            IsEmptySearch = Visibility.Collapsed;
             SelectedQuantity = 0;
         }
 
@@ -208,11 +227,60 @@ namespace GoodsSupply.ViewModels
                 previousQuantity = element.OrderedQuantity;
                 context.ORDERED_PRODUCTS.Remove(element);
             }
-            ORDERED_PRODUCTS newelement = new ORDERED_PRODUCTS(context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode, SelectedQuantity + previousQuantity, 3, (float)this.SelectedProductItem.Price);
+            ORDERED_PRODUCTS newelement = new ORDERED_PRODUCTS(context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode, SelectedQuantity + previousQuantity, 3, (float)SelectedProductItem.Price);
             context.ORDERED_PRODUCTS.Add(newelement); context.SaveChanges();
 
+            if (context.ORDERED_PRODUCTS.Count() > 0)
+                IsCartEmpty = Visibility.Collapsed;
+            else
+                IsCartEmpty = Visibility.Visible;
+
             CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+
+            if (context.ORDERED_PRODUCTS.Count() > 0)
+            {
+                for (int i = 0; i < context.ORDERED_PRODUCTS.Count(); i++)
+                {
+                    CartPrice += CartItems[i].OrderedProductPrice * CartItems[i].OrderedQuantity;
+                }
+            }
         }
+
+        public ICommand SearchCodeCommand { get; }
+        private bool CanSearchCodeCommandExecute(object p) => context.PRODUCTS.Count() > 0;
+        private void OnSearchCodeCommandExecuted(object p)
+        {
+            var productDetail = new ObservableCollection<PRODUCTS_DETAIL>(context.PRODUCTS_DETAIL.Where(f => f.ProductCode.Equals(SearchProductCode)));
+
+            if (productDetail.Count() > 0)
+            {
+                var product = productDetail[0];
+                ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.ProductId.Equals(product.LinkToProductId)));
+                IsEmptySearch = Visibility.Collapsed;
+                NoCategoryselectedFlag = Visibility.Collapsed;
+                IsCategorySelectedFlag = Visibility.Visible;
+                SelectedProductItem = ProductsList[0];
+            }
+            else
+            {
+                ProductsList = null;
+                NoCategoryselectedFlag = Visibility.Collapsed;
+                IsEmptySearch = Visibility.Visible;
+                IsCategorySelectedFlag = Visibility.Collapsed;
+            }
+        }
+
+        public ICommand SortAscCommand { get; }
+        private bool CanSortAscCommandExecute(object p) => context.PRODUCTS.Count() > 0 && NoCategoryselectedFlag == Visibility.Collapsed && IsEmptySearch == Visibility.Collapsed;
+        private void OnSortAscCommandExecuted(object p) => ProductsList = new ObservableCollection<PRODUCTS>(ProductsList.OrderBy(f => f.Price));
+
+        public ICommand SortDescCommand { get; }
+        private bool CanSortDescCommandExecute(object p) => context.PRODUCTS.Count() > 0 && NoCategoryselectedFlag == Visibility.Collapsed && IsEmptySearch == Visibility.Collapsed;
+        private void OnSortDescCommandExecuted(object p) => ProductsList = new ObservableCollection<PRODUCTS>(ProductsList.OrderByDescending(f => f.Price));
+
+        public ICommand SortAlphabetCommand { get; }
+        private bool CanSortAlphabetCommandExecute(object p) => context.PRODUCTS.Count() > 0 && NoCategoryselectedFlag == Visibility.Collapsed && IsEmptySearch == Visibility.Collapsed;
+        private void OnSortAlphabetCommandExecuted(object p) => ProductsList = new ObservableCollection<PRODUCTS>(ProductsList.OrderBy(f => f.Name));
 
         public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter)
         {
@@ -222,6 +290,7 @@ namespace GoodsSupply.ViewModels
 
         public MainWindowViewModel()
         {
+            CartPrice = 0;
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
             CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
 
@@ -233,6 +302,10 @@ namespace GoodsSupply.ViewModels
             AddQuantityCommand = new DelegateCommand(OnAddQuantityCommandExecuted, CanAddQuantityCommandExecute);
             RemoveQuantityCommand = new DelegateCommand(OnRemoveQuantityCommandExecuted, CanRemoveQuantityCommandExecute);
             AddToCartCommand = new DelegateCommand(OnAddToCartCommandExecuted, CanAddToCartCommandExecute);
+            SearchCodeCommand = new DelegateCommand(OnSearchCodeCommandExecuted, CanSearchCodeCommandExecute);
+            SortAscCommand = new DelegateCommand(OnSortAscCommandExecuted, CanSortAscCommandExecute);
+            SortDescCommand = new DelegateCommand(OnSortDescCommandExecuted, CanSortDescCommandExecute);
+            SortAlphabetCommand = new DelegateCommand(OnSortAlphabetCommandExecuted, CanSortAlphabetCommandExecute);
         }
     }
 }

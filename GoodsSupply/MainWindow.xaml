@@ -25,7 +25,7 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="59"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="56"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
@@ -59,30 +59,34 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="0 17 30 0">
             <Label Content="КАТЕГОРИИ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
-            <ListView ItemsSource="{Binding CategoriesList}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListView.ItemTemplate>
+            <ListBox ItemsSource="{Binding CategoriesList}" ItemContainerStyle="{StaticResource ContainerStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" FontSize="10" Margin="-5 0 0 10" Padding="0" TextWrapping="Wrap" Width="111"></TextBlock>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Margin="0 17 30 0">
             <Label Content="ТОВАРЫ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 -50 0 0">
-                <Button Background="Transparent" BorderBrush="Transparent" Height="14">
+                <Button Command="{Binding SortAscCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent" Height="14">
                     <Image Source="Assets/sortAsc.png" Height="10"></Image>
                 </Button>
-                <Button Margin="10 0 0 0" Background="Transparent" BorderBrush="Transparent" Height="14">
+                <Button Command="{Binding SortDescCommand}" Style="{DynamicResource DefaultButtonStyle}" Margin="10 0 0 0" Background="Transparent" BorderBrush="Transparent" Height="14">
                     <Image Source="Assets/sortDesc.png" Height="10"></Image>
                 </Button>
-                <Button Margin="10 0 0 0" Background="Transparent" BorderBrush="Transparent" Height="14">
+                <Button Command="{Binding SortAlphabetCommand}" Style="{DynamicResource DefaultButtonStyle}" Margin="10 0 0 0" Background="Transparent" BorderBrush="Transparent" Height="14">
                     <Image Source="Assets/sortAlphabet.png" Height="10"></Image>
                 </Button>
             </StackPanel>
             <StackPanel Grid.Row="2" Margin="0 100" Visibility="{Binding NoCategoryselectedFlag}">
                 <Image Source="Assets/notSelected.png" Width="85"></Image>
                 <TextBlock Text="Здесь пока пусто! Для начала выберите категорию" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Row="2" Margin="0 20" Visibility="{Binding IsEmptySearch}">
+                <Image Source="Assets/questionIcon.png" Width="35"></Image>
+                <TextBlock Text="Увы, по вашему запросу не было найдено товаров" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
             </StackPanel>
             <ListView ItemsSource="{Binding ProductsList}" SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}"  Width="247" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
@@ -107,10 +111,10 @@
         <ScrollViewer Grid.Row="1" Grid.RowSpan="2" Grid.Column="3" VerticalScrollBarVisibility="Hidden">
             <StackPanel Margin="0 17 20 0" Visibility="{Binding IsCategorySelectedFlag}">
                 <Label Content="ПОДРОБНЕЕ" FontWeight="SemiBold" FontSize="16" Margin="-1 0 0 10"></Label>
-                <!--<StackPanel Grid.Row="2" Margin="0 100" Visibility="{Binding NoProductSelectedFlag}">
+                <StackPanel Grid.Row="2" Margin="0 100" Visibility="{Binding NoProductSelectedFlag}">
                     <Image Source="Assets/notSelected.png" Width="85"></Image>
                     <TextBlock Text="Здесь пока пусто! Для начала выберите товар" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
-                </StackPanel>-->
+                </StackPanel>
                 <StackPanel Margin="4 0 0 10" HorizontalAlignment="Left" Orientation="Horizontal" Visibility="{Binding IsProductSelectedFlag}">
                     <Rectangle Fill="{Binding BrushQuantity}" Width="10" Height="10" RadiusX="100" RadiusY="100"></Rectangle>
                     <Label Padding="5 0 0 0" Content="{Binding QuantityLabel}" FontSize="12"></Label>
@@ -141,17 +145,17 @@
                 <StackPanel Margin="0 0 -6 30" Visibility="{Binding IsProductSelectedFlag}">
                     <StackPanel Orientation="Horizontal">
                         <StackPanel>
-                            <Button Command="{Binding AddQuantityCommand}" Background="Transparent" BorderBrush="Transparent">
+                            <Button Command="{Binding AddQuantityCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                                 <Image Source="Assets/arrowUp.png" Width="9"></Image>
                             </Button>
-                            <Button Command="{Binding RemoveQuantityCommand}" Background="Transparent" BorderBrush="Transparent">
+                            <Button Command="{Binding RemoveQuantityCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                                 <Image Source="Assets/arrowDown.png" Width="9"></Image>
                             </Button>
                         </StackPanel>
                         <Label Content="{Binding SelectedQuantity}" FontSize="12" Padding="5 0 0 0"></Label>
                         <Label Content="шт." FontSize="12" Padding="5 0 0 0"></Label>
                     </StackPanel>
-                    <Button Command="{Binding AddToCartCommand}" Background="Transparent" Margin="0 -22 8 10" BorderBrush="#0058A3" Width="130" Height="26" Content="Добавить в корзину" FontSize="10" HorizontalAlignment="Right"></Button>
+                    <Button Command="{Binding AddToCartCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" Margin="0 -22 8 10" BorderBrush="#0058A3" Width="130" Height="26" Content="Добавить в корзину" FontSize="10" HorizontalAlignment="Right"></Button>
                     <Button Background="Transparent" Margin="0 0 5 0" Style="{DynamicResource DefaultButtonStyle}" BorderBrush="#0058A3" Width="200" Height="26" Content="Оставить отзыв/вопрос" FontSize="10" HorizontalAlignment="Right"></Button>
                 </StackPanel>
                 <StackPanel Visibility="{Binding IsProductSelectedFlag}">
@@ -181,8 +185,8 @@
             </StackPanel>
         </ScrollViewer>
         <StackPanel Grid.Row="0" Grid.Column="2" VerticalAlignment="Bottom" Margin="0 0 30 13">
-            <TextBox Padding="10 7" Text="Поиск по артикулу" BorderBrush="Transparent" FontSize="10"></TextBox>
-            <Button Width="18" Height="18" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Right" Margin="0 -30 10 0">
+            <TextBox Padding="10 7" Text="{Binding SearchProductCode}" BorderBrush="Transparent" FontSize="10"></TextBox>
+            <Button Command="{Binding SearchCodeCommand}" Style="{DynamicResource DefaultButtonStyle}" Width="18" Height="18" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Right" Margin="0 -30 10 0">
                 <Image Source="Assets/searchCode.png" Width="12" Height="12"></Image>
             </Button>
         </StackPanel>
@@ -211,8 +215,9 @@
             </StackPanel>
             <StackPanel MinHeight="47" Background="#fff" Margin="15 -1 15 0">
                 <StackPanel Margin="10">
-                    <Button Content="Перейти" Background="#fff" BorderBrush="#0058A3" FontSize="10" Width="85" Height="26" HorizontalAlignment="Left"></Button>
-                    <Label Content="1277 ₽" Margin="0 -30" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Right"></Label>
+                    <Button Content="Перейти" Background="#fff" Style="{DynamicResource DefaultButtonStyle}" BorderBrush="#0058A3" FontSize="10" Width="85" Height="26" HorizontalAlignment="Left"></Button>
+                    <Label Content="{Binding CartPrice}" Margin="15 -30" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Right"></Label>
+                    <Label Content="₽" Margin="0 -30" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Right"></Label>
                 </StackPanel>
             </StackPanel>
             <Image Source="Assets/checkEnd.png" Width="180" Margin="0 -1"></Image>
