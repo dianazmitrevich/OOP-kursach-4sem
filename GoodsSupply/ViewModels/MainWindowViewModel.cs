@@ -32,6 +32,8 @@ namespace GoodsSupply.ViewModels
         private Visibility isCartEmpty = Visibility.Visible;
         private Visibility isEmptySearch = Visibility.Collapsed;
 
+        private Brush borderProductBrush;
+
         private int selectedQuantity = 0;
         private int selectedItemQuantity = 0;
         private double cartPrice = 0;
@@ -113,6 +115,11 @@ namespace GoodsSupply.ViewModels
             get => isEmptySearch;
             set => Set(ref isEmptySearch, value);
         }
+        public Brush BorderProductBrush
+        {
+            get => borderProductBrush;
+            set => Set(ref borderProductBrush, value);
+        }
         public ObservableCollection<PRODUCTS_DETAIL> ProductsDetail
         {
             get => productsDetail;
@@ -156,6 +163,7 @@ namespace GoodsSupply.ViewModels
 
         void ShowProducts()
         {
+            BorderProductBrush = Brushes.Red;
             ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(SelectedItem.CategoryId)));
             NoCategoryselectedFlag = Visibility.Collapsed;
             NoProductSelectedFlag = Visibility.Visible;
@@ -290,12 +298,17 @@ namespace GoodsSupply.ViewModels
 
         public MainWindowViewModel()
         {
-            CartPrice = 0;
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
             CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
 
             if (CartItems.Count > 0)
+            {
+                for (int i = 0; i < context.ORDERED_PRODUCTS.Count(); i++)
+                {
+                    CartPrice += CartItems[i].OrderedProductPrice * CartItems[i].OrderedQuantity;
+                }
                 IsCartEmpty = Visibility.Collapsed;
+            }
             else
                 IsCartEmpty = Visibility.Visible;
 

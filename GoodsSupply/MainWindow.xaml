@@ -59,13 +59,13 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="0 17 30 0">
             <Label Content="КАТЕГОРИИ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
-            <ListBox ItemsSource="{Binding CategoriesList}" ItemContainerStyle="{StaticResource ContainerStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListBox.ItemTemplate>
+            <ListView ItemsSource="{Binding CategoriesList}" ItemContainerStyle="{DynamicResource ListViewItemStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Name}" FontSize="10" Margin="-5 0 0 10" Padding="0" TextWrapping="Wrap" Width="111"></TextBlock>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Margin="0 17 30 0">
             <Label Content="ТОВАРЫ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
@@ -88,7 +88,7 @@
                 <Image Source="Assets/questionIcon.png" Width="35"></Image>
                 <TextBlock Text="Увы, по вашему запросу не было найдено товаров" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
             </StackPanel>
-            <ListView ItemsSource="{Binding ProductsList}" SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}"  Width="247" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView ItemsSource="{Binding ProductsList}" ItemContainerStyle="{DynamicResource ListViewItemProductStyle}" SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}"  Width="247" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="#E6E6E6" Width="235" BorderThickness="1" Margin="-5 0 0 5">
@@ -164,7 +164,7 @@
                         <Image Source="Assets/questionIcon.png" Width="35"></Image>
                         <TextBlock Text="Здесь пока пусто! Будьте первым кто оставит свой отзыв" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
                     </StackPanel>
-                    <ListView ItemsSource="{Binding ProductReviews}" Width="205" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                    <ListView ItemsSource="{Binding ProductReviews}" IsHitTestVisible="False" Width="205" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
