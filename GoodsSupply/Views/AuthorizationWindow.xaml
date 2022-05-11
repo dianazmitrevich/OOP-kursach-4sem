@@ -10,10 +10,17 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
         Icon="/Assets/whiteRectangle.png"
-        FontFamily="Arial">
+        FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans">
     <Window.DataContext>
         <vm:AuthorizationViewModel></vm:AuthorizationViewModel>
     </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Assistants/Resources/StyleTriggers.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
@@ -25,15 +32,15 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Width="20" Command="{Binding CloseWindowCommand}" Height="15" HorizontalAlignment="Left" Margin="20 0" Background="Transparent" BorderBrush="Transparent">
+        <Button Width="20" Command="{Binding CloseWindowCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="15" HorizontalAlignment="Left" Margin="24 0" Background="Transparent" BorderBrush="Transparent">
             <Image Source="/Assets/backArrow.png" Width="20"></Image>
         </Button>
-        <ContentControl Grid.Row="1" Content="{Binding AuthorizationWindowTitle}" FontSize="20" FontWeight="SemiBold" Margin="20 0"></ContentControl>
+        <ContentControl Grid.Row="1" Content="{Binding AuthorizationWindowTitle}" FontSize="20" FontWeight="SemiBold" Margin="24 0"></ContentControl>
         <Label Grid.Row="2" Margin="20 0">
-            <TextBlock TextWrapping="Wrap" FontSize="12" Text="Миссия ИКЕА — изменить к лучшему повседневную жизнь многих людей по всему миру. Эта миссия лежит в основе нашей стратегии устойчивого развития «Да — людям и планете»."></TextBlock>
+            <TextBlock TextWrapping="Wrap" FontSize="10" Text="Миссия ИКЕА — изменить к лучшему повседневную жизнь многих людей по всему миру. Эта миссия лежит в основе нашей стратегии устойчивого развития «Да — людям и планете»."></TextBlock>
         </Label>
         <Label Grid.Row="3" Margin="20 0">
-            <TextBlock TextWrapping="Wrap" FontSize="12" Text="Мы вдохновляем миллионы покупателей на экологичный образ жизни и ответственное потребление, заботимся о климате и природных ресурсах, обеспечиваем справедливые условия труда и равные возможности для каждого. Вместе мы делаем этот мир лучше!"></TextBlock>
+            <TextBlock TextWrapping="Wrap" FontSize="10" Text="Мы вдохновляем миллионы покупателей на экологичный образ жизни и ответственное потребление, заботимся о климате и природных ресурсах, обеспечиваем справедливые условия труда и равные возможности для каждого. Вместе мы делаем этот мир лучше!"></TextBlock>
         </Label>
         <ContentControl Grid.Row="4" Content="{Binding SelectedAuthorizationWindow}"></ContentControl>
     </Grid>

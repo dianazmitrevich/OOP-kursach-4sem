@@ -10,6 +10,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="450"
              Background="#fff">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Assistants/Resources/StyleTriggers.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -18,21 +25,21 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="25 10 25 0">
-            <TextBox Height="14" Text="{Binding Login}" BorderBrush="LightGray" Background="Transparent" BorderThickness="0 0 0 1"></TextBox>
-            <Label Content="Логин" FontSize="10" Margin="0 -2"></Label>
-            <Label Content="Неверный логин или пароль" Foreground="#BE1717" Visibility="{Binding FailedAuthorizationFlag}" FontSize="10" Margin="0 -20 2 0" HorizontalAlignment="Right"></Label>
-            <Rectangle Width="3" Visibility="{Binding FailedAuthorizationFlag}" Height="3" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 0 0"></Rectangle>
+            <TextBox FontSize="10" Width="400" Text="{Binding Login}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+            <Label Content="Логин" FontSize="8" Margin="7 -5 0 0"></Label>
+            <Label Content="Неверный логин или пароль" Foreground="#BE1717" Visibility="{Binding FailedAuthorizationFlag}" FontSize="8" Margin="0 -20 7 0" HorizontalAlignment="Right"></Label>
+            <Rectangle Width="2" Visibility="{Binding FailedAuthorizationFlag}" Height="2" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 5 0"></Rectangle>
         </StackPanel>
-        <StackPanel Grid.Row="1" Margin="25 10 25 0">
-            <PasswordBox Height="14" ff:PasswordBoxAssistant.BindPassword="true" ff:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderBrush="LightGray" Background="Transparent" BorderThickness="0 0 0 1"></PasswordBox>
-            <Label Content="Пароль" FontSize="10" Margin="0 -2"></Label>
+        <StackPanel Grid.Row="1" Margin="25 5 25 0">
+            <PasswordBox FontSize="10" Width="400" ff:PasswordBoxAssistant.BindPassword="true" ff:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></PasswordBox>
+            <Label Content="Пароль" FontSize="8" Margin="7 -5 0 0"></Label>
         </StackPanel>
         <Label Grid.Row="2" Margin="25 10">
-            <TextBlock Text="Нет аккаунта? Давайте перейдем к" FontSize="10"></TextBlock>
+            <TextBlock FontStyle="Italic" Text="Нет аккаунта? Давайте перейдем к" FontSize="10"></TextBlock>
         </Label>
-        <Button Grid.Row="2" Command="{Binding SignUpWindowCommand}" Background="Transparent"  Width="60" Height="14" Margin="15 0 0 0" BorderThickness="0">
-            <TextBlock FontSize="10" Text="регистрации" TextDecorations="Underline"></TextBlock>
+        <Button Grid.Row="2" Command="{Binding SignUpWindowCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent"  Width="65" Height="15" Margin="45 0 0 0" BorderThickness="0">
+            <TextBlock FontSize="10" FontStyle="Italic" Text="регистрации" TextDecorations="Underline"></TextBlock>
         </Button>
-        <Button Grid.Row="4" Command="{Binding LoginCommand}" Height="30" Margin="25 10" Content="Войти" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
+        <Button Grid.Row="4" Command="{Binding LoginCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10" Content="Войти" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
     </Grid>
 </UserControl>

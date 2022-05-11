@@ -10,6 +10,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="450"
              Background="#fff">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Assistants/Resources/StyleTriggers.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
@@ -21,41 +28,41 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="25 10 25 0">
-            <TextBox Height="14" Text="{Binding Name}" BorderBrush="LightGray" Background="Transparent" BorderThickness="0 0 0 1"></TextBox>
-            <Label Content="Имя" FontSize="10" Margin="0 -2"></Label>
-            <Label Content="Имя не должно содержать цифры и другие символы" Foreground="#BE1717" Visibility="{Binding FailedNameFlag}" FontSize="10" Margin="0 -20 2 0" HorizontalAlignment="Right"></Label>
-            <Rectangle Width="3" Visibility="{Binding FailedNameFlag}" Height="3" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 0 0"></Rectangle>
+            <TextBox FontSize="10" Width="400" Text="{Binding Name}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+            <Label Content="Имя" FontSize="8" Margin="7 -5 0 0"></Label>
+            <Label Content="Имя не должно содержать цифры и другие символы" Foreground="#BE1717" Visibility="{Binding FailedNameFlag}" FontSize="8" Margin="0 -20 7 0" HorizontalAlignment="Right"></Label>
+            <Rectangle Width="2" Visibility="{Binding FailedNameFlag}" Height="2" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 5 0"></Rectangle>
         </StackPanel>
-        <StackPanel Grid.Row="1" Margin="25 10 25 0">
-            <TextBox Height="14" Text="{Binding Email}" BorderBrush="LightGray" Background="Transparent" BorderThickness="0 0 0 1"></TextBox>
-            <Label Content="E-mail" FontSize="10" Margin="0 -2"></Label>
-            <ContentControl Content="{Binding FailedSignupLabel}" Foreground="#BE1717" Visibility="{Binding FailedEmailFlag}" FontSize="10" Margin="0 -17 7 0" HorizontalAlignment="Right"></ContentControl>
-            <Rectangle Width="3" Visibility="{Binding FailedEmailFlag}" Height="3" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 0 0"></Rectangle>
+        <StackPanel Grid.Row="1" Margin="25 5 25 0">
+            <TextBox FontSize="10" Width="400" Text="{Binding Email}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+            <Label Content="E-mail" FontSize="8" Margin="7 -5 0 0"></Label>
+            <ContentControl Content="{Binding FailedSignupLabel}" Foreground="#BE1717" Visibility="{Binding FailedEmailFlag}" FontSize="8" Margin="0 -16 10 0" HorizontalAlignment="Right"></ContentControl>
+            <Rectangle Width="2" Visibility="{Binding FailedEmailFlag}" Height="2" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 5 0"></Rectangle>
         </StackPanel>
-        <StackPanel Grid.Row="2" Margin="25 10 25 0">
-            <TextBox Height="14" Text="{Binding Login}" BorderBrush="LightGray" Background="Transparent" BorderThickness="0 0 0 1"></TextBox>
-            <Label Content="Придумайте логин" FontSize="10" Margin="0 -2"></Label>
-            <ContentControl Content="{Binding FailedSignupLabel}" Foreground="#BE1717" Visibility="{Binding FailedLoginFlag}" FontSize="10" Margin="0 -17 8 0" HorizontalAlignment="Right"></ContentControl>
-            <Rectangle Width="3" Visibility="{Binding FailedLoginFlag}" Height="3" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 0 0"></Rectangle>
+        <StackPanel Grid.Row="2" Margin="25 5 25 0">
+            <TextBox FontSize="10" Width="400" Text="{Binding Login}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+            <Label Content="Придумайте логин" FontSize="8" Margin="7 -5 0 0"></Label>
+            <ContentControl Content="{Binding FailedSignupLabel}" Foreground="#BE1717" Visibility="{Binding FailedLoginFlag}" FontSize="8" Margin="0 -16 10 0" HorizontalAlignment="Right"></ContentControl>
+            <Rectangle Width="2" Visibility="{Binding FailedLoginFlag}" Height="2" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 5 0"></Rectangle>
         </StackPanel>
-        <StackPanel Grid.Row="3" Margin="25 10 25 0">
-            <PasswordBox Height="14" ff:PasswordBoxAssistant.BindPassword="true" ff:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderBrush="LightGray" Background="Transparent" BorderThickness="0 0 0 1"></PasswordBox>
-            <Label Content="Придумайте пароль" FontSize="10" Margin="0 -2"></Label>
-            <ContentControl Content="{Binding FailedSignupLabel}" Foreground="#BE1717" Visibility="{Binding FailedPasswordFlag}" FontSize="10" Margin="0 -17 8 0" HorizontalAlignment="Right"></ContentControl>
-            <Rectangle Width="3" Visibility="{Binding FailedPasswordFlag}" Height="3" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 0 0"></Rectangle>
+        <StackPanel Grid.Row="3" Margin="25 5 25 0">
+            <PasswordBox Width="400" ff:PasswordBoxAssistant.BindPassword="true" ff:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></PasswordBox>
+            <Label Content="Придумайте пароль" FontSize="8" Margin="7 -5 0 0"></Label>
+            <ContentControl Content="{Binding FailedSignupLabel}" Foreground="#BE1717" Visibility="{Binding FailedPasswordFlag}" FontSize="8" Margin="0 -16 10 0" HorizontalAlignment="Right"></ContentControl>
+            <Rectangle Width="2" Visibility="{Binding FailedPasswordFlag}" Height="2" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 5 0"></Rectangle>
         </StackPanel>
-        <StackPanel Grid.Row="4" Margin="25 10 25 0">
-            <PasswordBox Height="14" ff:PasswordBoxAssistant.BindPassword="true" ff:PasswordBoxAssistant.BoundPassword="{Binding Path=PasswordCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderBrush="LightGray" Background="Transparent" BorderThickness="0 0 0 1"></PasswordBox>
-            <Label Content="Повторите пароль" FontSize="10" Margin="0 -2"></Label>
-            <ContentControl Content="{Binding FailedSignupLabel}" Foreground="#BE1717" Visibility="{Binding FailedPasswordCheckFlag}" FontSize="10" Margin="0 -17 8 0" HorizontalAlignment="Right"></ContentControl>
-            <Rectangle Width="3" Visibility="{Binding FailedPasswordCheckFlag}" Height="3" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 0 0"></Rectangle>
+        <StackPanel Grid.Row="4" Margin="25 5 25 0">
+            <PasswordBox Width="400" ff:PasswordBoxAssistant.BindPassword="true" ff:PasswordBoxAssistant.BoundPassword="{Binding Path=PasswordCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></PasswordBox>
+            <Label Content="Повторите пароль" FontSize="8" Margin="7 -5 0 0"></Label>
+            <ContentControl Content="{Binding FailedSignupLabel}" Foreground="#BE1717" Visibility="{Binding FailedPasswordCheckFlag}" FontSize="8" Margin="0 -16 10 0" HorizontalAlignment="Right"></ContentControl>
+            <Rectangle Width="2" Visibility="{Binding FailedPasswordCheckFlag}" Height="2" Fill="#BE1717" RadiusX="100" RadiusY="100" HorizontalAlignment="Right" Margin="0 -19 5 0"></Rectangle>
         </StackPanel>
         <Label Grid.Row="5" Margin="25 10">
-            <TextBlock Text="Есть аккаунт?" FontSize="10"></TextBlock>
+            <TextBlock FontStyle="Italic" Text="Есть аккаунт?" FontSize="10"></TextBlock>
         </Label>
-        <Button Grid.Row="5" Command="{Binding LogInWindowCommand}" Background="Transparent"  Width="42" Height="14" Margin="-200 0 0 0" BorderThickness="0">
-            <TextBlock FontSize="10" Text="Войдите" TextDecorations="Underline"></TextBlock>
+        <Button Grid.Row="5" Command="{Binding LogInWindowCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent"  Width="45" Height="14" Margin="-184 -2 0 0" BorderThickness="0">
+            <TextBlock FontSize="10" FontStyle="Italic" Text="Войдите" TextDecorations="Underline"></TextBlock>
         </Button>
-        <Button Grid.Row="6" Command="{Binding SignupCommand}" Height="30" Margin="25 10" Content="Зарегистрироваться" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
+        <Button Grid.Row="6" Command="{Binding SignupCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10" Content="Зарегистрироваться" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
     </Grid>
 </UserControl>
