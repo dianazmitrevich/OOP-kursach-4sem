@@ -1,0 +1,126 @@
+﻿<Window x:Class="GoodsSupply.Views.CartWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GoodsSupply.Views"
+        xmlns:vm="clr-namespace:GoodsSupply.ViewModels"
+        mc:Ignorable="d"
+        Height="350" Width="600"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        Icon="/Assets/whiteRectangle.png"
+        FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans">
+    <Window.DataContext>
+        <vm:CartWindowViewModel></vm:CartWindowViewModel>
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Assistants/Resources/StyleTriggers.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="185"></ColumnDefinition>
+            <ColumnDefinition Width="164"></ColumnDefinition>
+            <ColumnDefinition Width="137"></ColumnDefinition>
+            <ColumnDefinition Width="105"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Margin="20 0 20 10" Grid.ColumnSpan="4" Content="КОРЗИНА И ОФОРМЛЕНИЕ ЗАКАЗА" FontWeight="SemiBold" FontSize="16" Padding="0"></Label>
+        <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+            <ListView ItemsSource="{Binding OrderedProductsList}" Margin="-5 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemProductStyle}" Height="140" ScrollViewer.VerticalScrollBarVisibility="Hidden" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="#E6E6E6" BorderThickness="1" Width="540" Margin="15 3">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel Margin="0 10">
+                                        <Label Content="{Binding OrderedProductId}" FontSize="12" Padding="0" Margin="15 0 0 2"></Label>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 -40 20 0">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
+                                            <Image Source="/Assets/arrowUp.png" Width="9"></Image>
+                                        </Button>
+                                        <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
+                                            <Image Source="/Assets/arrowDown.png" Width="9"></Image>
+                                        </Button>
+                                    </StackPanel>
+                                    <StackPanel Margin="10 0 0 0" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Label Padding="5 0" Content="{Binding OrderedQuantity}"></Label>
+                                        <Label Padding="5 0" Content="×"></Label>
+                                        <Label Padding="5 0" Content="{Binding OrderedProductPrice}"></Label>
+                                        <Label Padding="0" Content="₽"></Label>
+                                    </StackPanel>
+                                    <Button Style="{DynamicResource DefaultButtonStyle}" Height="13" Margin="10 2 0 0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                                        <Image Source="/Assets/deleteOrderedProduct.png" Width="13"></Image>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+        <TextBox Grid.Row="2" FontSize="10" Grid.ColumnSpan="2" Padding="10 7" Width="237" Height="27" HorizontalAlignment="Left" Margin="20 20 0 0" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+        <Button Style="{DynamicResource DefaultButtonStyle}" Grid.Row="2" Grid.ColumnSpan="2" Width="60" Margin="85 20 0 0" Height="20" FontSize="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+            <TextBlock Text="Применить" TextDecorations="Underline"></TextBlock>
+        </Button>
+        <Button Grid.Row="2" Style="{DynamicResource DefaultButtonStyle}" Width="18" Height="18" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Right" Margin="0 20 -95 0">
+            <Image Source="/Assets/searchCode.png" Width="12" Height="12"></Image>
+        </Button>
+        <StackPanel Grid.Row="3" Margin="20 10">
+            <StackPanel Margin="0 0 0 5">
+                <RadioButton FontSize="10" Margin="0 0 0 5">
+                    <TextBlock Text="Оплата наличными" Padding="10 0 0 0"></TextBlock>
+                </RadioButton>
+                <RadioButton FontSize="10">
+                    <TextBlock Text="Оплата картой" Padding="10 0 0 0"></TextBlock>
+                </RadioButton>
+            </StackPanel>
+            <CheckBox FontSize="10">
+                <TextBlock Text="Прислать чек на почту" Padding="10 0 0 0"></TextBlock>
+            </CheckBox>
+        </StackPanel>
+        <!--<Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" BorderBrush="#E6E6E6" BorderThickness="1" Margin="20 0 45 5">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Assets/test.PNG" Width="43" Margin="10"></Image>
+                    <StackPanel Margin="0 10">
+                        <Label Content="VÅRKRAGE ВОРКРАГЕ" FontSize="12" Padding="0" Margin="0 0 0 2"></Label>
+                        <TextBlock Text="Плед, бежевый, 110x170 см" FontSize="10" MaxWidth="110" Margin="-10 0 0 0" TextWrapping="Wrap"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="220 0 0 0">
+                    <StackPanel VerticalAlignment="Center">
+                        <Button Background="Transparent" BorderBrush="Transparent">
+                            <Image Source="/Assets/arrowUp.png" Width="9"></Image>
+                        </Button>
+                        <Button Background="Transparent" BorderBrush="Transparent">
+                            <Image Source="/Assets/arrowDown.png" Width="9"></Image>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Margin="10 0 0 0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Padding="5 0" Content="2"></Label>
+                        <Label Padding="5 0" Content="×"></Label>
+                        <Label Padding="5 0" Content="599"></Label>
+                        <Label Padding="0" Content="₽"></Label>
+                    </StackPanel>
+                    <Button Margin="10 2 0 0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                        <Image Source="/Assets/deleteOrderedProduct.png" Width="13"></Image>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Border>-->
+    </Grid>
+</Window>

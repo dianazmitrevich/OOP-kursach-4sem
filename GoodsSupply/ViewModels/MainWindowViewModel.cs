@@ -31,6 +31,7 @@ namespace GoodsSupply.ViewModels
         private Visibility isReviewsEmpty = Visibility.Visible;
         private Visibility isCartEmpty = Visibility.Visible;
         private Visibility isEmptySearch = Visibility.Collapsed;
+        private double price;
 
         private Brush borderProductBrush;
 
@@ -163,7 +164,6 @@ namespace GoodsSupply.ViewModels
 
         void ShowProducts()
         {
-            BorderProductBrush = Brushes.Red;
             ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(SelectedItem.CategoryId)));
             NoCategoryselectedFlag = Visibility.Collapsed;
             NoProductSelectedFlag = Visibility.Visible;
@@ -176,6 +176,9 @@ namespace GoodsSupply.ViewModels
 
         void ShowProductsDetail()
         {
+            // var converter = new System.Windows.Media.BrushConverter();
+            // BorderProductBrush = (Brush)converter.ConvertFromString("#0058AB");
+
             if (SelectedProductItem != null)
             {
                 int quantity = SelectedProductItem.Quantity;
@@ -197,10 +200,10 @@ namespace GoodsSupply.ViewModels
 
                 ProductsDetail = new ObservableCollection<PRODUCTS_DETAIL>(context.PRODUCTS_DETAIL.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
                 ProductReviews = new ObservableCollection<REVIEWS>(context.REVIEWS.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
+                SelectedItemQuantity = SelectedProductItem.Quantity;
             }
 
             SelectedQuantity = 0;
-            SelectedItemQuantity = SelectedProductItem.Quantity;
             IsReviewsEmpty = Visibility.Visible;
             IsProductSelectedFlag = Visibility.Visible;
             NoProductSelectedFlag = Visibility.Collapsed;
@@ -247,10 +250,13 @@ namespace GoodsSupply.ViewModels
 
             if (context.ORDERED_PRODUCTS.Count() > 0)
             {
+                price = 0;
                 for (int i = 0; i < context.ORDERED_PRODUCTS.Count(); i++)
                 {
-                    CartPrice += CartItems[i].OrderedProductPrice * CartItems[i].OrderedQuantity;
+                    price += CartItems[i].OrderedProductPrice * CartItems[i].OrderedQuantity;
                 }
+
+                CartPrice = price;
             }
         }
 
