@@ -27,9 +27,11 @@ namespace GoodsSupply.Models
         [StringLength(100)]
         public string AdminName{ get; set; }
 
-        public REVIEWS(int productIdParameter)
+        public REVIEWS(int productIdParameter, string loginParameter, string textParameter)
         {
-
+            this.LinkToProductId = productIdParameter;
+            this.LinkUserLogin = loginParameter;
+            this.ReviewText = textParameter;
         }
 
         public REVIEWS() { }

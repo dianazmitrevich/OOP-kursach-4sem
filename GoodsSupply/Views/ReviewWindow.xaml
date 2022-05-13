@@ -39,6 +39,6 @@
         </StackPanel>
         <TextBox Text="{Binding ReviewText, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Grid.Row="2" Margin="20 10" Padding="10 7" Background="#EFEFEF" Height="205" BorderBrush="Transparent" BorderThickness="0"></TextBox>
         <TextBlock FontSize="10" TextWrapping="Wrap" Foreground="#B7B7B7" Text="{Binding ReviewTextSymbols}" Grid.Row="3" HorizontalAlignment="Right" Margin="0 5 120 0"></TextBlock>
-        <Button Grid.Row="3" Content="Отправить" Background="#fff" Style="{DynamicResource DefaultButtonStyle}" Margin="20 0" BorderBrush="#0058A3" FontSize="10" Width="85" Height="26" HorizontalAlignment="Right"></Button>
+        <Button Command="{Binding AddReviewCommand}" Grid.Row="3" Content="Отправить" Background="#fff" Style="{DynamicResource DefaultButtonStyle}" Margin="20 0" BorderBrush="#0058A3" FontSize="10" Width="85" Height="26" HorizontalAlignment="Right"></Button>
     </Grid>
 </Window>

@@ -328,6 +328,7 @@ namespace GoodsSupply.ViewModels
             reviewWindow.DataContext = model;
 
             reviewWindow.ShowDialog();
+            ShowProductsDetail();
         }
 
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace GoodsSupply.ViewModels
@@ -63,13 +64,17 @@ namespace GoodsSupply.ViewModels
         {
             if (ReviewText.Length <= 200)
             {
-                REVIEWS element = new REVIEWS();
+                var window = Application.Current.Windows[1];
+                REVIEWS element = new REVIEWS(product.ProductId, "diana", ReviewText);
                 context.REVIEWS.Add(element); context.SaveChanges();
+                MessageBox.Show("Отзыв добавлен!");
+                window.Close();
             }
         }
 
         public ReviewWindowViewModel(PRODUCTS productParameter)
         {
+            AddReviewCommand = new DelegateCommand(OnAddReviewCommandExecuted, CanAddReviewCommandExecute);
             this.Product = productParameter;
             ProductCode = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(Product.ProductId)).ProductCode.ToString();
             ProductName = Product.Name;
@@ -81,7 +86,6 @@ namespace GoodsSupply.ViewModels
         public ReviewWindowViewModel()
         {
             AddReviewCommand = new DelegateCommand(OnAddReviewCommandExecuted, CanAddReviewCommandExecute);
-
         }
     }
 }
