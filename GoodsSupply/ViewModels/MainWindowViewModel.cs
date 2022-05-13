@@ -16,6 +16,7 @@ namespace GoodsSupply.ViewModels
 {
     class MainWindowViewModel : BaseViewModel
     {
+        #region private variables
         private readonly GoodsSupplyContext context = new GoodsSupplyContext();
 
         private PERSONAL_ACCOUNTS account;
@@ -44,7 +45,9 @@ namespace GoodsSupply.ViewModels
 
         private string quantityLabel;
         private Brush brushQuantity;
+        #endregion
 
+        #region public variables
         public PERSONAL_ACCOUNTS Account
         {
             get => account;
@@ -163,6 +166,7 @@ namespace GoodsSupply.ViewModels
             get => brushQuantity;
             set => Set(ref brushQuantity, value);
         }
+        #endregion
 
         void ShowProducts()
         {
@@ -221,17 +225,11 @@ namespace GoodsSupply.ViewModels
 
         public ICommand AddQuantityCommand { get; }
         private bool CanAddQuantityCommandExecute(object p) => SelectedItemQuantity > SelectedQuantity;
-        private void OnAddQuantityCommandExecuted(object p)
-        {
-            SelectedQuantity++;
-        }
+        private void OnAddQuantityCommandExecuted(object p) => SelectedQuantity++;
 
         public ICommand RemoveQuantityCommand { get; }
         private bool CanRemoveQuantityCommandExecute(object p) => SelectedQuantity > 0;
-        private void OnRemoveQuantityCommandExecuted(object p)
-        {
-            SelectedQuantity--;
-        }
+        private void OnRemoveQuantityCommandExecuted(object p) => SelectedQuantity--;
 
         public ICommand AddToCartCommand { get; }
         private bool CanAddToCartCommandExecute(object p) => SelectedQuantity > 0;
@@ -322,6 +320,17 @@ namespace GoodsSupply.ViewModels
             cartWindow.ShowDialog();
         }
 
+        public ICommand AddReviewCommand { get; }
+        private void OnAddReviewCommandExecuted(object p)
+        {
+            var model = new ReviewWindowViewModel(SelectedProductItem);
+            var reviewWindow = new ReviewWindow();
+            reviewWindow.DataContext = model;
+
+            reviewWindow.ShowDialog();
+        }
+
+
         public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter)
         {
             this.Account = accountParameter;
@@ -352,6 +361,7 @@ namespace GoodsSupply.ViewModels
             SortDescCommand = new DelegateCommand(OnSortDescCommandExecuted, CanSortDescCommandExecute);
             SortAlphabetCommand = new DelegateCommand(OnSortAlphabetCommandExecuted, CanSortAlphabetCommandExecute);
             OpenCartCommand = new DelegateCommand(OnOpenCartCommandExecuted, CanOpenCartCommandExecute);
+            AddReviewCommand = new DelegateCommand(OnAddReviewCommandExecuted);
         }
     }
 }

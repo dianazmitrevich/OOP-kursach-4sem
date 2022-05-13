@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -59,16 +60,24 @@ namespace GoodsSupply.ViewModels
         private bool CanApplyCouponCommandExecute(object p) => CouponCodeToAdd != null;
         private void OnApplyCouponCommandExecuted(object p)
         {
-            var coupon = context.COUPONS.FirstOrDefault(f => f.CouponCode.Equals(CouponCodeToAdd));
+            if (!Regex.IsMatch(CouponCodeToAdd, @"[-.?!)(,:]"))
+            {
+                var coupon = context.COUPONS.FirstOrDefault(f => f.CouponCode.Equals(CouponCodeToAdd));
 
-            if (coupon.IsPercent.Equals("Y"))
-            {
-                CartPriceNew = CartPrice - CartPrice * coupon.PercentOff / 100;
+                if (coupon != null)
+                {
+                    if (coupon.IsPercent.Equals("Y"))
+                    {
+                        CartPriceNew = CartPrice - CartPrice * coupon.PercentOff / 100;
+                    }
+                    if (coupon.IsPercent.Equals("N"))
+                    {
+                        CartPriceNew = (double)(CartPrice - coupon.MoneyOff);
+                    }
+                }
+                else CartPriceNew = CartPrice;
             }
-            if (coupon.IsPercent.Equals("N"))
-            {
-                CartPriceNew = (double)(CartPrice - coupon.MoneyOff);
-            }
+            else CartPriceNew = CartPrice;
         }
 
         public CartWindowViewModel()

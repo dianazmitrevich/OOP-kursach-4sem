@@ -27,6 +27,13 @@ namespace GoodsSupply.Models
         [StringLength(100)]
         public string AdminName{ get; set; }
 
+        public REVIEWS(int productIdParameter)
+        {
+
+        }
+
+        public REVIEWS() { }
+
         public virtual PRODUCTS PRODUCTS { get; set; }
 
         public virtual USERS USERS { get; set; }

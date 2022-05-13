@@ -72,7 +72,7 @@
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollViewer>
-        <TextBox Grid.Row="2" Text="{Binding CouponCodeToAdd}" FontSize="10" Grid.ColumnSpan="2" Padding="10 7" Width="237" Height="27" HorizontalAlignment="Left" Margin="20 20 0 0" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+        <TextBox Grid.Row="2" Text="{Binding CouponCodeToAdd, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Grid.ColumnSpan="2" Padding="10 7" Width="237" Height="27" HorizontalAlignment="Left" Margin="20 20 0 0" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
         <Button Style="{DynamicResource DefaultButtonStyle}" Command="{Binding ApplyCouponCommand}" Grid.Row="2" Grid.ColumnSpan="2" Width="60" Margin="85 20 0 0" Height="20" FontSize="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
             <TextBlock Text="Применить" TextDecorations="Underline"></TextBlock>
         </Button>
