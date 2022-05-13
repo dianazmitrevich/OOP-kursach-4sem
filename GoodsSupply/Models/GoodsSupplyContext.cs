@@ -39,6 +39,10 @@ namespace GoodsSupply.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<COUPONS>()
+                .Property(e => e.CouponText)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<COUPONS>()
                 .Property(e => e.IsPercent)
                 .IsUnicode(false);
 

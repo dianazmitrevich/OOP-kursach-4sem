@@ -72,11 +72,11 @@
                 </ListView.ItemTemplate>
             </ListView>
         </ScrollViewer>
-        <TextBox Grid.Row="2" FontSize="10" Grid.ColumnSpan="2" Padding="10 7" Width="237" Height="27" HorizontalAlignment="Left" Margin="20 20 0 0" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
-        <Button Style="{DynamicResource DefaultButtonStyle}" Grid.Row="2" Grid.ColumnSpan="2" Width="60" Margin="85 20 0 0" Height="20" FontSize="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+        <TextBox Grid.Row="2" Text="{Binding CouponCodeToAdd}" FontSize="10" Grid.ColumnSpan="2" Padding="10 7" Width="237" Height="27" HorizontalAlignment="Left" Margin="20 20 0 0" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+        <Button Style="{DynamicResource DefaultButtonStyle}" Command="{Binding ApplyCouponCommand}" Grid.Row="2" Grid.ColumnSpan="2" Width="60" Margin="85 20 0 0" Height="20" FontSize="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
             <TextBlock Text="Применить" TextDecorations="Underline"></TextBlock>
         </Button>
-        <Button Grid.Row="2" Style="{DynamicResource DefaultButtonStyle}" Width="18" Height="18" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Right" Margin="0 20 -95 0">
+        <Button Grid.Row="2" Command="{Binding SearchCouponsCommand}" Style="{DynamicResource DefaultButtonStyle}" Width="18" Height="18" Background="Transparent" BorderBrush="Transparent" HorizontalAlignment="Right" Margin="0 20 -95 0">
             <Image Source="/Assets/searchCode.png" Width="12" Height="12"></Image>
         </Button>
         <StackPanel Grid.Row="3" Margin="20">
@@ -98,12 +98,12 @@
         <StackPanel Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Orientation="Horizontal">
             <StackPanel Margin="36 0 0 0">
                 <StackPanel Margin="0 20 0 0">
-                    <TextBlock Text="1277" FontSize="10" Margin="0 0 8 0" Foreground="#D3D3D3" TextAlignment="Right"></TextBlock>
+                    <TextBlock Text="{Binding CartPrice}" FontSize="10" Margin="0 0 8 0" Foreground="#D3D3D3" TextAlignment="Right"></TextBlock>
                     <TextBlock Text="₽" Margin="0 -14 0 0" FontSize="10" Foreground="#D3D3D3" TextAlignment="Right"></TextBlock>
                 </StackPanel>
                 <TextBlock Text="Старая цена" Foreground="#D3D3D3" FontSize="10"></TextBlock>
             </StackPanel>
-            <TextBlock Text="1277" Margin="22 18 10 0" FontSize="16" FontWeight="SemiBold"></TextBlock>
+            <TextBlock Text="{Binding CartPriceNew}" Margin="22 18 10 0" FontSize="16" FontWeight="SemiBold"></TextBlock>
             <TextBlock Text="₽" FontSize="16" Margin="0 18 0 0" FontWeight="SemiBold" ></TextBlock>
         </StackPanel>
     </Grid>

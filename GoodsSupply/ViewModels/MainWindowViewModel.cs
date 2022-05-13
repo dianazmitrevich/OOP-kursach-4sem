@@ -1,10 +1,12 @@
 ﻿using GoodsSupply.Commands;
 using GoodsSupply.Models;
+using GoodsSupply.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -38,7 +40,7 @@ namespace GoodsSupply.ViewModels
         private int selectedQuantity = 0;
         private int selectedItemQuantity = 0;
         private double cartPrice = 0;
-        private int searchProductCode;
+        private string searchProductCode = "Поиск по артикулу";
 
         private string quantityLabel;
         private Brush brushQuantity;
@@ -136,7 +138,7 @@ namespace GoodsSupply.ViewModels
             get => quantityLabel;
             set => Set(ref quantityLabel, value);
         }
-        public int SearchProductCode
+        public string SearchProductCode
         {
             get => searchProductCode;
             set => Set(ref searchProductCode, value);
@@ -182,7 +184,12 @@ namespace GoodsSupply.ViewModels
             if (SelectedProductItem != null)
             {
                 int quantity = SelectedProductItem.Quantity;
-                if (quantity < 5)
+                if(quantity == 0)
+                {
+                    QuantityLabel = "ожидается поступление";
+                    BrushQuantity = Brushes.Tomato;
+                }
+                else if (quantity < 5)
                 {
                     QuantityLabel = "<5 на складе";
                     BrushQuantity = Brushes.Red;
@@ -240,6 +247,7 @@ namespace GoodsSupply.ViewModels
             }
             ORDERED_PRODUCTS newelement = new ORDERED_PRODUCTS(context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode, SelectedQuantity + previousQuantity, 3, (float)SelectedProductItem.Price);
             context.ORDERED_PRODUCTS.Add(newelement); context.SaveChanges();
+            context.PRODUCTS.FirstOrDefault(f => f.ProductId.Equals(SelectedProductItem.ProductId)).Quantity -= SelectedQuantity; context.SaveChanges();
 
             if (context.ORDERED_PRODUCTS.Count() > 0)
                 IsCartEmpty = Visibility.Collapsed;
@@ -258,29 +266,39 @@ namespace GoodsSupply.ViewModels
 
                 CartPrice = price;
             }
+
+            ShowProductsDetail();
         }
 
         public ICommand SearchCodeCommand { get; }
         private bool CanSearchCodeCommandExecute(object p) => context.PRODUCTS.Count() > 0;
         private void OnSearchCodeCommandExecuted(object p)
         {
-            var productDetail = new ObservableCollection<PRODUCTS_DETAIL>(context.PRODUCTS_DETAIL.Where(f => f.ProductCode.Equals(SearchProductCode)));
+            if (SearchProductCode is string)
+            {
+                if (!Regex.IsMatch(SearchProductCode, @"\D+"))
+                {
+                    int search = Convert.ToInt32(SearchProductCode);
+                    var productDetail = new ObservableCollection<PRODUCTS_DETAIL>(context.PRODUCTS_DETAIL.Where(f => f.ProductCode.Equals(search)));
 
-            if (productDetail.Count() > 0)
-            {
-                var product = productDetail[0];
-                ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.ProductId.Equals(product.LinkToProductId)));
-                IsEmptySearch = Visibility.Collapsed;
-                NoCategoryselectedFlag = Visibility.Collapsed;
-                IsCategorySelectedFlag = Visibility.Visible;
-                SelectedProductItem = ProductsList[0];
-            }
-            else
-            {
-                ProductsList = null;
-                NoCategoryselectedFlag = Visibility.Collapsed;
-                IsEmptySearch = Visibility.Visible;
-                IsCategorySelectedFlag = Visibility.Collapsed;
+                    if (productDetail.Count() > 0)
+                    {
+                        var product = productDetail[0];
+                        ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.ProductId.Equals(product.LinkToProductId)));
+                        IsEmptySearch = Visibility.Collapsed;
+                        NoCategoryselectedFlag = Visibility.Collapsed;
+                        IsCategorySelectedFlag = Visibility.Visible;
+                        SelectedProductItem = ProductsList[0];
+                    }
+                    else
+                    {
+                        ProductsList = null;
+                        NoCategoryselectedFlag = Visibility.Collapsed;
+                        IsEmptySearch = Visibility.Visible;
+                        IsCategorySelectedFlag = Visibility.Collapsed;
+                    }
+                }
+                else MessageBox.Show("Неверный формат кода" + "\n" + "продукта - код должен" + "\n" + "содержать только цифры.");
             }
         }
 
@@ -295,6 +313,14 @@ namespace GoodsSupply.ViewModels
         public ICommand SortAlphabetCommand { get; }
         private bool CanSortAlphabetCommandExecute(object p) => context.PRODUCTS.Count() > 0 && NoCategoryselectedFlag == Visibility.Collapsed && IsEmptySearch == Visibility.Collapsed;
         private void OnSortAlphabetCommandExecuted(object p) => ProductsList = new ObservableCollection<PRODUCTS>(ProductsList.OrderBy(f => f.Name));
+
+        public ICommand OpenCartCommand { get; }
+        private bool CanOpenCartCommandExecute(object p) => context.ORDERED_PRODUCTS.Count() > 0;
+        private void OnOpenCartCommandExecuted(object p)
+        {
+            var cartWindow = new CartWindow();
+            cartWindow.ShowDialog();
+        }
 
         public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter)
         {
@@ -325,6 +351,7 @@ namespace GoodsSupply.ViewModels
             SortAscCommand = new DelegateCommand(OnSortAscCommandExecuted, CanSortAscCommandExecute);
             SortDescCommand = new DelegateCommand(OnSortDescCommandExecuted, CanSortDescCommandExecute);
             SortAlphabetCommand = new DelegateCommand(OnSortAlphabetCommandExecuted, CanSortAlphabetCommandExecute);
+            OpenCartCommand = new DelegateCommand(OnOpenCartCommandExecuted, CanOpenCartCommandExecute);
         }
     }
 }

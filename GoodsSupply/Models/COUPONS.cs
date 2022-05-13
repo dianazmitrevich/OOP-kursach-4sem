@@ -22,5 +22,9 @@ namespace GoodsSupply.Models
         public int PercentOff { get; set; }
 
         public double? MoneyOff { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string CouponText { get; set; }
     }
 }

@@ -44,25 +44,25 @@
             <Label Content="Диана" FontSize="12" HorizontalAlignment="Center" Margin="0 -3"></Label>
         </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="2" Width="32">
-            <Button Background="Transparent" BorderBrush="Transparent">
+            <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="Assets/catalogAButton.jpg"></Image>
             </Button>
-            <Button Background="Transparent" BorderBrush="Transparent" Margin="0 20">
+            <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent" Margin="0 20">
                 <Image Source="Assets/couponsButton.jpg"></Image>
             </Button>
-            <Button Background="Transparent" BorderBrush="Transparent">
+            <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="Assets/reviewsButton.jpg"></Image>
             </Button>
-            <Button Background="Transparent" BorderBrush="Transparent" Margin="0 20">
+            <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent" Margin="0 20">
                 <Image Source="Assets/logOutButton.jpg"></Image>
             </Button>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="0 17 30 0">
             <Label Content="КАТЕГОРИИ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
-            <ListView ItemsSource="{Binding CategoriesList}" ItemContainerStyle="{DynamicResource ListViewItemStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView ItemsSource="{Binding CategoriesList}" Margin="-5 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" FontSize="10" Margin="-5 0 0 10" Padding="0" TextWrapping="Wrap" Width="111"></TextBlock>
+                        <TextBlock Text="{Binding Name}" FontSize="10" Margin="-5 0 0 10" Padding="5 5 5 0" TextWrapping="Wrap" Width="111"></TextBlock>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -117,7 +117,7 @@
                 </StackPanel>
                 <StackPanel Margin="4 0 0 10" HorizontalAlignment="Left" Orientation="Horizontal" Visibility="{Binding IsProductSelectedFlag}">
                     <Rectangle Fill="{Binding BrushQuantity}" Width="10" Height="10" RadiusX="100" RadiusY="100"></Rectangle>
-                    <Label Padding="5 0 0 0" Content="{Binding QuantityLabel}" FontSize="12"></Label>
+                    <Label Padding="5 -2 0 0" Content="{Binding QuantityLabel}" FontSize="10" Margin="5 0 0 0"></Label>
                 </StackPanel>
                 <ContentControl Content="{Binding ProductsDetail}" Visibility="{Binding IsProductSelectedFlag}" Margin="-2 0 0 0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
                     <ContentControl.ContentTemplate>
@@ -198,7 +198,7 @@
                         <Image Source="Assets/questionIcon.png" Width="35"></Image>
                         <TextBlock Text="Здесь пока пусто! Добавьте какой-нибудь товар к себе в корзину" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
                     </StackPanel>
-                    <ListView ItemsSource="{Binding CartItems}" BorderBrush="Transparent" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView ItemsSource="{Binding CartItems}" IsHitTestVisible="False" BorderBrush="Transparent" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="0 0 0 -10" Orientation="Horizontal">
@@ -215,7 +215,7 @@
             </StackPanel>
             <StackPanel MinHeight="47" Background="#fff" Margin="15 -1 15 0">
                 <StackPanel Margin="10">
-                    <Button Content="Перейти" Background="#fff" Style="{DynamicResource DefaultButtonStyle}" BorderBrush="#0058A3" FontSize="10" Width="85" Height="26" HorizontalAlignment="Left"></Button>
+                    <Button Content="Перейти" Command="{Binding OpenCartCommand}" Background="#fff" Style="{DynamicResource DefaultButtonStyle}" BorderBrush="#0058A3" FontSize="10" Width="85" Height="26" HorizontalAlignment="Left"></Button>
                     <Label Content="{Binding CartPrice}" Margin="15 -30" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Right"></Label>
                     <Label Content="₽" Margin="0 -30" FontSize="16" FontWeight="SemiBold" HorizontalAlignment="Right"></Label>
                 </StackPanel>
