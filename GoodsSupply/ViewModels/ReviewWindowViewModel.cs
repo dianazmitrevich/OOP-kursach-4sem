@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GoodsSupply.ViewModels
 {
@@ -19,6 +20,8 @@ namespace GoodsSupply.ViewModels
         private string productName;
         private string reviewText;
         private string reviewTextSymbols;
+        private Brush symbolsLabel;
+        private bool isSymbolsAbove;
 
         public PRODUCTS Product
         {
@@ -41,7 +44,8 @@ namespace GoodsSupply.ViewModels
             set
             {
                 Set(ref reviewText, value);
-                GetSymbols();
+                GetSymbols(); ChangeLabelColor();
+                IsTextAbove();
             }
         }
         public string ReviewTextSymbols
@@ -49,17 +53,42 @@ namespace GoodsSupply.ViewModels
             get => reviewTextSymbols;
             set => Set(ref reviewTextSymbols, value);
         }
+        public Brush SymbolsLabel
+        {
+            get => symbolsLabel;
+            set => Set(ref symbolsLabel, value);
+        }
+        public bool IsSymbolsAbove
+        {
+            get => isSymbolsAbove;
+            set => Set(ref isSymbolsAbove, value);
+        }
 
-        public void GetSymbols()
+        private void GetSymbols()
         {
             if (ReviewText != "")
             {
                 ReviewTextSymbols = $"{ReviewText.Length}/200";
             }
         }
+        private void IsTextAbove()
+        {
+            if (ReviewText.Length <= 200)
+                IsSymbolsAbove = false;
+            else if (ReviewText.Length > 200)
+                IsSymbolsAbove = true;
+        }
+
+        private void ChangeLabelColor()
+        {
+            if (ReviewText.Length > 200)
+                SymbolsLabel = new SolidColorBrush(Color.FromRgb(190, 23, 23));
+            else
+                SymbolsLabel = new SolidColorBrush(Color.FromRgb(183, 183, 183));
+        }
 
         public ICommand AddReviewCommand { get; }
-        private bool CanAddReviewCommandExecute(object p) => ReviewText != "";
+        private bool CanAddReviewCommandExecute(object p) => ReviewText != "" && IsSymbolsAbove == false;
         private void OnAddReviewCommandExecuted(object p)
         {
             if (ReviewText.Length <= 200)
@@ -80,6 +109,7 @@ namespace GoodsSupply.ViewModels
             ProductName = Product.Name;
             ReviewText = "Текст отзыва";
             ReviewTextSymbols = "0/200";
+            SymbolsLabel = new SolidColorBrush(Color.FromRgb(183, 183, 183));
             GetSymbols();
         }
 
