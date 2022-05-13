@@ -37,7 +37,7 @@
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Margin="20 0 20 10" Grid.ColumnSpan="4" Content="КОРЗИНА И ОФОРМЛЕНИЕ ЗАКАЗА" FontWeight="SemiBold" FontSize="16" Padding="0"></Label>
         <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
-            <ListView ItemsSource="{Binding OrderedProductsList}" Margin="9 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemProductStyle}" Height="140" ScrollViewer.VerticalScrollBarVisibility="Hidden" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView Name="CartItems" ItemsSource="{Binding OrderedProductsList, UpdateSourceTrigger=PropertyChanged}" Margin="9 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemProductStyle}" Height="140" ScrollViewer.VerticalScrollBarVisibility="Hidden" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Border BorderBrush="#E6E6E6" BorderThickness="1" Width="540" Margin="15 3">
@@ -49,7 +49,7 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 -40 20 0">
                                     <StackPanel VerticalAlignment="Center">
-                                        <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
+                                        <Button Command="{Binding ElementName=CartItems, Path=DataContext.RemoveQuantityCommand}" CommandParameter="{Binding OrderedProductId}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                                             <Image Source="/Assets/arrowUp.png" Width="9"></Image>
                                         </Button>
                                         <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
@@ -57,7 +57,7 @@
                                         </Button>
                                     </StackPanel>
                                     <StackPanel Margin="10 0 0 0" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Label Padding="5 0" Content="{Binding OrderedQuantity}"></Label>
+                                        <Label Padding="5 0" Content="{Binding OrderedQuantity, UpdateSourceTrigger=PropertyChanged}"></Label>
                                         <Label Padding="5 0" Content="×"></Label>
                                         <Label Padding="5 0" Content="{Binding OrderedProductPrice}"></Label>
                                         <Label Padding="0" Content="₽"></Label>

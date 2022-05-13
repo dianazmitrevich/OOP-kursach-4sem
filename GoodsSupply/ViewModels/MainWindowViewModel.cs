@@ -182,9 +182,6 @@ namespace GoodsSupply.ViewModels
 
         void ShowProductsDetail()
         {
-            // var converter = new System.Windows.Media.BrushConverter();
-            // BorderProductBrush = (Brush)converter.ConvertFromString("#0058AB");
-
             if (SelectedProductItem != null)
             {
                 int quantity = SelectedProductItem.Quantity;
@@ -272,7 +269,7 @@ namespace GoodsSupply.ViewModels
         private bool CanSearchCodeCommandExecute(object p) => context.PRODUCTS.Count() > 0;
         private void OnSearchCodeCommandExecuted(object p)
         {
-            if (SearchProductCode is string)
+            if (SearchProductCode is string && SearchProductCode != "")
             {
                 if (!Regex.IsMatch(SearchProductCode, @"\D+"))
                 {

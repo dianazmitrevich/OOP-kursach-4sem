@@ -13,7 +13,7 @@
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int OrderedProductId { get; set; }
 
-        [Key]
+        // [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int OrderedQuantity { get; set; }

@@ -13,7 +13,8 @@ namespace GoodsSupply.ViewModels
 {
     class ReviewWindowViewModel : BaseViewModel
     {
-        GoodsSupplyContext context = new GoodsSupplyContext();
+        #region private variables
+        private GoodsSupplyContext context = new GoodsSupplyContext();
 
         private PRODUCTS product;
         private string productCode;
@@ -22,7 +23,9 @@ namespace GoodsSupply.ViewModels
         private string reviewTextSymbols;
         private Brush symbolsLabel;
         private bool isSymbolsAbove;
+        #endregion
 
+        #region public variables
         public PRODUCTS Product
         {
             get => product;
@@ -63,6 +66,7 @@ namespace GoodsSupply.ViewModels
             get => isSymbolsAbove;
             set => Set(ref isSymbolsAbove, value);
         }
+        #endregion
 
         private void GetSymbols()
         {

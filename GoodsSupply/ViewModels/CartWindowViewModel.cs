@@ -14,6 +14,7 @@ namespace GoodsSupply.ViewModels
 {
     class CartWindowViewModel : BaseViewModel
     {
+        #region private variables
         private readonly GoodsSupplyContext context = new GoodsSupplyContext();
 
         private ObservableCollection<ORDERED_PRODUCTS> orderedProductsList = null;
@@ -22,7 +23,9 @@ namespace GoodsSupply.ViewModels
         private double cartPrice;
         private double cartPriceNew;
         private double price;
+        #endregion
 
+        #region public variables
         public ObservableCollection<ORDERED_PRODUCTS> OrderedProductsList
         {
             get => orderedProductsList;
@@ -48,6 +51,27 @@ namespace GoodsSupply.ViewModels
             get => cartPriceNew;
             set => Set(ref cartPriceNew, value);
         }
+        #endregion
+
+        private void EditCartPrice()
+        {
+            if (context.ORDERED_PRODUCTS.Count() > 0)
+            {
+                price = 0;
+                for (int i = 0; i < context.ORDERED_PRODUCTS.Count(); i++)
+                {
+                    price += OrderedProductsList[i].OrderedProductPrice * OrderedProductsList[i].OrderedQuantity;
+                }
+
+                CartPrice = price;
+                CartPriceNew = CartPrice;
+            }
+            else
+            {
+                CartPrice = 0;
+                CartPriceNew = 0;
+            }
+        }
 
         public ICommand SearchCouponsCommand { get; }
         private void OnSearchCouponsCommandExecuted(object p)
@@ -72,7 +96,8 @@ namespace GoodsSupply.ViewModels
                     }
                     if (coupon.IsPercent.Equals("N"))
                     {
-                        CartPriceNew = (double)(CartPrice - coupon.MoneyOff);
+                        if (CartPrice >= 1000)
+                            CartPriceNew = (double)(CartPrice - coupon.MoneyOff);
                     }
                 }
                 else CartPriceNew = CartPrice;
@@ -80,28 +105,26 @@ namespace GoodsSupply.ViewModels
             else CartPriceNew = CartPrice;
         }
 
+        public ICommand RemoveQuantityCommand { get; }
+        //private bool CanRemoveQuantityCommandExecute(object p) => CouponCodeToAdd != null;
+        private void OnRemoveQuantityCommandExecuted(object p)
+        {
+            int productCode = Convert.ToInt32(p); 
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
+            element.OrderedQuantity -= 1; context.SaveChanges();
+
+            EditCartPrice();
+            OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+        }
+
         public CartWindowViewModel()
         {
             OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
             SearchCouponsCommand = new DelegateCommand(OnSearchCouponsCommandExecuted);
             ApplyCouponCommand = new DelegateCommand(OnApplyCouponCommandExecuted, CanApplyCouponCommandExecute);
+            RemoveQuantityCommand = new DelegateCommand(OnRemoveQuantityCommandExecuted);
 
-            if (context.ORDERED_PRODUCTS.Count() > 0)
-            {
-                price = 0;
-                for (int i = 0; i < context.ORDERED_PRODUCTS.Count(); i++)
-                {
-                    price += OrderedProductsList[i].OrderedProductPrice * OrderedProductsList[i].OrderedQuantity;
-                }
-
-                CartPrice = price;
-                CartPriceNew = CartPrice;
-            }
-            else
-            {
-                CartPrice = 0;
-                CartPriceNew = 0;
-            }
+            EditCartPrice();
         }
     }
 }
