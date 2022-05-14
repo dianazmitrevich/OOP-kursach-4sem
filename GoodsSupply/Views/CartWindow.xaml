@@ -49,10 +49,10 @@
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 -40 20 0">
                                     <StackPanel VerticalAlignment="Center">
-                                        <Button Command="{Binding ElementName=CartItems, Path=DataContext.RemoveQuantityCommand}" CommandParameter="{Binding OrderedProductId}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
+                                        <Button Command="{Binding ElementName=CartItems, Path=DataContext.AddQuantityCommand}" CommandParameter="{Binding OrderedProductId}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                                             <Image Source="/Assets/arrowUp.png" Width="9"></Image>
                                         </Button>
-                                        <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
+                                        <Button Command="{Binding ElementName=CartItems, Path=DataContext.RemoveQuantityCommand}" CommandParameter="{Binding OrderedProductId}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                                             <Image Source="/Assets/arrowDown.png" Width="9"></Image>
                                         </Button>
                                     </StackPanel>

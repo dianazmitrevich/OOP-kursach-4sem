@@ -198,14 +198,14 @@
                         <Image Source="Assets/questionIcon.png" Width="35"></Image>
                         <TextBlock Text="Здесь пока пусто! Добавьте какой-нибудь товар к себе в корзину" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
                     </StackPanel>
-                    <ListView ItemsSource="{Binding CartItems}" IsHitTestVisible="False" BorderBrush="Transparent" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListView ItemsSource="{Binding CartItems, UpdateSourceTrigger=PropertyChanged}" IsHitTestVisible="False" BorderBrush="Transparent" BorderThickness="0" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="0 0 0 -10" Orientation="Horizontal">
-                                    <Label Content="{Binding OrderedProductId}"></Label>
-                                    <Label Content="{Binding OrderedQuantity}"></Label>
+                                    <Label Content="{Binding OrderedProductId, UpdateSourceTrigger=PropertyChanged}"></Label>
+                                    <Label Content="{Binding OrderedQuantity, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></Label>
                                     <Label Content="×"></Label>
-                                    <Label Content="{Binding OrderedProductPrice}"></Label>
+                                    <Label Content="{Binding OrderedProductPrice, UpdateSourceTrigger=PropertyChanged}"></Label>
                                     <Label Content="₽"></Label>
                                 </StackPanel>
                             </DataTemplate>

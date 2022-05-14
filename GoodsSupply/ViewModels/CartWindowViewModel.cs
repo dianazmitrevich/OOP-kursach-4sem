@@ -106,15 +106,61 @@ namespace GoodsSupply.ViewModels
         }
 
         public ICommand RemoveQuantityCommand { get; }
-        //private bool CanRemoveQuantityCommandExecute(object p) => CouponCodeToAdd != null;
+        private bool CanRemoveQuantityCommandExecute(object p)
+        {
+            bool flag = true;
+            int productCode = Convert.ToInt32(p);
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
+
+            if (element != null && element.OrderedQuantity > 0)
+                flag = true;
+            else flag = false;
+            return flag;
+        }
         private void OnRemoveQuantityCommandExecuted(object p)
         {
-            int productCode = Convert.ToInt32(p); 
+            int productCode = Convert.ToInt32(p);
             var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
-            element.OrderedQuantity -= 1; context.SaveChanges();
 
-            EditCartPrice();
-            OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+            if (element != null)
+            {
+                element.OrderedQuantity -= 1; context.SaveChanges();
+
+                EditCartPrice();
+                OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+            }
+        }
+
+        public ICommand AddQuantityCommand { get; }
+        private bool CanAddQuantityCommandExecute(object p)
+        {
+            bool flag = true;
+            int productCode = Convert.ToInt32(p);
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
+
+            if (element != null)
+            {
+                var elementDetail = context.PRODUCTS_DETAIL.FirstOrDefault(o => o.ProductCode.Equals(productCode)).LinkToProductId;
+                int elementQuantity = context.PRODUCTS.FirstOrDefault(f => f.ProductId.Equals(elementDetail)).Quantity;
+
+                if (element != null && element.OrderedQuantity <= elementQuantity)
+                    flag = true;
+                else flag = false;
+            }
+            return flag;
+        }
+        private void OnAddQuantityCommandExecuted(object p)
+        {
+            int productCode = Convert.ToInt32(p);
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
+
+            if (element != null)
+            {
+                element.OrderedQuantity += 1; context.SaveChanges();
+
+                EditCartPrice();
+                OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+            }
         }
 
         public CartWindowViewModel()
@@ -122,7 +168,8 @@ namespace GoodsSupply.ViewModels
             OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
             SearchCouponsCommand = new DelegateCommand(OnSearchCouponsCommandExecuted);
             ApplyCouponCommand = new DelegateCommand(OnApplyCouponCommandExecuted, CanApplyCouponCommandExecute);
-            RemoveQuantityCommand = new DelegateCommand(OnRemoveQuantityCommandExecuted);
+            RemoveQuantityCommand = new DelegateCommand(OnRemoveQuantityCommandExecuted, CanRemoveQuantityCommandExecute);
+            AddQuantityCommand = new DelegateCommand(OnAddQuantityCommandExecuted, CanAddQuantityCommandExecute);
 
             EditCartPrice();
         }

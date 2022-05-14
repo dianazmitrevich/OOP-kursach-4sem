@@ -315,6 +315,12 @@ namespace GoodsSupply.ViewModels
         {
             var cartWindow = new CartWindow();
             cartWindow.ShowDialog();
+
+            if (!cartWindow.IsActive)
+            {
+                MessageBox.Show("kjuhgfdx");
+                // CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+            }
         }
 
         public ICommand AddReviewCommand { get; }
