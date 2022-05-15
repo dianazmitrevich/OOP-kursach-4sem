@@ -1,10 +1,13 @@
-﻿using GoodsSupply.Models;
+﻿using GoodsSupply.Commands;
+using GoodsSupply.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace GoodsSupply.ViewModels.Admin_viewmodels
 {
@@ -61,9 +64,26 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             ProductsDetail = new ObservableCollection<PRODUCTS_DETAIL>(context.PRODUCTS_DETAIL.Where(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId)));
         }
 
+        public ICommand SaveChangesCommand { get; }
+        private void OnAddQuantityCommandExecuted(object p)
+        {
+            context.SaveChanges();
+            MessageBox.Show("Данные успешно" + "\n" + "обновлены");
+        }
+
+        public ICommand AddCategoryCommand { get; }
+        private void OnAddCategoryCommandExecuted(object p)
+        {
+            context.SaveChanges();
+            MessageBox.Show("Данные успешно" + "\n" + "обновлены");
+        }
+
         public AdminMainWindowViewModel()
         {
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
+
+            SaveChangesCommand = new DelegateCommand(OnAddQuantityCommandExecuted);
+            AddCategoryCommand = new DelegateCommand(OnAddCategoryCommandExecuted);
         }
     }
 }

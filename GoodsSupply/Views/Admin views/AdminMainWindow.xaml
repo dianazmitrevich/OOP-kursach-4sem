@@ -55,6 +55,7 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="0 17 30 0">
             <Label Content="КАТЕГОРИИ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
+            <Button Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="0 0 0 15" Content="Добавить новую" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
             <ListView ItemsSource="{Binding CategoriesList}" IsSynchronizedWithCurrentItem="True" Margin="-5 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -69,6 +70,7 @@
                 <Image Source="Assets/notSelected.png" Width="85"></Image>
                 <TextBlock Text="Здесь пока пусто! Для начала выберите категорию" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
             </StackPanel>-->
+            <Button Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="0 0 0 15" Content="Добавить новый" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
             <ListView ItemsSource="{Binding ProductsList}" IsSynchronizedWithCurrentItem="True" ItemContainerStyle="{DynamicResource ListViewItemProductStyle}" SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}"  Width="247" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -104,7 +106,7 @@
                             </DataTemplate>
                         </ContentControl.ContentTemplate>
                 </ContentControl>
-                <Button Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10 0 10" Content="Обновить категорию" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
+                <Button Command="{Binding SaveChangesCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10 0 10" Content="Обновить категорию" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
                 <TextBlock Text="Товар:" Margin="5 20 5 5" FontStyle="Italic" FontSize="10" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
                 <ContentControl Content="{Binding ProductsList}" Margin="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
                     <ContentControl.ContentTemplate>
@@ -164,7 +166,7 @@
                         </DataTemplate>
                     </ContentControl.ContentTemplate>
                 </ContentControl>
-                <Button Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10 0 30" Content="Обновить товар" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
+                <Button Command="{Binding SaveChangesCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10 0 30" Content="Обновить товар" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
             </StackPanel>
         </ScrollViewer>
         <!--<StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="4">
