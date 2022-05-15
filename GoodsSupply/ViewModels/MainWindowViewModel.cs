@@ -168,7 +168,7 @@ namespace GoodsSupply.ViewModels
         }
         #endregion
 
-        void ShowProducts()
+        private void ShowProducts()
         {
             ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(SelectedItem.CategoryId)));
             NoCategoryselectedFlag = Visibility.Collapsed;
@@ -180,29 +180,29 @@ namespace GoodsSupply.ViewModels
             SelectedQuantity = 0;
         }
 
-        void ShowProductsDetail()
+        private void ShowProductsDetail()
         {
             if (SelectedProductItem != null)
             {
                 int quantity = SelectedProductItem.Quantity;
                 if(quantity == 0)
                 {
-                    QuantityLabel = "ожидается поступление";
+                    QuantityLabel = "0 в наличии";
                     BrushQuantity = Brushes.Tomato;
                 }
                 else if (quantity < 5)
                 {
-                    QuantityLabel = "<5 на складе";
+                    QuantityLabel = "< 5 в наличии";
                     BrushQuantity = Brushes.Red;
                 }
                 else if (quantity >= 5 && quantity < 10)
                 {
-                    QuantityLabel = "<10 на складе";
+                    QuantityLabel = "< 10 в наличии";
                     BrushQuantity = Brushes.Orange;
                 }
                 else if (quantity >= 10)
                 {
-                    QuantityLabel = ">10 на складе";
+                    QuantityLabel = "> 10 в наличии";
                     BrushQuantity = Brushes.Green;
                 }
 
@@ -218,6 +218,33 @@ namespace GoodsSupply.ViewModels
 
             if (ProductReviews.Count > 0)
                 IsReviewsEmpty = Visibility.Collapsed;
+        }
+
+        private void RefreshAll()
+        {
+            foreach (var entity in context.ChangeTracker.Entries())
+            {
+                entity.Reload();
+            }
+        }
+
+        private void ShowCartPrice()
+        {
+            if (CartItems.Count > 0)
+            {
+                price = 0;
+                for (int i = 0; i < context.ORDERED_PRODUCTS.Count(); i++)
+                {
+                    price += CartItems[i].OrderedProductPrice * CartItems[i].OrderedQuantity;
+                }
+                IsCartEmpty = Visibility.Collapsed;
+                CartPrice = price;
+            }
+            else
+            {
+                IsCartEmpty = Visibility.Visible;
+                CartPrice = 0;
+            }
         }
 
         public ICommand AddQuantityCommand { get; }
@@ -251,17 +278,7 @@ namespace GoodsSupply.ViewModels
 
             CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
 
-            if (context.ORDERED_PRODUCTS.Count() > 0)
-            {
-                price = 0;
-                for (int i = 0; i < context.ORDERED_PRODUCTS.Count(); i++)
-                {
-                    price += CartItems[i].OrderedProductPrice * CartItems[i].OrderedQuantity;
-                }
-
-                CartPrice = price;
-            }
-
+            ShowCartPrice();
             ShowProductsDetail();
         }
 
@@ -318,8 +335,9 @@ namespace GoodsSupply.ViewModels
 
             if (!cartWindow.IsActive)
             {
-                MessageBox.Show("kjuhgfdx");
-                // CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+                RefreshAll();
+                CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+                ShowCartPrice();
             }
         }
 
@@ -346,16 +364,7 @@ namespace GoodsSupply.ViewModels
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
             CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
 
-            if (CartItems.Count > 0)
-            {
-                for (int i = 0; i < context.ORDERED_PRODUCTS.Count(); i++)
-                {
-                    CartPrice += CartItems[i].OrderedProductPrice * CartItems[i].OrderedQuantity;
-                }
-                IsCartEmpty = Visibility.Collapsed;
-            }
-            else
-                IsCartEmpty = Visibility.Visible;
+            ShowCartPrice();
 
             AddQuantityCommand = new DelegateCommand(OnAddQuantityCommandExecuted, CanAddQuantityCommandExecute);
             RemoveQuantityCommand = new DelegateCommand(OnRemoveQuantityCommandExecuted, CanRemoveQuantityCommandExecute);

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace GoodsSupply.ViewModels
@@ -112,7 +113,7 @@ namespace GoodsSupply.ViewModels
             int productCode = Convert.ToInt32(p);
             var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
 
-            if (element != null && element.OrderedQuantity > 0)
+            if (element != null && element.OrderedQuantity > 1)
                 flag = true;
             else flag = false;
             return flag;
@@ -163,6 +164,38 @@ namespace GoodsSupply.ViewModels
             }
         }
 
+        public ICommand DeleteOrderedProductCommand { get; }
+        private bool CanDeleteOrderedProductCommandExecute(object p)
+        {
+            bool flag = true;
+            int productCode = Convert.ToInt32(p);
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
+
+            if (element != null)
+                flag = true;
+            else flag = false;
+            return flag;
+        }
+        private void OnDeleteOrderedProductCommandExecuted(object p)
+        {
+            int productCode = Convert.ToInt32(p);
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+
+            if (element != null)
+            {
+                var result = MessageBox.Show("Вы точно хотите удалить этот" + "\n" + "товар из корзины?", "Удаление товара", buttons, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    context.ORDERED_PRODUCTS.Remove(element); context.SaveChanges();
+
+                    EditCartPrice();
+                    OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+                }
+                else return;
+            }
+        }
+
         public CartWindowViewModel()
         {
             OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
@@ -170,6 +203,7 @@ namespace GoodsSupply.ViewModels
             ApplyCouponCommand = new DelegateCommand(OnApplyCouponCommandExecuted, CanApplyCouponCommandExecute);
             RemoveQuantityCommand = new DelegateCommand(OnRemoveQuantityCommandExecuted, CanRemoveQuantityCommandExecute);
             AddQuantityCommand = new DelegateCommand(OnAddQuantityCommandExecuted, CanAddQuantityCommandExecute);
+            DeleteOrderedProductCommand = new DelegateCommand(OnDeleteOrderedProductCommandExecuted, CanDeleteOrderedProductCommandExecute);
 
             EditCartPrice();
         }
