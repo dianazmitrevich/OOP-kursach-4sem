@@ -23,5 +23,10 @@ namespace GoodsSupply.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRODUCTS> PRODUCTS { get; set; }
+
+        public CATEGORIES(string name)
+        {
+            this.Name = name;
+        }
     }
 }

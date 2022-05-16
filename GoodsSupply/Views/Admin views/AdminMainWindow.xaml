@@ -36,8 +36,8 @@
             <ColumnDefinition Width="220"></ColumnDefinition>
             <ColumnDefinition Width="210"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Rectangle Width="960" Height="59" Grid.Row="0" Grid.ColumnSpan="5" Fill="#EAEAEA"></Rectangle>
-        <Rectangle Grid.Row="1" Grid.Column="4" Grid.RowSpan="3" Width="210" Fill="#AEAEAE"/>
+        <Rectangle Width="960" Height="59" Grid.Row="0" Grid.ColumnSpan="5" Fill="#F3F3F3"></Rectangle>
+        <Rectangle Grid.Row="1" Grid.Column="4" Grid.RowSpan="3" Width="210" Fill="#616161"/>
         <Image Source="/Assets/ikeaLogo.jpg" Width="80" Grid.Column="4" HorizontalAlignment="Right" Margin="12 0"></Image>
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" Width="32" Margin="0 20 0 0">
             <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
@@ -55,7 +55,7 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Margin="0 17 30 0">
             <Label Content="КАТЕГОРИИ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
-            <Button Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="0 0 0 15" Content="Добавить новую" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
+            <Button Command="{Binding AddCategoryCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="0 0 0 15" Content="Добавить новую" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
             <ListView ItemsSource="{Binding CategoriesList}" IsSynchronizedWithCurrentItem="True" Margin="-5 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -66,11 +66,11 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Margin="0 17 30 0">
             <Label Content="ТОВАРЫ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
-            <!--<StackPanel Grid.Row="2" Margin="0 100" Visibility="{Binding NoCategoryselectedFlag}">
-                <Image Source="Assets/notSelected.png" Width="85"></Image>
-                <TextBlock Text="Здесь пока пусто! Для начала выберите категорию" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
-            </StackPanel>-->
-            <Button Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="0 0 0 15" Content="Добавить новый" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
+            <Button Command="{Binding AddProductCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="0 0 0 15" Content="Добавить новый" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
+            <StackPanel Grid.Row="2" Margin="0 60" Visibility="{Binding IsCategoryEmpty}">
+                <Image Source="/Assets/notSelected.png" Width="85"></Image>
+                <TextBlock Text="Кажется, в этой категории нет товаров. Добавьте сюда что-нибудь" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
+            </StackPanel>
             <ListView ItemsSource="{Binding ProductsList}" IsSynchronizedWithCurrentItem="True" ItemContainerStyle="{DynamicResource ListViewItemProductStyle}" SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}"  Width="247" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -79,8 +79,8 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="/Assets/test.PNG" Width="43" Margin="10"></Image>
                                     <StackPanel Margin="0 10">
-                                        <Label Content="{Binding Name}" FontSize="12" Padding="0" Margin="0 0 0 2"></Label>
-                                        <TextBlock Text="{Binding Description}" FontSize="10" MaxWidth="110" TextWrapping="Wrap"></TextBlock>
+                                        <TextBlock Width="160" TextWrapping="Wrap" Text="{Binding Name}" FontSize="12" Padding="0" Margin="0 0 0 2"></TextBlock>
+                                        <TextBlock Text="{Binding Description}" Margin="-50 0 0 0" FontSize="10" MaxWidth="110" TextWrapping="Wrap"></TextBlock>
                                     </StackPanel>
                                 </StackPanel>
                                 <TextBlock Text="{Binding Price}" Padding="0" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="5 -35 20 10" FontWeight="SemiBold"></TextBlock>
@@ -100,24 +100,24 @@
                         <ContentControl.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <TextBox FontSize="10" Width="210" Text="{Binding Name}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+                                <TextBox FontSize="10" Margin="1 0 0 0" Width="200" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
                                     <Label Content="Название" FontSize="8" Margin="0 -5 0 0"></Label>
                                 </StackPanel>
                             </DataTemplate>
                         </ContentControl.ContentTemplate>
                 </ContentControl>
-                <Button Command="{Binding SaveChangesCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10 0 10" Content="Обновить категорию" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
+                <Button Command="{Binding SaveCChangesCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10 0 10" Content="Обновить категорию" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
                 <TextBlock Text="Товар:" Margin="5 20 5 5" FontStyle="Italic" FontSize="10" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
                 <ContentControl Content="{Binding ProductsList}" Margin="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
                     <ContentControl.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0 0 0 20">
                                 <StackPanel>
-                                    <TextBox FontSize="10" Width="210" Text="{Binding Name}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+                                    <TextBox FontSize="10" Width="200" Margin="1 0 0 0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
                                     <Label Content="Название" FontSize="8" Margin="0 -5 0 0"></Label>
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBox FontSize="10" Width="210" Text="{Binding Description}" TextWrapping="Wrap" Padding="10 7" Height="60" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+                                    <TextBox FontSize="10" Width="200" Margin="1 0 0 0" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Padding="10 7" Height="60" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
                                     <Label Content="Описание для анонса" FontSize="8" Margin="0 -5 0 0"></Label>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0 10 0 10">
@@ -127,46 +127,46 @@
                                     </Button>
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBox FontSize="10" Width="210" Text="{Binding Price}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+                                    <TextBox FontSize="10" Width="200" Margin="1 0 0 0" Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
                                     <Label Content="Цена" FontSize="8" Margin="0 -5 0 0"></Label>
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBox FontSize="10" Width="210" Text="{Binding Quantity}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+                                    <TextBox FontSize="10" Width="200" Margin="1 0 0 0" Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
                                     <Label Content="Доступное количество" FontSize="8" Margin="0 -5 0 0"></Label>
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </ContentControl.ContentTemplate>
                 </ContentControl>
-                <ContentControl Content="{Binding ProductsDetail}" Margin="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
+                <ContentControl Content="{Binding ProductsDetail, UpdateSourceTrigger=PropertyChanged}" Margin="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
                     <ContentControl.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Margin="0 0 0 5">
                                 <StackPanel>
-                                    <TextBox FontSize="10" Width="210" Text="{Binding ProductCode}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+                                    <TextBox FontSize="10" Width="200" Margin="1 0 0 0" Text="{Binding ProductCode, UpdateSourceTrigger=PropertyChanged}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
                                     <Label Content="Код товара" FontSize="8" Margin="0 -5 0 0"></Label>
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBox FontSize="10" Width="210" Text="{Binding Material}" TextWrapping="Wrap" Padding="10 7" Height="80" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+                                    <TextBox FontSize="10" Width="200" Margin="1 0 0 0" Text="{Binding Material, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Padding="10 7" Height="80" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
                                     <Label Content="Материал" FontSize="8" Margin="0 -5 0 0"></Label>
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBox FontSize="10" Width="210" Text="{Binding Package}" TextWrapping="Wrap" Padding="10 7" Height="80" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+                                    <TextBox FontSize="10" Width="200" Margin="1 0 0 0" Text="{Binding Package, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Padding="10 7" Height="80" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
                                     <Label Content="Упаковка" FontSize="8" Margin="0 -5 0 0"></Label>
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBox FontSize="10" Width="210" Text="{Binding Size}" TextWrapping="Wrap" Padding="10 7" Height="40" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+                                    <TextBox FontSize="10" Width="200" Margin="1 0 0 0" Text="{Binding Size, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Padding="10 7" Height="40" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
                                     <Label Content="Размер" FontSize="8" Margin="0 -5 0 0"></Label>
                                 </StackPanel>
                                 <StackPanel>
-                                    <TextBox FontSize="10" Width="210" Text="{Binding BigDescription}" TextWrapping="Wrap" Padding="10 7" Height="80" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+                                    <TextBox FontSize="10" Width="200" Margin="1 0 0 0" Text="{Binding BigDescription, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Padding="10 7" Height="80" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
                                     <Label Content="Детальное описание" FontSize="8" Margin="0 -5 0 0"></Label>
                                 </StackPanel>
                             </StackPanel>
                         </DataTemplate>
                     </ContentControl.ContentTemplate>
                 </ContentControl>
-                <Button Command="{Binding SaveChangesCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10 0 30" Content="Обновить товар" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
+                <Button Command="{Binding SavePChangesCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10 0 30" Content="Обновить товар" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
             </StackPanel>
         </ScrollViewer>
         <!--<StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="4">

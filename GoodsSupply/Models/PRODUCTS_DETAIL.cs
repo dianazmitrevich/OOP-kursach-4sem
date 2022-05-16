@@ -32,5 +32,16 @@ namespace GoodsSupply.Models
         public string BigDescription { get; set; }
 
         public virtual PRODUCTS PRODUCTS { get; set; }
+
+        public PRODUCTS_DETAIL() { }
+        public PRODUCTS_DETAIL(int product, int code, string material, string package, string size, string bigDescription)
+        {
+            this.LinkToProductId = product;
+            this.ProductCode = code;
+            this.Material = material;
+            this.Package = package;
+            this.Size = size;
+            this.BigDescription = bigDescription;
+        }
     }
 }
