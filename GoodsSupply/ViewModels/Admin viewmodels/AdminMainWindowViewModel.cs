@@ -23,6 +23,8 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
         private PRODUCTS selectedProductItem = null;
         private Visibility isCategoryEmpty = Visibility.Collapsed;
         private Visibility isProductSelected = Visibility.Collapsed;
+        private Visibility isCategorySelected = Visibility.Visible;
+        private Visibility isCategorySelectedToEdit = Visibility.Collapsed;
 
         public ObservableCollection<CATEGORIES> CategoriesList
         {
@@ -42,6 +44,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
                 Set(ref selectedItem, value);
                 ShowProducts();
                 IsProductSelected = Visibility.Collapsed;
+                IsCategorySelectedToEdit = Visibility.Visible;
             }
         }
         public ObservableCollection<PRODUCTS_DETAIL> ProductsDetail
@@ -59,6 +62,16 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             get => isProductSelected;
             set => Set(ref isProductSelected, value);
         }
+        public Visibility IsCategorySelected
+        {
+            get => isCategorySelected;
+            set => Set(ref isCategorySelected, value);
+        }
+        public Visibility IsCategorySelectedToEdit
+        {
+            get => isCategorySelectedToEdit;
+            set => Set(ref isCategorySelectedToEdit, value);
+        }
         public PRODUCTS SelectedProductItem
         {
             get => selectedProductItem;
@@ -72,11 +85,20 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
 
         private void ShowProducts()
         {
-            ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(SelectedItem.CategoryId)));
+            if (SelectedItem != null)
+            {
+                int categoryId = SelectedItem.CategoryId;
+                ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(categoryId)));
+                IsCategorySelected = Visibility.Collapsed;
 
-            if (ProductsList.Count == 0)
-                IsCategoryEmpty = Visibility.Visible;
-            else IsCategoryEmpty = Visibility.Collapsed;
+                if (ProductsList.Count == 0)
+                    IsCategoryEmpty = Visibility.Visible;
+                else
+                {
+                    IsCategoryEmpty = Visibility.Collapsed;
+                    IsCategorySelected = Visibility.Collapsed;
+                }
+            }
         }
         private void ShowDetail()
         {
@@ -87,32 +109,40 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
         {
             bool flag = true;
 
-            var elementCategory = CategoriesList.FirstOrDefault(f => f.CategoryId.Equals(SelectedItem.CategoryId));
-            var element = ProductsList.FirstOrDefault(f => f.ProductId.Equals(SelectedProductItem.ProductId));
-            var elementDetail = ProductsDetail;
-
-            if (elementCategory != null && element != null && elementDetail.Count > 0)
+            if (SelectedItem != null)
             {
-                if (elementCategory.Name.Length <= 100 && elementCategory.Name != "")
+                if (SelectedProductItem != null)
                 {
-                    if (element.Name.Length <= 100 && element.Name != "")
+                    var elementCategory = CategoriesList.FirstOrDefault(f => f.CategoryId.Equals(SelectedItem.CategoryId));
+                    var element = ProductsList.FirstOrDefault(f => f.ProductId.Equals(SelectedProductItem.ProductId));
+                    var elementDetail = ProductsDetail;
+
+                    if (elementCategory != null && element != null && elementDetail.Count > 0)
                     {
-                        if (element.Description.Length <= 100 && element.Description != "")
+                        if (elementCategory.Name.Length <= 100 && elementCategory.Name != "")
                         {
-                            if (element.Price != 0 && element.Price > 0)
+                            if (element.Name.Length <= 100 && element.Name != "")
                             {
-                                if (element.Quantity >= 0)
+                                if (element.Description.Length <= 100 && element.Description != "")
                                 {
-                                    if (elementDetail[0].ProductCode.ToString().Length == 6)
+                                    if (element.Price != 0 && element.Price > 0)
                                     {
-                                        if (elementDetail[0].Material.Length <= 100 && elementDetail[0].Material != "")
+                                        if (element.Quantity >= 0)
                                         {
-                                            if (elementDetail[0].Package.Length <= 100 && elementDetail[0].Package != "")
+                                            if (elementDetail[0].ProductCode.ToString().Length == 6)
                                             {
-                                                if (elementDetail[0].Size.Length <= 100 && elementDetail[0].Size != "")
+                                                if (elementDetail[0].Material.Length <= 100 && elementDetail[0].Material != "")
                                                 {
-                                                    if (elementDetail[0].BigDescription.Length <= 200 && elementDetail[0].BigDescription != "")
-                                                        flag = true;
+                                                    if (elementDetail[0].Package.Length <= 100 && elementDetail[0].Package != "")
+                                                    {
+                                                        if (elementDetail[0].Size.Length <= 100 && elementDetail[0].Size != "")
+                                                        {
+                                                            if (elementDetail[0].BigDescription.Length <= 200 && elementDetail[0].BigDescription != "")
+                                                                flag = true;
+                                                        }
+                                                        else flag = false;
+                                                    }
+                                                    else flag = false;
                                                 }
                                                 else flag = false;
                                             }
@@ -141,12 +171,16 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
         {
             bool flag = true;
 
-            var elementCategory = CategoriesList.FirstOrDefault(f => f.CategoryId.Equals(SelectedItem.CategoryId));
-
-            if (elementCategory != null)
+            if (SelectedItem != null)
             {
-                if (elementCategory.Name.Length <= 100 && elementCategory.Name != "")
-                    flag = true;
+                var elementCategory = CategoriesList.FirstOrDefault(f => f.CategoryId.Equals(SelectedItem.CategoryId));
+
+                if (elementCategory != null)
+                {
+                    if (elementCategory.Name.Length <= 100 && elementCategory.Name != "")
+                        flag = true;
+                    else flag = false;
+                }
                 else flag = false;
             }
             else flag = false;
@@ -187,6 +221,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
         {
             CATEGORIES element = new CATEGORIES("Новая категория. Нажмите для редактирования");
             context.CATEGORIES.Add(element); context.SaveChanges();
+            SelectedItem = element;
 
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
         }
@@ -264,19 +299,62 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
                         var products = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(SelectedItem.CategoryId)));
                         foreach (var item in products)
                         {
-                            var detail = (context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(item.ProductId)));
-                            context.PRODUCTS_DETAIL.Remove(detail); context.SaveChanges();
-                            context.PRODUCTS.Remove(item); context.SaveChanges();
+                            var detail = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(item.ProductId));
+                            context.PRODUCTS_DETAIL.Remove(detail);
+                            context.PRODUCTS.Remove(item);
                         }
                         context.CATEGORIES.Remove(element); context.SaveChanges();
-
                     }
                     else return;
                 }
             }
 
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
-            ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS);
+            ProductsList = null;
+            IsCategorySelected = Visibility.Visible; IsCategoryEmpty = Visibility.Collapsed;
+        }
+
+        public ICommand DeleteProductCommand { get; }
+        private bool CanDeleteProductCommandExecute(object p) => SelectedProductItem != null;
+        private void OnDeleteProductCommandExecuted(object p)
+        {
+            var element = context.PRODUCTS.FirstOrDefault(f => f.ProductId.Equals(SelectedProductItem.ProductId));
+
+            if (element != null)
+            {
+                MessageBoxButton buttons = MessageBoxButton.YesNo;
+                if (element != null)
+                {
+                    var result = MessageBox.Show("Вы точно хотите удалить этот" + "\n" + "товар? Будет удалена и его" + "\n" + "детальная страница", "Удаление товара", buttons, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        var detail = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId));
+                        context.PRODUCTS_DETAIL.Remove(detail); context.SaveChanges();
+
+                        var reviews = context.REVIEWS.Where(f => f.LinkToProductId.Equals(element.ProductId));
+                        foreach (var item in reviews)
+                        {
+                            context.REVIEWS.Remove(item);
+                        }
+                        context.SaveChanges();
+
+                        var orderedProducts = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.OrderedProductId.Equals(SelectedProductItem.ProductId)));
+                        if (orderedProducts.Count > 0)
+                        {
+                            MessageBox.Show("На этот товар еще" + "\n" + "есть заказы", "Действие невозможно");
+                            return;
+                        }
+                        else context.PRODUCTS.Remove(element); context.SaveChanges();
+                    }
+                    else return;
+                }
+            }
+
+            ProductsDetail.Clear();
+            ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(SelectedItem.CategoryId)));
+            if (ProductsList.Count > 0)
+                IsCategoryEmpty = Visibility.Collapsed;
+            else IsCategoryEmpty = Visibility.Visible;
         }
 
         public AdminMainWindowViewModel()
@@ -288,6 +366,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             AddCategoryCommand = new DelegateCommand(OnAddCategoryCommandExecuted, CanAddCategoryCommandExecute);
             AddProductCommand = new DelegateCommand(OnAddProductCommandExecuted, CanAddProductCommandExecute);
             DeleteCategoryCommand = new DelegateCommand(OnDeleteCategoryCommandExecuted, CanDeleteCategoryCommandExecute);
+            DeleteProductCommand = new DelegateCommand(OnDeleteProductCommandExecuted, CanDeleteProductCommandExecute);
         }
     }
 }

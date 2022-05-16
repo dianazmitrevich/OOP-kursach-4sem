@@ -38,7 +38,7 @@
         </Grid.ColumnDefinitions>
         <Rectangle Grid.Row="0" Grid.ColumnSpan="5" Fill="#FBD914"/>
         <Rectangle Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Fill="#616161" Margin="0,0,1,0"/>
-        <Image Source="/Assets/ikeaLogo.jpg" Width="80" Grid.Column="4" HorizontalAlignment="Right" Margin="0,10,12,10"></Image>
+        <Image Source="/Assets/ikeaLogo.jpg" Width="80" Grid.Column="4" HorizontalAlignment="Right" Margin="0,10,10,10"></Image>
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="40,20,41,0">
             <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="/Assets/catalogAButton.jpg"></Image>
@@ -57,7 +57,7 @@
             <Label Content="КАТЕГОРИИ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
             <Button Command="{Binding AddCategoryCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="0 0 20 15" Content="Добавить новую" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
             <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                <ListView ItemsSource="{Binding CategoriesList}" Width="140" Height="375" IsSynchronizedWithCurrentItem="True" Margin="-5 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <ListView ItemsSource="{Binding CategoriesList}" Width="140" Height="375"  Margin="-5 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}" FontSize="10" Margin="-5 0 0 10" Padding="5 5 5 0" TextWrapping="Wrap" Width="111"></TextBlock>
@@ -69,12 +69,16 @@
         <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Margin="0 17 30 0">
             <Label Content="ТОВАРЫ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
             <Button Command="{Binding AddProductCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="0 0 0 15" Content="Добавить новый" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
+            <StackPanel Grid.Row="2" Margin="0 60" Visibility="{Binding IsCategorySelected}">
+                <Image Source="/Assets/notSelected.png" Width="85"></Image>
+                <TextBlock Text="Здесь пока ничего нет! Для начала выберите категорию" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
+            </StackPanel>
             <StackPanel Grid.Row="2" Margin="0 60" Visibility="{Binding IsCategoryEmpty}">
                 <Image Source="/Assets/notSelected.png" Width="85"></Image>
                 <TextBlock Text="Кажется, в этой категории нет товаров. Добавьте сюда что-нибудь" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
             </StackPanel>
             <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                <ListView ItemsSource="{Binding ProductsList}" MaxHeight="375" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsSynchronizedWithCurrentItem="True" ItemContainerStyle="{DynamicResource ListViewItemProductStyle}" SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}"  Width="247" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView ItemsSource="{Binding ProductsList}" MaxHeight="375" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{DynamicResource ListViewItemProductStyle}" SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}"  Width="247" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="#E6E6E6" Width="230" BorderThickness="1" Margin="-5 0 0 5">
@@ -99,27 +103,29 @@
             <StackPanel Margin="0 17 20 0">
                 <Label Content="РЕДАКТИРОВАНИЕ" FontWeight="SemiBold" FontSize="16" Margin="-1 0 0 10"></Label>
                 <TextBlock Text="Здесь можно редактировать категорию/товар. Для начала выберите что-нибудь" Margin="5" FontStyle="Italic" FontSize="10" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
-                <TextBlock Text="Категория:" Margin="5" FontStyle="Italic" FontSize="10" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
-                <Button Command="{Binding DeleteCategoryCommand}" Height="15" Style="{DynamicResource DefaultButtonStyle}" Margin="0 -25 5 0" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
-                    <TextBlock Text="Удалить" TextDecorations="Underline" Foreground="#BE1717" FontSize="10"></TextBlock>
-                </Button>
-                <ContentControl Content="{Binding CategoriesList}" Margin="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
-                    <ContentControl.ContentTemplate>
-                        <DataTemplate>
-                            <StackPanel>
-                                <TextBox FontSize="10" Margin="1 0 0 0" Width="200" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
-                                <Label Content="Название" FontSize="8" Margin="0 -5 0 0"></Label>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ContentControl.ContentTemplate>
-                </ContentControl>
-                <Button Command="{Binding SaveCChangesCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10 0 10" Content="Обновить категорию" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
-                <StackPanel Visibility="{Binding IsProductSelected}">
-                    <TextBlock Text="Товар:" Margin="5 20 5 5" FontStyle="Italic" FontSize="10" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
-                    <Button Height="15" Style="{DynamicResource DefaultButtonStyle}" Margin="0 -25 5 0" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                <StackPanel Visibility="{Binding IsCategorySelectedToEdit}">
+                    <TextBlock Text="Категория:" Margin="5" FontStyle="Italic" FontSize="10" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
+                    <Button Command="{Binding DeleteCategoryCommand}" Height="15" Style="{DynamicResource DefaultButtonStyle}" Margin="0 -25 5 0" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                         <TextBlock Text="Удалить" TextDecorations="Underline" Foreground="#BE1717" FontSize="10"></TextBlock>
                     </Button>
-                    <ContentControl Content="{Binding ProductsList}" Margin="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
+                    <ContentControl Content="{Binding SelectedItem}" Margin="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
+                        <ContentControl.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBox FontSize="10" Margin="1 0 0 0" Width="200" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>
+                                    <Label Content="Название" FontSize="8" Margin="0 -5 0 0"></Label>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ContentControl.ContentTemplate>
+                    </ContentControl>
+                    <Button Command="{Binding SaveCChangesCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="30" Margin="25 10 0 10" Content="Обновить категорию" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
+                </StackPanel>
+                <StackPanel Visibility="{Binding IsProductSelected}">
+                    <TextBlock Text="Товар:" Margin="5 20 5 5" FontStyle="Italic" FontSize="10" TextWrapping="Wrap" TextAlignment="Left"></TextBlock>
+                    <Button Command="{Binding DeleteProductCommand}" Height="15" Style="{DynamicResource DefaultButtonStyle}" Margin="0 -25 5 0" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                        <TextBlock Text="Удалить" TextDecorations="Underline" Foreground="#BE1717" FontSize="10"></TextBlock>
+                    </Button>
+                    <ContentControl Content="{Binding SelectedProductItem}" Margin="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
                         <ContentControl.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="0 0 0 20">
