@@ -18,10 +18,11 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
 
         private ObservableCollection<CATEGORIES> categoriesList;
         private ObservableCollection<PRODUCTS> productsList = null;
-        private CATEGORIES selectedItem;
+        private CATEGORIES selectedItem = null;
         private ObservableCollection<PRODUCTS_DETAIL> productsDetail = null;
-        private PRODUCTS selectedProductItem;
+        private PRODUCTS selectedProductItem = null;
         private Visibility isCategoryEmpty = Visibility.Collapsed;
+        private Visibility isProductSelected = Visibility.Collapsed;
 
         public ObservableCollection<CATEGORIES> CategoriesList
         {
@@ -40,6 +41,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             {
                 Set(ref selectedItem, value);
                 ShowProducts();
+                IsProductSelected = Visibility.Collapsed;
             }
         }
         public ObservableCollection<PRODUCTS_DETAIL> ProductsDetail
@@ -52,6 +54,11 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             get => isCategoryEmpty;
             set => Set(ref isCategoryEmpty, value);
         }
+        public Visibility IsProductSelected
+        {
+            get => isProductSelected;
+            set => Set(ref isProductSelected, value);
+        }
         public PRODUCTS SelectedProductItem
         {
             get => selectedProductItem;
@@ -59,12 +66,14 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             {
                 Set(ref selectedProductItem, value);
                 ShowDetail();
+                IsProductSelected = Visibility.Visible;
             }
         }
 
         private void ShowProducts()
         {
             ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(SelectedItem.CategoryId)));
+
             if (ProductsList.Count == 0)
                 IsCategoryEmpty = Visibility.Visible;
             else IsCategoryEmpty = Visibility.Collapsed;
@@ -82,7 +91,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             var element = ProductsList.FirstOrDefault(f => f.ProductId.Equals(SelectedProductItem.ProductId));
             var elementDetail = ProductsDetail;
 
-            if (elementCategory != null && element != null && elementDetail != null)
+            if (elementCategory != null && element != null && elementDetail.Count > 0)
             {
                 if (elementCategory.Name.Length <= 100 && elementCategory.Name != "")
                 {
@@ -127,14 +136,30 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             return flag;
         }
 
-        private bool CanSaveChangesCommandExecute(object p) => ValidationCheck();
         public ICommand SaveCChangesCommand { get; }
+        private bool CanSaveCChangesCommandExecute(object p)
+        {
+            bool flag = true;
+
+            var elementCategory = CategoriesList.FirstOrDefault(f => f.CategoryId.Equals(SelectedItem.CategoryId));
+
+            if (elementCategory != null)
+            {
+                if (elementCategory.Name.Length <= 100 && elementCategory.Name != "")
+                    flag = true;
+                else flag = false;
+            }
+            else flag = false;
+            return flag;
+
+        }
         private void OnSaveCChangesCommandExecuted(object p)
         {
             context.SaveChanges();
             MessageBox.Show("Данные успешно" + "\n" + "обновлены");
         }
         public ICommand SavePChangesCommand { get; }
+        private bool CanSavePChangesCommandExecute(object p) => ValidationCheck();
         private void OnSavePChangesCommandExecuted(object p)
         {
             context.SaveChanges();
@@ -207,7 +232,6 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             else flag = false;
             return flag;
         }
-            //context.PRODUCTS.FirstOrDefault(f => f.Name.Equals("Новый товар. Нажмите для редактирования")) == null;
         private void OnAddProductCommandExecuted(object p)
         {
             PRODUCTS element = new PRODUCTS(SelectedItem.CategoryId, "Новый товар. Нажмите для редактирования", "Описание для анонса длиной в 100 символов", 0, 0);
@@ -223,14 +247,47 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             ShowDetail();
         }
 
+        public ICommand DeleteCategoryCommand { get; }
+        private bool CanDeleteCategoryCommandExecute(object p) => SelectedItem != null;
+        private void OnDeleteCategoryCommandExecuted(object p)
+        {
+            var element = context.CATEGORIES.FirstOrDefault(f => f.CategoryId.Equals(SelectedItem.CategoryId));
+
+            if (element != null)
+            {
+                MessageBoxButton buttons = MessageBoxButton.YesNo;
+                if (element != null)
+                {
+                    var result = MessageBox.Show("Вы точно хотите удалить эту" + "\n" + "категорию? Будут удалены все" + "\n" + "товары, привязанные к ней", "Удаление категории", buttons, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        var products = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(SelectedItem.CategoryId)));
+                        foreach (var item in products)
+                        {
+                            var detail = (context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(item.ProductId)));
+                            context.PRODUCTS_DETAIL.Remove(detail); context.SaveChanges();
+                            context.PRODUCTS.Remove(item); context.SaveChanges();
+                        }
+                        context.CATEGORIES.Remove(element); context.SaveChanges();
+
+                    }
+                    else return;
+                }
+            }
+
+            CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
+            ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS);
+        }
+
         public AdminMainWindowViewModel()
         {
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
 
-            SaveCChangesCommand = new DelegateCommand(OnSaveCChangesCommandExecuted, CanSaveChangesCommandExecute);
-            SavePChangesCommand = new DelegateCommand(OnSavePChangesCommandExecuted, CanSaveChangesCommandExecute);
+            SaveCChangesCommand = new DelegateCommand(OnSaveCChangesCommandExecuted, CanSaveCChangesCommandExecute);
+            SavePChangesCommand = new DelegateCommand(OnSavePChangesCommandExecuted, CanSavePChangesCommandExecute);
             AddCategoryCommand = new DelegateCommand(OnAddCategoryCommandExecuted, CanAddCategoryCommandExecute);
             AddProductCommand = new DelegateCommand(OnAddProductCommandExecuted, CanAddProductCommandExecute);
+            DeleteCategoryCommand = new DelegateCommand(OnDeleteCategoryCommandExecuted, CanDeleteCategoryCommandExecute);
         }
     }
 }
