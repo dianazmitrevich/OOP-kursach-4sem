@@ -24,6 +24,8 @@ namespace GoodsSupply.ViewModels
         private double cartPrice;
         private double cartPriceNew;
         private double price;
+        private ORDERS order;
+        private PERSONAL_ACCOUNTS account;
         #endregion
 
         #region public variables
@@ -36,6 +38,16 @@ namespace GoodsSupply.ViewModels
         {
             get => orderedProductsName;
             set => Set(ref orderedProductsName, value);
+        }
+        public ORDERS Order
+        {
+            get => order;
+            set => Set(ref order, value);
+        }
+        public PERSONAL_ACCOUNTS Account
+        {
+            get => account;
+            set => Set(ref account, value);
         }
         public string CouponCodeToAdd
         {
@@ -56,10 +68,10 @@ namespace GoodsSupply.ViewModels
 
         private void EditCartPrice()
         {
-            if (context.ORDERED_PRODUCTS.Count() > 0)
+            if (OrderedProductsList.Count() > 0)
             {
                 price = 0;
-                for (int i = 0; i < context.ORDERED_PRODUCTS.Count(); i++)
+                for (int i = 0; i < OrderedProductsList.Count(); i++)
                 {
                     price += OrderedProductsList[i].OrderedProductPrice * OrderedProductsList[i].OrderedQuantity;
                 }
@@ -127,8 +139,12 @@ namespace GoodsSupply.ViewModels
             {
                 element.OrderedQuantity -= 1; context.SaveChanges();
 
+                var productDetail = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.ProductCode.Equals(productCode));
+                var product = context.PRODUCTS.FirstOrDefault(f => f.ProductId.Equals(productDetail.LinkToProductId));
+                product.Quantity += 1; context.SaveChanges();
+
                 EditCartPrice();
-                OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+                OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == Order.OrderId));
             }
         }
 
@@ -160,7 +176,7 @@ namespace GoodsSupply.ViewModels
                 element.OrderedQuantity += 1; context.SaveChanges();
 
                 EditCartPrice();
-                OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+                OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == Order.OrderId));
             }
         }
 
@@ -187,18 +203,25 @@ namespace GoodsSupply.ViewModels
                 var result = MessageBox.Show("Вы точно хотите удалить этот" + "\n" + "товар из корзины?", "Удаление товара", buttons, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)
                 {
+                    var productDetail = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.ProductCode.Equals(productCode));
+                    var product = context.PRODUCTS.FirstOrDefault(f => f.ProductId.Equals(productDetail.LinkToProductId));
+                    product.Quantity += element.OrderedQuantity; context.SaveChanges();
+
                     context.ORDERED_PRODUCTS.Remove(element); context.SaveChanges();
 
                     EditCartPrice();
-                    OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+                    OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == Order.OrderId));
                 }
                 else return;
             }
         }
 
-        public CartWindowViewModel()
+        public CartWindowViewModel(ORDERS order, PERSONAL_ACCOUNTS account)
         {
-            OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+            this.Order = order;
+            this.Account = account;
+
+            OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == Order.OrderId));
             SearchCouponsCommand = new DelegateCommand(OnSearchCouponsCommandExecuted);
             ApplyCouponCommand = new DelegateCommand(OnApplyCouponCommandExecuted, CanApplyCouponCommandExecute);
             RemoveQuantityCommand = new DelegateCommand(OnRemoveQuantityCommandExecuted, CanRemoveQuantityCommandExecute);

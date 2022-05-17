@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:GoodsSupply"
              xmlns:vm="clr-namespace:GoodsSupply.ViewModels"
-             StartupUri="\Views\Admin views\AdminMainWindow.xaml">
+             StartupUri="\Views\AuthorizationWindow.xaml">
     <Application.Resources>
          
     </Application.Resources>

@@ -11,10 +11,8 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
         Icon="/Assets/whiteRectangle.png"
-        FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans">
-    <Window.DataContext>
-        <vm:CartWindowViewModel></vm:CartWindowViewModel>
-    </Window.DataContext>
+        FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans"
+        d:DataContext="{d:DesignInstance Type=vm:CartWindowViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

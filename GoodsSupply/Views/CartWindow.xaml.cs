@@ -23,5 +23,10 @@ namespace GoodsSupply.Views
         {
             InitializeComponent();
         }
+        public CartWindow(object dataContextViewModel)
+        {
+            DataContext = dataContextViewModel;
+            InitializeComponent();
+        }
     }
 }

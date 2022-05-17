@@ -20,6 +20,7 @@ namespace GoodsSupply.ViewModels
         private readonly GoodsSupplyContext context = new GoodsSupplyContext();
 
         private PERSONAL_ACCOUNTS account;
+        private ORDERS order;
         private ObservableCollection<CATEGORIES> categoriesList;
         private ObservableCollection<PRODUCTS> productsList = null;
         private ObservableCollection<PRODUCTS_DETAIL> productsDetail = null;
@@ -52,6 +53,11 @@ namespace GoodsSupply.ViewModels
         {
             get => account;
             set => Set(ref account, value);
+        }
+        public ORDERS Order
+        {
+            get => order;
+            set => Set(ref order, value);
         }
         public ObservableCollection<CATEGORIES> CategoriesList
         {
@@ -233,7 +239,7 @@ namespace GoodsSupply.ViewModels
             if (CartItems.Count > 0)
             {
                 price = 0;
-                for (int i = 0; i < context.ORDERED_PRODUCTS.Count(); i++)
+                for (int i = 0; i < CartItems.Count(); i++)
                 {
                     price += CartItems[i].OrderedProductPrice * CartItems[i].OrderedQuantity;
                 }
@@ -259,24 +265,25 @@ namespace GoodsSupply.ViewModels
         private bool CanAddToCartCommandExecute(object p) => SelectedQuantity > 0;
         private void OnAddToCartCommandExecuted(object p)
         {
-            int elementCount = context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3 && context.PRODUCTS_DETAIL.FirstOrDefault(t => t.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode == f.OrderedProductId).Count();
-            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.LinkToOrderId == 3 && context.PRODUCTS_DETAIL.FirstOrDefault(t => t.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode == f.OrderedProductId);
+            var orderId = Order.OrderId;
+            int elementCount = context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == orderId && context.PRODUCTS_DETAIL.FirstOrDefault(t => t.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode == f.OrderedProductId).Count();
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.LinkToOrderId == orderId && context.PRODUCTS_DETAIL.FirstOrDefault(t => t.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode == f.OrderedProductId);
             int previousQuantity = 0;
             if (elementCount > 0)
             {
                 previousQuantity = element.OrderedQuantity;
                 context.ORDERED_PRODUCTS.Remove(element);
             }
-            ORDERED_PRODUCTS newelement = new ORDERED_PRODUCTS(context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode, SelectedQuantity + previousQuantity, 3, (float)SelectedProductItem.Price);
+            ORDERED_PRODUCTS newelement = new ORDERED_PRODUCTS(context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(this.SelectedProductItem.ProductId)).ProductCode, SelectedQuantity + previousQuantity, orderId, (float)SelectedProductItem.Price);
             context.ORDERED_PRODUCTS.Add(newelement); context.SaveChanges();
             context.PRODUCTS.FirstOrDefault(f => f.ProductId.Equals(SelectedProductItem.ProductId)).Quantity -= SelectedQuantity; context.SaveChanges();
 
-            if (context.ORDERED_PRODUCTS.Count() > 0)
+            if (context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId.Equals(orderId)).Count() > 0)
                 IsCartEmpty = Visibility.Collapsed;
             else
                 IsCartEmpty = Visibility.Visible;
 
-            CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+            CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == orderId));
 
             ShowCartPrice();
             ShowProductsDetail();
@@ -330,13 +337,14 @@ namespace GoodsSupply.ViewModels
         private bool CanOpenCartCommandExecute(object p) => context.ORDERED_PRODUCTS.Count() > 0;
         private void OnOpenCartCommandExecuted(object p)
         {
-            var cartWindow = new CartWindow();
+            var model = new CartWindowViewModel(Order, Account);
+            var cartWindow = new CartWindow(model);
             cartWindow.ShowDialog();
 
             if (!cartWindow.IsActive)
             {
-                RefreshAll();
-                CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+                RefreshAll(); var orderId = Order.OrderId;
+                CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == orderId));
                 ShowCartPrice();
             }
         }
@@ -353,16 +361,13 @@ namespace GoodsSupply.ViewModels
         }
 
 
-        public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter)
+        public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter, ORDERS order)
         {
             this.Account = accountParameter;
-            CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
-        }
+            this.Order = order;
 
-        public MainWindowViewModel()
-        {
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
-            CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == 3));
+            CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == Order.OrderId));
 
             ShowCartPrice();
 
@@ -376,5 +381,7 @@ namespace GoodsSupply.ViewModels
             OpenCartCommand = new DelegateCommand(OnOpenCartCommandExecuted, CanOpenCartCommandExecute);
             AddReviewCommand = new DelegateCommand(OnAddReviewCommandExecuted);
         }
+
+        public MainWindowViewModel() { }
     }
 }

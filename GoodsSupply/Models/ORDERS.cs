@@ -34,5 +34,10 @@ namespace GoodsSupply.Models
         public virtual PERSONAL_ACCOUNTS PERSONAL_ACCOUNTS { get; set; }
 
         public virtual ICollection<ORDERED_PRODUCTS> ORDERED_PRODUCTS { get; set; }
+
+        public ORDERS(int account)
+        {
+            this.LinkAccountId = account;
+        }
     }
 }

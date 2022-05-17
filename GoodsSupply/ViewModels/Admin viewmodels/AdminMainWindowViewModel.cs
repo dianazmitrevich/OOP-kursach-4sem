@@ -14,6 +14,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
 {
     class AdminMainWindowViewModel : BaseViewModel
     {
+        #region private variables
         private readonly GoodsSupplyContext context = new GoodsSupplyContext();
 
         private ObservableCollection<CATEGORIES> categoriesList;
@@ -25,7 +26,9 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
         private Visibility isProductSelected = Visibility.Collapsed;
         private Visibility isCategorySelected = Visibility.Visible;
         private Visibility isCategorySelectedToEdit = Visibility.Collapsed;
+        #endregion
 
+        #region public variables
         public ObservableCollection<CATEGORIES> CategoriesList
         {
             get => categoriesList;
@@ -82,6 +85,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
                 IsProductSelected = Visibility.Visible;
             }
         }
+        #endregion
 
         private void ShowProducts()
         {
@@ -288,25 +292,22 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
         {
             var element = context.CATEGORIES.FirstOrDefault(f => f.CategoryId.Equals(SelectedItem.CategoryId));
 
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
             if (element != null)
             {
-                MessageBoxButton buttons = MessageBoxButton.YesNo;
-                if (element != null)
+                var result = MessageBox.Show("Вы точно хотите удалить эту" + "\n" + "категорию? Будут удалены все" + "\n" + "товары, привязанные к ней", "Удаление категории", buttons, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
                 {
-                    var result = MessageBox.Show("Вы точно хотите удалить эту" + "\n" + "категорию? Будут удалены все" + "\n" + "товары, привязанные к ней", "Удаление категории", buttons, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
+                    var products = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(SelectedItem.CategoryId)));
+                    foreach (var item in products)
                     {
-                        var products = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId.Equals(SelectedItem.CategoryId)));
-                        foreach (var item in products)
-                        {
-                            var detail = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(item.ProductId));
-                            context.PRODUCTS_DETAIL.Remove(detail);
-                            context.PRODUCTS.Remove(item);
-                        }
-                        context.CATEGORIES.Remove(element); context.SaveChanges();
+                        var detail = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(item.ProductId));
+                        context.PRODUCTS_DETAIL.Remove(detail);
+                        context.PRODUCTS.Remove(item);
                     }
-                    else return;
+                    context.CATEGORIES.Remove(element); context.SaveChanges();
                 }
+                else return;
             }
 
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
