@@ -90,7 +90,7 @@
                     <TextBlock Text="Оплата картой" Padding="10 1 0 0"></TextBlock>
                 </RadioButton>
             </StackPanel>
-            <CheckBox FontSize="10">
+            <CheckBox FontSize="10" IsChecked="{Binding IsSendEmail}">
                 <TextBlock Text="Прислать чек на почту" Padding="10 1 0 0"></TextBlock>
             </CheckBox>
         </StackPanel>

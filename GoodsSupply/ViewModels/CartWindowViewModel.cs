@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -31,6 +34,7 @@ namespace GoodsSupply.ViewModels
         private string paymentMethod;
         private bool isByCash = false;
         private bool isByCard = false;
+        private bool isSendEmail = false;
         private string adress;
         #endregion
 
@@ -54,6 +58,11 @@ namespace GoodsSupply.ViewModels
         {
             get => adress;
             set => Set(ref adress, value);
+        }
+        public bool IsSendEmail
+        {
+            get => isSendEmail;
+            set => Set(ref isSendEmail, value);
         }
         public bool IsByCash
         {
@@ -137,10 +146,30 @@ namespace GoodsSupply.ViewModels
         private void SetPaymentMethod()
         {
             if (IsByCard == true && IsByCash == false)
-                PaymentMethod = "Картой";
+                PaymentMethod = "картой";
             else if (IsByCash == true && IsByCard == false)
-                PaymentMethod = "Наличными";
+                PaymentMethod = "наличными";
             else return;
+        }
+
+        private static bool CanPing()
+        {
+            const int timeout = 1000;
+            const string host = "google.com";
+
+            var ping = new Ping();
+            var buffer = new byte[32];
+            var pingOptions = new PingOptions();
+
+            try
+            {
+                var reply = ping.Send(host, timeout, buffer, pingOptions);
+                return (reply != null && reply.Status == IPStatus.Success);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public ICommand SearchCouponsCommand { get; }
@@ -284,6 +313,7 @@ namespace GoodsSupply.ViewModels
             order.FinalOrderPrice = CartPriceNew;
             if (CouponCodeToAdd != null)
                 order.Coupon = CouponCodeToAdd;
+            order.Status = "Заказ оформлен";
 
             context.SaveChanges();
 
@@ -292,9 +322,46 @@ namespace GoodsSupply.ViewModels
             var myOrders = new MyOrdersWindow();
             myOrders.DataContext = model;
 
-            OrderedProductsList.Clear();
+            if (IsSendEmail)
+            {
+                if (CanPing())
+                {
+                    try
+                    {
+                        MailAddress from = new MailAddress("fsdvjnwrjnjsldfe@gmail.com", "Администратор приложения");
+                        MailAddress to = new MailAddress($"{Account.Email}");
+                        MailMessage m = new MailMessage(from, to);
+                        m.Subject = "Доставка из IKEA";
+                        m.Body = $"<h2>Добрый день, {Account.Name}!</h2>" +
+                            $"<p>На сумму {order.FinalOrderPrice}₽ ({order.OrderPrice}₽ без купона) была заказана доставка по адресу {order.Adress}, оплата {order.PaymentMethod}.</p><p>";
 
-            MessageBox.Show("Заказ успешно оформлен");
+                        foreach (var item in OrderedProductsList)
+                        {
+                            var detail = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.ProductCode.Equals(item.OrderedProductId));
+                            var product = context.PRODUCTS.FirstOrDefault(f => f.ProductId == detail.LinkToProductId);
+                            m.Body += $"{product.Name}. {product.Description} - {item.OrderedQuantity} шт.<br>";
+                        }
+                        m.Body += $"</p><p>Текущий статус заказа - <i>{order.Status}</i></p>";
+
+                        m.IsBodyHtml = true;
+                        SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+                        smtp.Credentials = new NetworkCredential("fsdvjnwrjnjsldfe@gmail.com", "Kursach_OOP2022");
+                        smtp.EnableSsl = true;
+                        smtp.Send(m);
+                        Console.Read();
+
+                        MessageBox.Show("Заказ успешно" + "\n" + "оформлен. Чек отправлен" + "\n" + "на вашу почту.");
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Не удалось отправить" + "\n" + "чек на почту :(" + "\n\n" + "Свой заказ можете" + "\n" + "просмотреть в 'Мои заказы'");
+                    }
+                }
+            }
+            else
+                MessageBox.Show("Заказ успешно+" + "\n" + "оформлен");
+
+            OrderedProductsList.Clear();
             myOrders.Show();
             window.Close();
         }
