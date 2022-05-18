@@ -396,10 +396,19 @@ namespace GoodsSupply.ViewModels
         public ICommand OpenCouponsCommand { get; }
         private void OnOpenCouponsCommandExecuted(object p)
         {
-            var window = Application.Current.Windows[0];
             var couponsWindow = new CouponsWindow();
 
             couponsWindow.ShowDialog();
+        }
+
+        public ICommand OpenReviewsCommand { get; }
+        private void OnOpenReviewsCommandExecuted(object p)
+        {
+            var model = new MyReviewsWindowViewModel(Account);
+            var reviewsWindow = new MyReviewsWindow();
+            reviewsWindow.DataContext = model;
+
+            reviewsWindow.ShowDialog();
         }
 
         public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter, ORDERS order)
@@ -425,6 +434,7 @@ namespace GoodsSupply.ViewModels
             AddReviewCommand = new DelegateCommand(OnAddReviewCommandExecuted);
             OpenMyOrdersCommand = new DelegateCommand(OnOpenMyOrdersCommandExecuted);
             OpenCouponsCommand = new DelegateCommand(OnOpenCouponsCommandExecuted);
+            OpenReviewsCommand = new DelegateCommand(OnOpenReviewsCommandExecuted);
         }
 
         public MainWindowViewModel() { }
