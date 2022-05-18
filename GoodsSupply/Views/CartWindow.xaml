@@ -34,7 +34,11 @@
             <ColumnDefinition Width="auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Margin="20 0 20 10" Grid.ColumnSpan="4" Content="КОРЗИНА И ОФОРМЛЕНИЕ ЗАКАЗА" FontWeight="SemiBold" FontSize="16" Padding="0"></Label>
-        <ScrollViewer Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Center" Margin="0 20" Visibility="{Binding IsCartEmpty}">
+            <Image Source="/Assets/questionIcon.png" Width="35"></Image>
+            <TextBlock Text="Здесь пока пусто! Добавьте какой-нибудь товар к себе в корзину" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
+        </StackPanel>
+        <ScrollViewer Visibility="{Binding IsCartNotEmpty}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
             <ListView Name="CartItems" ItemsSource="{Binding OrderedProductsList, UpdateSourceTrigger=PropertyChanged}" Margin="9 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemProductStyle}" Height="140" ScrollViewer.VerticalScrollBarVisibility="Hidden" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -79,10 +83,10 @@
         </Button>
         <StackPanel Grid.Row="3" Margin="20">
             <StackPanel Margin="0 0 0 15">
-                <RadioButton FontSize="10" Margin="0 0 0 5">
+                <RadioButton FontSize="10" Margin="0 0 0 5" IsChecked="{Binding IsByCash}">
                     <TextBlock Text="Оплата наличными" Padding="10 0 0 0"></TextBlock>
                 </RadioButton>
-                <RadioButton FontSize="10">
+                <RadioButton FontSize="10" IsChecked="{Binding IsByCard}">
                     <TextBlock Text="Оплата картой" Padding="10 1 0 0"></TextBlock>
                 </RadioButton>
             </StackPanel>
@@ -90,9 +94,9 @@
                 <TextBlock Text="Прислать чек на почту" Padding="10 1 0 0"></TextBlock>
             </CheckBox>
         </StackPanel>
-        <TextBox Grid.Row="3" FontSize="10" Grid.Column="1" Grid.ColumnSpan="2" Padding="10 7" Width="288" Height="27" HorizontalAlignment="Left" Margin="20" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF" VerticalAlignment="Top"></TextBox>
+        <TextBox Grid.Row="3" Text="{Binding Adress, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Grid.Column="1" Grid.ColumnSpan="2" Padding="10 7" Width="288" Height="27" HorizontalAlignment="Left" Margin="20" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF" VerticalAlignment="Top"></TextBox>
         <Image Grid.Row="3" ToolTip="Поле обязательное к заполнению" Grid.Column="2" Source="/Assets/requiredField.png" Width="13" Margin="0 27 30 0" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
-        <Button Grid.Row="3" Grid.Column="3" Content="Оформить" Margin="0 20 20 0" Background="#fff" Style="{DynamicResource DefaultButtonStyle}" BorderBrush="#0058A3" FontSize="10" Width="90" Height="26" HorizontalAlignment="Right" VerticalAlignment="Top"></Button>
+        <Button Command="{Binding AddOrderCommand}" Grid.Row="3" Grid.Column="3" Content="Оформить" Margin="0 20 20 0" Background="#fff" Style="{DynamicResource DefaultButtonStyle}" BorderBrush="#0058A3" FontSize="10" Width="90" Height="26" HorizontalAlignment="Right" VerticalAlignment="Top"></Button>
         <StackPanel Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Orientation="Horizontal">
             <StackPanel Margin="36 0 0 0">
                 <StackPanel Margin="0 20 0 0">

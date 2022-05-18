@@ -28,8 +28,11 @@ namespace GoodsSupply.Models
         [StringLength(100)]
         public string PaymentMethod { get; set; }
 
-        [StringLength(10)]
+        [StringLength(100)]
         public string Adress { get; set; }
+
+        [StringLength(100)]
+        public string Status { get; set; }
 
         public virtual PERSONAL_ACCOUNTS PERSONAL_ACCOUNTS { get; set; }
 

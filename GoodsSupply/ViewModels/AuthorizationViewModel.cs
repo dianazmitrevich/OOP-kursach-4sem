@@ -125,26 +125,29 @@ namespace GoodsSupply.ViewModels
                     var userLinkAccountId = user.LinkAccountId;
                     var account = context.PERSONAL_ACCOUNTS.FirstOrDefault(f => f.AccountId == userLinkAccountId).AccountId;
 
-                    var foundOrder = context.ORDERS.FirstOrDefault(f => f.LinkAccountId.Equals(account));
+                    var foundOrder = context.ORDERS.Where(f => f.LinkAccountId.Equals(account));
                     if (foundOrder != null)
                     {
-                        if (foundOrder.Adress == null)
+                        foreach (var item in foundOrder)
                         {
-                            var orderedProducts = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId.Equals(foundOrder.OrderId)));
-
-                            foreach (var item in orderedProducts)
+                            if (item.Adress == null)
                             {
-                                if (item != null)
+                                var orderedProducts = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId.Equals(item.OrderId)));
+
+                                foreach (var element in orderedProducts)
                                 {
-                                    var productDetail = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.ProductCode.Equals(item.OrderedProductId));
-                                    var product = context.PRODUCTS.FirstOrDefault(f => f.ProductId.Equals(productDetail.LinkToProductId));
+                                    if (element != null)
+                                    {
+                                        var productDetail = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.ProductCode.Equals(element.OrderedProductId));
+                                        var product = context.PRODUCTS.FirstOrDefault(f => f.ProductId.Equals(productDetail.LinkToProductId));
 
-                                    product.Quantity += item.OrderedQuantity;
+                                        product.Quantity += element.OrderedQuantity;
 
-                                    context.ORDERED_PRODUCTS.Remove(item);
+                                        context.ORDERED_PRODUCTS.Remove(element);
+                                    }
                                 }
+                                context.ORDERS.Remove(item);
                             }
-                            context.ORDERS.Remove(foundOrder);
                         }
                     }
 

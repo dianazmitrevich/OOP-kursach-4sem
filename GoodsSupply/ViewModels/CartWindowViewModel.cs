@@ -26,6 +26,12 @@ namespace GoodsSupply.ViewModels
         private double price;
         private ORDERS order;
         private PERSONAL_ACCOUNTS account;
+        private Visibility isCartEmpty = Visibility.Collapsed;
+        private Visibility isCartNotEmpty = Visibility.Visible;
+        private string paymentMethod;
+        private bool isByCash = false;
+        private bool isByCard = false;
+        private string adress;
         #endregion
 
         #region public variables
@@ -38,6 +44,44 @@ namespace GoodsSupply.ViewModels
         {
             get => orderedProductsName;
             set => Set(ref orderedProductsName, value);
+        }
+        public string PaymentMethod
+        {
+            get => paymentMethod;
+            set => Set(ref paymentMethod, value);
+        }
+        public string Adress
+        {
+            get => adress;
+            set => Set(ref adress, value);
+        }
+        public bool IsByCash
+        {
+            get => isByCash;
+            set
+            {
+                Set(ref isByCash, value);
+                SetPaymentMethod();
+            }
+        }
+        public bool IsByCard
+        {
+            get => isByCard;
+            set
+            {
+                Set(ref isByCard, value);
+                SetPaymentMethod();
+            }
+        }
+        public Visibility IsCartEmpty
+        {
+            get => isCartEmpty;
+            set => Set(ref isCartEmpty, value);
+        }
+        public Visibility IsCartNotEmpty
+        {
+            get => isCartNotEmpty;
+            set => Set(ref isCartNotEmpty, value);
         }
         public ORDERS Order
         {
@@ -76,14 +120,27 @@ namespace GoodsSupply.ViewModels
                     price += OrderedProductsList[i].OrderedProductPrice * OrderedProductsList[i].OrderedQuantity;
                 }
 
+                IsCartNotEmpty = Visibility.Visible;
+                IsCartEmpty = Visibility.Collapsed;
                 CartPrice = price;
                 CartPriceNew = CartPrice;
             }
             else
             {
+                IsCartNotEmpty = Visibility.Collapsed;
+                IsCartEmpty = Visibility.Visible;
                 CartPrice = 0;
                 CartPriceNew = 0;
             }
+        }
+
+        private void SetPaymentMethod()
+        {
+            if (IsByCard == true && IsByCash == false)
+                PaymentMethod = "Картой";
+            else if (IsByCash == true && IsByCard == false)
+                PaymentMethod = "Наличными";
+            else return;
         }
 
         public ICommand SearchCouponsCommand { get; }
@@ -123,7 +180,7 @@ namespace GoodsSupply.ViewModels
         {
             bool flag = true;
             int productCode = Convert.ToInt32(p);
-            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode) && f.LinkToOrderId == Order.OrderId);
 
             if (element != null && element.OrderedQuantity > 1)
                 flag = true;
@@ -133,7 +190,7 @@ namespace GoodsSupply.ViewModels
         private void OnRemoveQuantityCommandExecuted(object p)
         {
             int productCode = Convert.ToInt32(p);
-            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode) && f.LinkToOrderId == Order.OrderId);
 
             if (element != null)
             {
@@ -153,7 +210,7 @@ namespace GoodsSupply.ViewModels
         {
             bool flag = true;
             int productCode = Convert.ToInt32(p);
-            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode) && f.LinkToOrderId == Order.OrderId);
 
             if (element != null)
             {
@@ -169,7 +226,7 @@ namespace GoodsSupply.ViewModels
         private void OnAddQuantityCommandExecuted(object p)
         {
             int productCode = Convert.ToInt32(p);
-            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode));
+            var element = context.ORDERED_PRODUCTS.FirstOrDefault(f => f.OrderedProductId.Equals(productCode) && f.LinkToOrderId == Order.OrderId);
 
             if (element != null)
             {
@@ -209,11 +266,36 @@ namespace GoodsSupply.ViewModels
 
                     context.ORDERED_PRODUCTS.Remove(element); context.SaveChanges();
 
-                    EditCartPrice();
                     OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == Order.OrderId));
+                    EditCartPrice();
                 }
                 else return;
             }
+        }
+
+        public ICommand AddOrderCommand { get; }
+        private bool CanAddOrderCommandExecute(object p) => Adress != null && IsByCash || IsByCard && OrderedProductsList.Count() > 0;
+        private void OnAddOrderCommandExecuted(object p)
+        {
+            var order = context.ORDERS.FirstOrDefault(f => f.OrderId == Order.OrderId);
+            order.Adress = Adress;
+            order.PaymentMethod = PaymentMethod;
+            order.OrderPrice = CartPrice;
+            order.FinalOrderPrice = CartPriceNew;
+            if (CouponCodeToAdd != null)
+                order.Coupon = CouponCodeToAdd;
+
+            context.SaveChanges();
+
+            var window = Application.Current.Windows[1];
+            var model = new MyOrdersWindowViewModel(Account);
+            var myOrders = new MyOrdersWindow(model);
+
+            OrderedProductsList.Clear();
+
+            MessageBox.Show("Заказ успешно оформлен");
+            myOrders.Show();
+            window.Close();
         }
 
         public CartWindowViewModel(ORDERS order, PERSONAL_ACCOUNTS account)
@@ -227,6 +309,7 @@ namespace GoodsSupply.ViewModels
             RemoveQuantityCommand = new DelegateCommand(OnRemoveQuantityCommandExecuted, CanRemoveQuantityCommandExecute);
             AddQuantityCommand = new DelegateCommand(OnAddQuantityCommandExecuted, CanAddQuantityCommandExecute);
             DeleteOrderedProductCommand = new DelegateCommand(OnDeleteOrderedProductCommandExecuted, CanDeleteOrderedProductCommandExecute);
+            AddOrderCommand = new DelegateCommand(OnAddOrderCommandExecuted, CanAddOrderCommandExecute);
 
             EditCartPrice();
         }

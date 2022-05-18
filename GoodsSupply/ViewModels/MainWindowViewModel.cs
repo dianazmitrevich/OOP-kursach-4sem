@@ -334,7 +334,14 @@ namespace GoodsSupply.ViewModels
         private void OnSortAlphabetCommandExecuted(object p) => ProductsList = new ObservableCollection<PRODUCTS>(ProductsList.OrderBy(f => f.Name));
 
         public ICommand OpenCartCommand { get; }
-        private bool CanOpenCartCommandExecute(object p) => context.ORDERED_PRODUCTS.Count() > 0;
+        private bool CanOpenCartCommandExecute(object p)
+        {
+            bool flag = true;
+
+            flag = context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == Order.OrderId).Count() > 0 && CartItems.Count() > 0;
+
+            return flag;
+        }
         private void OnOpenCartCommandExecuted(object p)
         {
             var model = new CartWindowViewModel(Order, Account);
@@ -344,7 +351,16 @@ namespace GoodsSupply.ViewModels
             if (!cartWindow.IsActive)
             {
                 RefreshAll(); var orderId = Order.OrderId;
-                CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == orderId));
+
+                var IsOrder = context.ORDERS.FirstOrDefault(f => f.OrderId == orderId).Adress;
+                if (IsOrder != null)
+                {
+                    CartItems.Clear();
+                    ORDERS order = new ORDERS(Account.AccountId); context.ORDERS.Add(order); context.SaveChanges();
+                }
+                else
+                    CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == orderId));
+
                 ShowCartPrice();
             }
         }

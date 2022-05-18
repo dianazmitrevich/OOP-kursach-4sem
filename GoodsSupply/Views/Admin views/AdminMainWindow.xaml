@@ -39,6 +39,11 @@
         <Rectangle Grid.Row="0" Grid.ColumnSpan="5" Fill="#FBD914"/>
         <Rectangle Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Fill="#616161" Margin="0,0,1,0"/>
         <Image Source="/Assets/ikeaLogo.jpg" Width="80" Grid.Column="4" HorizontalAlignment="Right" Margin="0,10,15,10"></Image>
+        <StackPanel Margin="40 0 0 0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Rectangle Height="33" Width="193" Fill="#fff"></Rectangle>
+            <Rectangle RadiusX="100" RadiusY="100" Fill="#E8C600" Height="15" Width="15" Margin="10 -30 0 0" HorizontalAlignment="Left"></Rectangle>
+            <Label Content="admin" FontSize="12" Margin="30 -30 0 0"></Label>
+        </StackPanel>
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="40,20,41,0">
             <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="/Assets/catalogAButton.jpg"></Image>

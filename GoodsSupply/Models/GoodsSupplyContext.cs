@@ -59,6 +59,10 @@ namespace GoodsSupply.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<ORDERS>()
+                .Property(e => e.Status)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<ORDERS>()
                 .HasMany(e => e.ORDERED_PRODUCTS)
                 .WithRequired(e => e.ORDERS)
                 .HasForeignKey(e => e.LinkToOrderId)
