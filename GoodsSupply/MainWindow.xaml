@@ -53,7 +53,7 @@
             <Button Command="{Binding OpenReviewsCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="Assets/reviewsButton.jpg"></Image>
             </Button>
-            <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent" Margin="0 20">
+            <Button Command="{Binding LogOutCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent" Margin="0 20">
                 <Image Source="Assets/logOutButton.jpg"></Image>
             </Button>
         </StackPanel>

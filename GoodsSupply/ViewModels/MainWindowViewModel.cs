@@ -411,6 +411,25 @@ namespace GoodsSupply.ViewModels
             reviewsWindow.ShowDialog();
         }
 
+        public ICommand LogOutCommand { get; }
+        private void OnLogOutCommandExecuted(object p)
+        {
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+
+            var result = MessageBox.Show("Вы точно хотите выйти из" + "\n" + "своего аккаунта?", "Выход из приложения", buttons, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                var window = Application.Current.Windows[0];
+                var authorizationWindow = new AuthorizationWindow();
+
+                window.Close();
+                authorizationWindow.Show();
+            }
+            else return;
+        }
+
+
+
         public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter, ORDERS order)
         {
             this.Account = accountParameter;
@@ -435,6 +454,7 @@ namespace GoodsSupply.ViewModels
             OpenMyOrdersCommand = new DelegateCommand(OnOpenMyOrdersCommandExecuted);
             OpenCouponsCommand = new DelegateCommand(OnOpenCouponsCommandExecuted);
             OpenReviewsCommand = new DelegateCommand(OnOpenReviewsCommandExecuted);
+            LogOutCommand = new DelegateCommand(OnLogOutCommandExecuted);
         }
 
         public MainWindowViewModel() { }
