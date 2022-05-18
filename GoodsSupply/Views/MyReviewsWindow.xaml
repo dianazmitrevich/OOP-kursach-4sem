@@ -35,7 +35,7 @@
         <Label Grid.Row="0" Grid.Column="0" Margin="20 0 20 10" Grid.ColumnSpan="4" Content="МОИ ОТЗЫВЫ И ВОПРОСЫ" FontWeight="SemiBold" FontSize="16" Padding="0"></Label>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Center" Margin="0 20" Visibility="{Binding IsReviewsEmpty}">
             <Image Source="/Assets/questionIcon.png" Width="35"></Image>
-            <TextBlock Text="Здесь пока пусто! Вы можете оформить заказ на детальной странице продукта" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
+            <TextBlock Text="Здесь пока пусто! Вы можете добавить отзыв на детальной странице продукта" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
         </StackPanel>
         <TextBlock Grid.Row="1" Grid.ColumnSpan="4" Padding="20 0 20 10" Text="* ответы на заданные вопросы рассматриваются в течение 1-2 рабочих дней" FontSize="10" FontStyle="Italic" TextWrapping="Wrap"></TextBlock>
         <ScrollViewer Visibility="{Binding IsReviewsNotEmpty}" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">

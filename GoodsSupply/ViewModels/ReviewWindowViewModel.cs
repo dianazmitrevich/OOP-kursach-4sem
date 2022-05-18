@@ -105,7 +105,7 @@ namespace GoodsSupply.ViewModels
             {
                 var window = Application.Current.Windows[1];
                 var login = context.USERS.FirstOrDefault(f => f.LinkAccountId == Account.AccountId).Login;
-                REVIEWS element = new REVIEWS(product.ProductId, login, ReviewText);
+                REVIEWS element = new REVIEWS(product.ProductId, login, ReviewText, "Пока еще нет ответа");
                 context.REVIEWS.Add(element); context.SaveChanges();
                 MessageBox.Show("Отзыв добавлен!");
                 window.Close();
