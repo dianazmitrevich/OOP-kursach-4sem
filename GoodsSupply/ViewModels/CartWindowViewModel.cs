@@ -274,7 +274,7 @@ namespace GoodsSupply.ViewModels
         }
 
         public ICommand AddOrderCommand { get; }
-        private bool CanAddOrderCommandExecute(object p) => Adress != null && IsByCash || IsByCard && OrderedProductsList.Count() > 0;
+        private bool CanAddOrderCommandExecute(object p) => Adress != null && (IsByCash || IsByCard) && OrderedProductsList.Count() > 0;
         private void OnAddOrderCommandExecuted(object p)
         {
             var order = context.ORDERS.FirstOrDefault(f => f.OrderId == Order.OrderId);
