@@ -289,7 +289,8 @@ namespace GoodsSupply.ViewModels
 
             var window = Application.Current.Windows[1];
             var model = new MyOrdersWindowViewModel(Account);
-            var myOrders = new MyOrdersWindow(model);
+            var myOrders = new MyOrdersWindow();
+            myOrders.DataContext = model;
 
             OrderedProductsList.Clear();
 

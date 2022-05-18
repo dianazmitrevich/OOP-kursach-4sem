@@ -12,10 +12,8 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
         Icon="/Assets/whiteRectangle.png"
-        FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans">
-    <Window.DataContext>
-        <vm:ReviewWindowViewModel></vm:ReviewWindowViewModel>
-    </Window.DataContext>
+        FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans"
+        d:DataContext="{d:DesignInstance Type=vm:ReviewWindowViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

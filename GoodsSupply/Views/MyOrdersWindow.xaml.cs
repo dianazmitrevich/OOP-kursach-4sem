@@ -23,10 +23,5 @@ namespace GoodsSupply.Views
         {
             InitializeComponent();
         }
-        public MyOrdersWindow(object dataContextViewModel)
-        {
-            DataContext = dataContextViewModel;
-            InitializeComponent();
-        }
     }
 }

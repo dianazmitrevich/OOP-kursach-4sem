@@ -33,21 +33,21 @@
             <ColumnDefinition Width="220"></ColumnDefinition>
             <ColumnDefinition Width="210"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Rectangle Width="950" Height="59" Grid.Row="0" Grid.ColumnSpan="5" Fill="#FBD914"></Rectangle>
+        <Rectangle Width="960" Height="59" Grid.Row="0" Grid.ColumnSpan="5" Fill="#FBD914"></Rectangle>
         <Rectangle Grid.Row="1" Grid.Column="4" Grid.RowSpan="2" Width="210" Fill="#0058A3"/>
         <Image Source="Assets/ikeaLogo.jpg" Width="80" Grid.Column="4" HorizontalAlignment="Right" Margin="12 0"></Image>
-        <Button Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="40 0 0 0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center">
+        <Button Command="{Binding OpenMyOrdersCommand}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="40 0 0 0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Left" VerticalAlignment="Center">
             <StackPanel>
                 <Rectangle Height="33" Width="193" Fill="#fff"></Rectangle>
                 <Rectangle RadiusX="100" RadiusY="100" Fill="#E8C600" Height="15" Width="15" Margin="10 -30 0 0" HorizontalAlignment="Left"></Rectangle>
-                <Label Content="dianazmitrevich" FontSize="12" Margin="30 -30 0 0"></Label>
+                <Label Content="{Binding AccountLogin}" FontSize="12" Margin="30 -30 0 0"></Label>
             </StackPanel>
         </Button>
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" Margin="0 20 0 0" Width="32">
             <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="Assets/catalogAButton.jpg"></Image>
             </Button>
-            <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent" Margin="0 20">
+            <Button Command="{Binding OpenCouponsCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent" Margin="0 20">
                 <Image Source="Assets/couponsButton.jpg"></Image>
             </Button>
             <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">

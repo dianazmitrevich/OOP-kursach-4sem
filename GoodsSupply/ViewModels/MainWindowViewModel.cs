@@ -44,6 +44,8 @@ namespace GoodsSupply.ViewModels
         private double cartPrice = 0;
         private string searchProductCode = "Поиск по артикулу";
 
+        private string accountLogin;
+
         private string quantityLabel;
         private Brush brushQuantity;
         #endregion
@@ -151,6 +153,11 @@ namespace GoodsSupply.ViewModels
         {
             get => searchProductCode;
             set => Set(ref searchProductCode, value);
+        }
+        public string AccountLogin
+        {
+            get => accountLogin;
+            set => Set(ref accountLogin, value);
         }
         public int SelectedQuantity
         {
@@ -368,7 +375,7 @@ namespace GoodsSupply.ViewModels
         public ICommand AddReviewCommand { get; }
         private void OnAddReviewCommandExecuted(object p)
         {
-            var model = new ReviewWindowViewModel(SelectedProductItem);
+            var model = new ReviewWindowViewModel(SelectedProductItem, Account);
             var reviewWindow = new ReviewWindow();
             reviewWindow.DataContext = model;
 
@@ -376,11 +383,31 @@ namespace GoodsSupply.ViewModels
             ShowProductsDetail();
         }
 
+        public ICommand OpenMyOrdersCommand { get; }
+        private void OnOpenMyOrdersCommandExecuted(object p)
+        {
+            var model = new MyOrdersWindowViewModel(Account);
+            var myOrders = new MyOrdersWindow();
+            myOrders.DataContext = model;
+
+            myOrders.ShowDialog();
+        }
+
+        public ICommand OpenCouponsCommand { get; }
+        private void OnOpenCouponsCommandExecuted(object p)
+        {
+            var window = Application.Current.Windows[0];
+            var couponsWindow = new CouponsWindow();
+
+            couponsWindow.ShowDialog();
+        }
 
         public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter, ORDERS order)
         {
             this.Account = accountParameter;
             this.Order = order;
+
+            AccountLogin = context.USERS.FirstOrDefault(f => f.LinkAccountId == accountParameter.AccountId).Login;
 
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
             CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == Order.OrderId));
@@ -396,6 +423,8 @@ namespace GoodsSupply.ViewModels
             SortAlphabetCommand = new DelegateCommand(OnSortAlphabetCommandExecuted, CanSortAlphabetCommandExecute);
             OpenCartCommand = new DelegateCommand(OnOpenCartCommandExecuted, CanOpenCartCommandExecute);
             AddReviewCommand = new DelegateCommand(OnAddReviewCommandExecuted);
+            OpenMyOrdersCommand = new DelegateCommand(OnOpenMyOrdersCommandExecuted);
+            OpenCouponsCommand = new DelegateCommand(OnOpenCouponsCommandExecuted);
         }
 
         public MainWindowViewModel() { }

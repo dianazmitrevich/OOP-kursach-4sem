@@ -17,6 +17,7 @@ namespace GoodsSupply.ViewModels
         private GoodsSupplyContext context = new GoodsSupplyContext();
 
         private PRODUCTS product;
+        private PERSONAL_ACCOUNTS account;
         private string productCode;
         private string productName;
         private string reviewText;
@@ -30,6 +31,11 @@ namespace GoodsSupply.ViewModels
         {
             get => product;
             set => Set(ref product, value);
+        }
+        public PERSONAL_ACCOUNTS Account
+        {
+            get => account;
+            set => Set(ref account, value);
         }
         public string ProductCode
         {
@@ -98,28 +104,27 @@ namespace GoodsSupply.ViewModels
             if (ReviewText.Length <= 200)
             {
                 var window = Application.Current.Windows[1];
-                REVIEWS element = new REVIEWS(product.ProductId, "diana", ReviewText);
+                var login = context.USERS.FirstOrDefault(f => f.LinkAccountId == Account.AccountId).Login;
+                REVIEWS element = new REVIEWS(product.ProductId, login, ReviewText);
                 context.REVIEWS.Add(element); context.SaveChanges();
                 MessageBox.Show("Отзыв добавлен!");
                 window.Close();
             }
         }
 
-        public ReviewWindowViewModel(PRODUCTS productParameter)
+        public ReviewWindowViewModel(PRODUCTS productParameter, PERSONAL_ACCOUNTS account)
         {
             AddReviewCommand = new DelegateCommand(OnAddReviewCommandExecuted, CanAddReviewCommandExecute);
+
             this.Product = productParameter;
+            this.Account = account;
+
             ProductCode = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(Product.ProductId)).ProductCode.ToString();
             ProductName = Product.Name;
             ReviewText = "Текст отзыва";
             ReviewTextSymbols = "0/200";
             SymbolsLabel = new SolidColorBrush(Color.FromRgb(183, 183, 183));
             GetSymbols();
-        }
-
-        public ReviewWindowViewModel()
-        {
-            AddReviewCommand = new DelegateCommand(OnAddReviewCommandExecuted, CanAddReviewCommandExecute);
         }
     }
 }
