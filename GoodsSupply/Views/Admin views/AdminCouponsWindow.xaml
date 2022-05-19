@@ -11,11 +11,8 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
         Icon="/Assets/whiteRectangle.png"
-        FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans">
-    <!--:DataContext="{d:DesignInstance Type=vm:AdminCouponsWindowViewModel}"-->
-    <Window.DataContext>
-        <vm:AdminCouponsWindowViewModel></vm:AdminCouponsWindowViewModel>
-    </Window.DataContext>
+        FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans"
+        d:DataContext="{d:DesignInstance Type=vm:AdminCouponsWindowViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

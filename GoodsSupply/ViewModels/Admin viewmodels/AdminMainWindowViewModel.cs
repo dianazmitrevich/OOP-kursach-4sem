@@ -1,5 +1,6 @@
 ﻿using GoodsSupply.Commands;
 using GoodsSupply.Models;
+using GoodsSupply.Views.Admin_views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -196,6 +197,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             context.SaveChanges();
             MessageBox.Show("Данные успешно" + "\n" + "обновлены");
         }
+
         public ICommand SavePChangesCommand { get; }
         private bool CanSavePChangesCommandExecute(object p) => ValidationCheck();
         private void OnSavePChangesCommandExecuted(object p)
@@ -353,6 +355,17 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             else IsCategoryEmpty = Visibility.Visible;
         }
 
+        public ICommand OpenCouponsWindowCommand { get; }
+        private void OnOpenCouponsWindowCommandExecuted(object p)
+        {
+            var model = new AdminCouponsWindowViewModel();
+            var couponsWindow = new AdminCouponsWindow();
+            couponsWindow.DataContext = model;
+
+            couponsWindow.ShowDialog();
+        }
+
+
         public AdminMainWindowViewModel()
         {
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
@@ -363,6 +376,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             AddProductCommand = new DelegateCommand(OnAddProductCommandExecuted, CanAddProductCommandExecute);
             DeleteCategoryCommand = new DelegateCommand(OnDeleteCategoryCommandExecuted, CanDeleteCategoryCommandExecute);
             DeleteProductCommand = new DelegateCommand(OnDeleteProductCommandExecuted, CanDeleteProductCommandExecute);
+            OpenCouponsWindowCommand = new DelegateCommand(OnOpenCouponsWindowCommandExecuted);
         }
     }
 }
