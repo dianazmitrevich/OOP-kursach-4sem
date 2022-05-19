@@ -51,6 +51,8 @@
             <Button Command="{Binding OpenReviewsWindowCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="/Assets/reviewsButton.jpg"></Image>
             </Button>
+            <Rectangle Margin="15 -45 0 0" Width="15" RadiusX="100" RadiusY="100" Height="15" Fill="#BE1717"></Rectangle>
+            <TextBlock Text="{Binding NotAnsweredReviewsCount}" FontSize="8" Margin="16 -28 0 0" TextAlignment="Center" Foreground="#fff"></TextBlock>
             <Button Command="{Binding LogOutCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent" Margin="0 20">
                 <Image Source="/Assets/logOutButton.jpg"></Image>
             </Button>

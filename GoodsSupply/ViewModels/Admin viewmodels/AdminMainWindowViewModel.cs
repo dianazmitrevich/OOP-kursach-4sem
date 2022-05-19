@@ -33,6 +33,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
         private Visibility isOrdersEmpty = Visibility.Visible;
         private Visibility orderCountLabel = Visibility.Collapsed;
         private string activeOrdersCount;
+        private string notAnsweredReviewsCount;
         #endregion
 
         #region public variables
@@ -81,6 +82,11 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
         {
             get => activeOrdersCount;
             set => Set(ref activeOrdersCount, value);
+        }
+        public string NotAnsweredReviewsCount
+        {
+            get => notAnsweredReviewsCount;
+            set => Set(ref notAnsweredReviewsCount, value);
         }
         public Visibility IsProductSelected
         {
@@ -208,6 +214,8 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
                 }
 
                 ActiveOrdersCount = $"{orders} активных заказов на сумму {sum} рублей";
+                IsOrdersEmpty = Visibility.Collapsed;
+                OrderCountLabel = Visibility.Visible;
             }
             else
             {
@@ -215,6 +223,9 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
                 OrderCountLabel = Visibility.Collapsed;
             }
         }
+
+        private void ShowNotAnsweredReviewsCount() => NotAnsweredReviewsCount = context.REVIEWS.Where(f => f.AdminText.Equals("Пока еще нет ответа")).Count().ToString();
+
         public ICommand SaveCChangesCommand { get; }
         private bool CanSaveCChangesCommandExecute(object p)
         {
@@ -427,6 +438,9 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             reviewsWindow.DataContext = model;
 
             reviewsWindow.ShowDialog();
+
+            if (!reviewsWindow.IsActive)
+                ShowNotAnsweredReviewsCount();
         }
 
         public ICommand OpenOrdersWindowCommand { get; }
@@ -489,7 +503,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
         public AdminMainWindowViewModel()
         {
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
-            SetOrdersCount();
+            SetOrdersCount(); ShowNotAnsweredReviewsCount();
 
             SaveCChangesCommand = new DelegateCommand(OnSaveCChangesCommandExecuted, CanSaveCChangesCommandExecute);
             SavePChangesCommand = new DelegateCommand(OnSavePChangesCommandExecuted, CanSavePChangesCommandExecute);
