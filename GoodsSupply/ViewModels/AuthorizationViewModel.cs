@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System;
 using GoodsSupply.Views.Admin_views;
 using System.Collections.ObjectModel;
+using GoodsSupply.ViewModels.Admin_viewmodels;
 
 namespace GoodsSupply.ViewModels
 {
@@ -116,7 +117,9 @@ namespace GoodsSupply.ViewModels
             {
                 if (user.Login == "admin" && user.IsAdmin == "Y")
                 {
+                    var model = new AdminMainWindowViewModel();
                     var MainWindow = new AdminMainWindow();
+                    MainWindow.DataContext = model;
                     MainWindow.Show();
                     window.Close();
                 }

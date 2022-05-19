@@ -11,11 +11,8 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow"
         Icon="/Assets/whiteRectangle.png"
-        FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans">
-    <!--:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"-->
-    <Window.DataContext>
-        <vm:AdminMainWindowViewModel></vm:AdminMainWindowViewModel>
-    </Window.DataContext>
+        FontFamily="pack://application:,,,/Assets/Fonts/#Noto Sans"
+        d:DataContext="{d:DesignInstance Type=vm:AdminMainWindowViewModel}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -89,7 +86,7 @@
                             <Border BorderBrush="#E6E6E6" Width="230" BorderThickness="1" Margin="-5 0 0 5">
                                 <StackPanel>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Source="/Assets/test.PNG" Width="43" Margin="10"></Image>
+                                        <Image Source="{Binding ProductId, Converter={StaticResource ToImageConverter}}" Width="43" Margin="10"></Image>
                                         <StackPanel Margin="0 10">
                                             <TextBlock Width="160" TextWrapping="Wrap" Text="{Binding Name}" FontSize="12" Padding="0" Margin="0 0 0 2"></TextBlock>
                                             <TextBlock Text="{Binding Description}" Margin="-50 0 0 0" FontSize="10" MaxWidth="110" TextWrapping="Wrap"></TextBlock>
@@ -130,7 +127,7 @@
                     <Button Command="{Binding DeleteProductCommand}" Height="15" Style="{DynamicResource DefaultButtonStyle}" Margin="0 -25 5 0" HorizontalAlignment="Right" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
                         <TextBlock Text="Удалить" TextDecorations="Underline" Foreground="#BE1717" FontSize="10"></TextBlock>
                     </Button>
-                    <ContentControl Content="{Binding SelectedProductItem}" Margin="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
+                    <ContentControl Name="ProductItem" Content="{Binding SelectedProductItem}" Margin="0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Width="210">
                         <ContentControl.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="0 0 0 20">
@@ -144,9 +141,10 @@
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Margin="0 10 0 10">
                                         <Label Content="Изображение" FontSize="8"></Label>
-                                        <Button Style="{DynamicResource DefaultButtonStyle}" Margin="85 -1 0 0" HorizontalAlignment="Left" FontSize="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
-                                            <TextBlock Text="Выбрать" TextDecorations="Underline"></TextBlock>
+                                        <Button Command="{Binding ElementName=ProductItem, Path=DataContext.AddImageCommand, UpdateSourceTrigger=PropertyChanged}" CommandParameter="{Binding ProductId}" Style="{DynamicResource DefaultButtonStyle}" Margin="25 -1 0 0" HorizontalAlignment="Left" FontSize="10" Background="Transparent" BorderBrush="Transparent" BorderThickness="0">
+                                            <TextBlock Text="Выбрать новое" TextDecorations="Underline"></TextBlock>
                                         </Button>
+                                        <Image Height="20" Width="20" Margin="5 0 0 0" Source="{Binding ProductId, Converter={StaticResource ToImageConverter}, UpdateSourceTrigger=PropertyChanged}"></Image>
                                     </StackPanel>
                                     <StackPanel>
                                         <TextBox FontSize="10" Width="200" Margin="1 0 0 0" Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" Padding="10 7" Height="27" HorizontalAlignment="Left" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF"></TextBox>

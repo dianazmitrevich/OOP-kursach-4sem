@@ -2,9 +2,11 @@
 using GoodsSupply.Models;
 using GoodsSupply.Views;
 using GoodsSupply.Views.Admin_views;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -349,6 +351,11 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
                         var detail = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(item.ProductId));
                         context.PRODUCTS_DETAIL.Remove(detail);
                         context.PRODUCTS.Remove(item);
+
+                        DirectoryInfo directory;
+                        directory = new DirectoryInfo(@"..\..\..");
+                        if (File.Exists(directory.FullName + $@"\GoodsSupply\ProductImages\{item.ProductId}.png"))
+                            File.Delete(directory.FullName + $@"\GoodsSupply\ProductImages\{item.ProductId}.png");
                     }
                     context.CATEGORIES.Remove(element); context.SaveChanges();
                 }
@@ -383,6 +390,11 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
                         {
                             context.REVIEWS.Remove(item);
                         }
+
+                        DirectoryInfo directory;
+                        directory = new DirectoryInfo(@"..\..\..");
+                        if (File.Exists(directory.FullName + $@"\GoodsSupply\ProductImages\{element.ProductId}.png"))
+                            File.Delete(directory.FullName + $@"\GoodsSupply\ProductImages\{element.ProductId}.png");
 
                         context.SaveChanges();
                     }
@@ -449,6 +461,31 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             else return;
         }
 
+        public ICommand AddImageCommand { get; }
+        private bool CanAddImageCommandExecute(object p) => SelectedProductItem != null;
+        private void OnAddImageCommandExecuted(object p)
+        {
+            DirectoryInfo directory;
+            directory = new DirectoryInfo(@"..\..\..");
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Фотографии|*.jpg;*.png;*.jpeg;";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var detail = SelectedProductItem;
+                var path = openFileDialog.FileName;
+
+                if (File.Exists(directory.FullName + $@"\GoodsSupply\ProductImages\{SelectedProductItem.ProductId}.png"))
+                    File.Delete(directory.FullName + $@"\GoodsSupply\ProductImages\{SelectedProductItem.ProductId}.png");
+
+                File.Copy(path, directory.FullName + $@"\GoodsSupply\ProductImages\{SelectedProductItem.ProductId}.png", true);
+
+                ProductsList = new ObservableCollection<PRODUCTS>(context.PRODUCTS.Where(f => f.LinkToCategoryId == SelectedItem.CategoryId));
+                SelectedProductItem = detail;
+            }
+        }
+
         public AdminMainWindowViewModel()
         {
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
@@ -464,6 +501,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             OpenReviewsWindowCommand = new DelegateCommand(OnOpenReviewsWindowCommandExecuted);
             OpenOrdersWindowCommand = new DelegateCommand(OnOpenOrdersWindowCommandExecuted);
             LogOutCommand = new DelegateCommand(OnLogOutCommandExecuted);
+            AddImageCommand = new DelegateCommand(OnAddImageCommandExecuted, CanAddImageCommandExecute);
         }
     }
 }
