@@ -239,6 +239,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             var productDetail = new ObservableCollection<PRODUCTS_DETAIL>(context.PRODUCTS_DETAIL);
             if (categories.Count > 0)
             {
+                if (SelectedItem == null) flag = false;
                 foreach (var item in categories)
                 {
                     if (item.Name.Length == 0)
@@ -330,22 +331,16 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
                     if (result == MessageBoxResult.Yes)
                     {
                         var detail = context.PRODUCTS_DETAIL.FirstOrDefault(f => f.LinkToProductId.Equals(SelectedProductItem.ProductId));
-                        context.PRODUCTS_DETAIL.Remove(detail); context.SaveChanges();
-
+                        // var orderedProducts = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.OrderedProductId.Equals(detail.ProductCode)));
+                        context.PRODUCTS_DETAIL.Remove(detail);
+                        context.PRODUCTS.Remove(element);
                         var reviews = context.REVIEWS.Where(f => f.LinkToProductId.Equals(element.ProductId));
                         foreach (var item in reviews)
                         {
                             context.REVIEWS.Remove(item);
                         }
-                        context.SaveChanges();
 
-                        var orderedProducts = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.OrderedProductId.Equals(SelectedProductItem.ProductId)));
-                        if (orderedProducts.Count > 0)
-                        {
-                            MessageBox.Show("На этот товар еще" + "\n" + "есть заказы", "Действие невозможно");
-                            return;
-                        }
-                        else context.PRODUCTS.Remove(element); context.SaveChanges();
+                        context.SaveChanges();
                     }
                     else return;
                 }

@@ -26,5 +26,16 @@ namespace GoodsSupply.Models
         [Required]
         [StringLength(100)]
         public string CouponText { get; set; }
+
+        public COUPONS(string code, string isPercent, int percentOff, double moneyOff, string text)
+        {
+            this.CouponCode = code;
+            this.IsPercent = isPercent;
+            this.PercentOff = percentOff;
+            this.MoneyOff = moneyOff;
+            this.CouponText = text;
+        }
+
+        public COUPONS() { }
     }
 }
