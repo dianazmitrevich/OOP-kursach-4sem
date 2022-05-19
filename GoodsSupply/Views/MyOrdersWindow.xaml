@@ -53,7 +53,7 @@
                                     <Label Content="₽" Margin="-8 1 0 0" FontSize="10"></Label>
                                 </StackPanel>
                                 <Label Content="{Binding Status}" FontSize="10" FontStyle="Italic" Margin="250 -30 0 0"></Label>
-                                <Button Height="23" HorizontalAlignment="Right" Margin="0 -36 14 0" Command="{Binding ElementName=OrdersItems, Path=DataContext.SendCheckByEmailCommand}" CommandParameter="{Binding OrderId}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
+                                <Button Height="23" HorizontalAlignment="Right" Margin="0 -42 14 0" Command="{Binding ElementName=OrdersItems, Path=DataContext.SendCheckByEmailCommand}" CommandParameter="{Binding OrderId}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                                     <StackPanel Orientation="Horizontal">
                                         <Label Content="Прислать чек на почту" Height="23" FontSize="10"></Label>
                                         <Image Source="/Assets/download.png" Margin="2 5 0 0" Width="7"></Image>

@@ -62,7 +62,7 @@
             <Label Content="КАТЕГОРИИ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
             <Button Command="{Binding AddCategoryCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="26" Margin="0 0 20 15" Content="Добавить новую" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
             <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                <ListView ItemsSource="{Binding CategoriesList}" Width="140" Height="375"  Margin="-5 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <ListView ScrollViewer.CanContentScroll="False" ItemsSource="{Binding CategoriesList}" Width="140" Height="375"  Margin="-5 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}" FontSize="10" Margin="-5 0 0 10" Padding="5 5 5 0" TextWrapping="Wrap" Width="111"></TextBlock>
@@ -82,8 +82,8 @@
                 <Image Source="/Assets/notSelected.png" Width="85"></Image>
                 <TextBlock Text="Кажется, в этой категории нет товаров. Добавьте сюда что-нибудь" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
             </StackPanel>
-            <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                <ListView ItemsSource="{Binding ProductsList}" MaxHeight="375" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{DynamicResource ListViewItemProductStyle}" SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}"  Width="247" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" VirtualizingPanel.ScrollUnit="Pixel">
+                <ListView ScrollViewer.CanContentScroll="False" VirtualizingPanel.ScrollUnit="Pixel"  ItemsSource="{Binding ProductsList}" MaxHeight="375" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemContainerStyle="{DynamicResource ListViewItemProductStyle}" SelectedItem="{Binding SelectedProductItem, UpdateSourceTrigger=PropertyChanged}"  Width="247" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border BorderBrush="#E6E6E6" Width="230" BorderThickness="1" Margin="-5 0 0 5">
