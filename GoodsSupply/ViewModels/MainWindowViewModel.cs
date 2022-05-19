@@ -364,6 +364,8 @@ namespace GoodsSupply.ViewModels
                 {
                     CartItems.Clear();
                     ORDERS order = new ORDERS(Account.AccountId); context.ORDERS.Add(order); context.SaveChanges();
+                    var orderElement = context.ORDERS.FirstOrDefault(f => f.OrderId == order.OrderId);
+                    orderElement.Status = "Пустой заказ"; context.SaveChanges();
                 }
                 else
                     CartItems = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == orderId));
@@ -427,8 +429,6 @@ namespace GoodsSupply.ViewModels
             }
             else return;
         }
-
-
 
         public MainWindowViewModel(PERSONAL_ACCOUNTS accountParameter, ORDERS order)
         {

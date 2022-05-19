@@ -8,6 +8,7 @@
         <!--
         "\Views\Admin views\AdminCouponsWindow.xaml"
         \Views\Admin views\AdminReviewsWindow.xaml
+        \Views\Admin views\AdminOrdersWindow.xaml
         \Views\AuthorizationWindow.xaml
         -->
     </Application.Resources>

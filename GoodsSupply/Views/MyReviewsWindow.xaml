@@ -33,7 +33,7 @@
             <ColumnDefinition Width="105"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Grid.Row="0" Grid.Column="0" Margin="20 0 20 10" Grid.ColumnSpan="4" Content="МОИ ОТЗЫВЫ И ВОПРОСЫ" FontWeight="SemiBold" FontSize="16" Padding="0"></Label>
-        <StackPanel Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Center" Margin="0 20" Visibility="{Binding IsReviewsEmpty}">
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Center" Margin="0 50" Visibility="{Binding IsReviewsEmpty}">
             <Image Source="/Assets/questionIcon.png" Width="35"></Image>
             <TextBlock Text="Здесь пока пусто! Вы можете добавить отзыв на детальной странице продукта" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
         </StackPanel>

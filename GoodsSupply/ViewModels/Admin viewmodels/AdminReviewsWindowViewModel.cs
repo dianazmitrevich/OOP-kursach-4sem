@@ -129,6 +129,5 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             DeleteReviewCommand = new DelegateCommand(OnDeleteReviewCommandExecuted, CanDeleteReviewCommandExecute);
             UpdateReviewCommand = new DelegateCommand(OnUpdateReviewCommandExecuted, CanUpdateReviewCommandExecute);
         }
-
     }
 }

@@ -152,6 +152,9 @@ namespace GoodsSupply.ViewModels
                     }
 
                     ORDERS order = new ORDERS(account); context.ORDERS.Add(order); context.SaveChanges();
+                    var orderStatus = context.ORDERS.FirstOrDefault(f => f.OrderId == order.OrderId);
+                    orderStatus.Status = "Пустой заказ";
+                    context.SaveChanges();
                     MainWindowViewModel model = new MainWindowViewModel(context.PERSONAL_ACCOUNTS.FirstOrDefault(f => context.USERS.FirstOrDefault(u => u.Login == Login).LinkAccountId == f.AccountId), order);
                     var MainWindow = new MainWindow(model);
                     MainWindow.Show();

@@ -1,5 +1,6 @@
 ﻿using GoodsSupply.Commands;
 using GoodsSupply.Models;
+using GoodsSupply.Views;
 using GoodsSupply.Views.Admin_views;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,9 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
         private Visibility isProductSelected = Visibility.Collapsed;
         private Visibility isCategorySelected = Visibility.Visible;
         private Visibility isCategorySelectedToEdit = Visibility.Collapsed;
+        private Visibility isOrdersEmpty = Visibility.Visible;
+        private Visibility orderCountLabel = Visibility.Collapsed;
+        private string activeOrdersCount;
         #endregion
 
         #region public variables
@@ -60,6 +64,21 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
         {
             get => isCategoryEmpty;
             set => Set(ref isCategoryEmpty, value);
+        }
+        public Visibility IsOrdersEmpty
+        {
+            get => isOrdersEmpty;
+            set => Set(ref isOrdersEmpty, value);
+        }
+        public Visibility OrderCountLabel
+        {
+            get => orderCountLabel;
+            set => Set(ref orderCountLabel, value);
+        }
+        public string ActiveOrdersCount
+        {
+            get => activeOrdersCount;
+            set => Set(ref activeOrdersCount, value);
         }
         public Visibility IsProductSelected
         {
@@ -171,6 +190,29 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             return flag;
         }
 
+        private void SetOrdersCount()
+        {
+            var orders = context.ORDERS.Count();
+
+            if (orders > 0)
+            {
+                double sum = 0;
+                var ordersList = new ObservableCollection<ORDERS>(context.ORDERS);
+
+                if (ordersList != null)
+                {
+                    foreach (var item in ordersList)
+                        sum += item.FinalOrderPrice;
+                }
+
+                ActiveOrdersCount = $"{orders} активных заказов на сумму {sum} рублей";
+            }
+            else
+            {
+                IsOrdersEmpty = Visibility.Visible;
+                OrderCountLabel = Visibility.Collapsed;
+            }
+        }
         public ICommand SaveCChangesCommand { get; }
         private bool CanSaveCChangesCommandExecute(object p)
         {
@@ -375,9 +417,42 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             reviewsWindow.ShowDialog();
         }
 
+        public ICommand OpenOrdersWindowCommand { get; }
+        private void OnOpenOrdersWindowCommandExecuted(object p)
+        {
+            var model = new AdminOrdersWindowViewModel();
+            var ordersWindow = new AdminOrdersWindow();
+            ordersWindow.DataContext = model;
+
+            ordersWindow.ShowDialog();
+
+            if (!ordersWindow.IsActive)
+            {
+                SetOrdersCount();
+            }
+        }
+
+        public ICommand LogOutCommand { get; }
+        private void OnLogOutCommandExecuted(object p)
+        {
+            MessageBoxButton buttons = MessageBoxButton.YesNo;
+
+            var result = MessageBox.Show("Вы точно хотите выйти из" + "\n" + "своего аккаунта?", "Выход из приложения", buttons, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Yes)
+            {
+                var window = Application.Current.Windows[0];
+                var authorizationWindow = new AuthorizationWindow();
+
+                window.Close();
+                authorizationWindow.Show();
+            }
+            else return;
+        }
+
         public AdminMainWindowViewModel()
         {
             CategoriesList = new ObservableCollection<CATEGORIES>(context.CATEGORIES);
+            SetOrdersCount();
 
             SaveCChangesCommand = new DelegateCommand(OnSaveCChangesCommandExecuted, CanSaveCChangesCommandExecute);
             SavePChangesCommand = new DelegateCommand(OnSavePChangesCommandExecuted, CanSavePChangesCommandExecute);
@@ -387,6 +462,8 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             DeleteProductCommand = new DelegateCommand(OnDeleteProductCommandExecuted, CanDeleteProductCommandExecute);
             OpenCouponsWindowCommand = new DelegateCommand(OnOpenCouponsWindowCommandExecuted);
             OpenReviewsWindowCommand = new DelegateCommand(OnOpenReviewsWindowCommandExecuted);
+            OpenOrdersWindowCommand = new DelegateCommand(OnOpenOrdersWindowCommandExecuted);
+            LogOutCommand = new DelegateCommand(OnLogOutCommandExecuted);
         }
     }
 }
