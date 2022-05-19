@@ -5,6 +5,10 @@
              xmlns:vm="clr-namespace:GoodsSupply.ViewModels"
              StartupUri="\Views\AuthorizationWindow.xaml">
     <Application.Resources>
-        <!--"\Views\Admin views\AdminCouponsWindow.xaml"-->
+        <!--
+        "\Views\Admin views\AdminCouponsWindow.xaml"
+        \Views\Admin views\AdminReviewsWindow.xaml
+        \Views\AuthorizationWindow.xaml
+        -->
     </Application.Resources>
 </Application>

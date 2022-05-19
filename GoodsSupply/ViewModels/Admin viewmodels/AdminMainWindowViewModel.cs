@@ -365,6 +365,15 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             couponsWindow.ShowDialog();
         }
 
+        public ICommand OpenReviewsWindowCommand { get; }
+        private void OnOpenReviewsWindowCommandExecuted(object p)
+        {
+            var model = new AdminReviewsWindowViewModel();
+            var reviewsWindow = new AdminReviewsWindow();
+            reviewsWindow.DataContext = model;
+
+            reviewsWindow.ShowDialog();
+        }
 
         public AdminMainWindowViewModel()
         {
@@ -377,6 +386,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
             DeleteCategoryCommand = new DelegateCommand(OnDeleteCategoryCommandExecuted, CanDeleteCategoryCommandExecute);
             DeleteProductCommand = new DelegateCommand(OnDeleteProductCommandExecuted, CanDeleteProductCommandExecute);
             OpenCouponsWindowCommand = new DelegateCommand(OnOpenCouponsWindowCommandExecuted);
+            OpenReviewsWindowCommand = new DelegateCommand(OnOpenReviewsWindowCommandExecuted);
         }
     }
 }

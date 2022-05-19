@@ -51,7 +51,7 @@
             <Button Command="{Binding OpenCouponsWindowCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent" Margin="0 20">
                 <Image Source="/Assets/couponsButton.jpg"></Image>
             </Button>
-            <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
+            <Button Command="{Binding OpenReviewsWindowCommand}" Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent">
                 <Image Source="/Assets/reviewsButton.jpg"></Image>
             </Button>
             <Button Style="{DynamicResource DefaultButtonStyle}" Background="Transparent" BorderBrush="Transparent" Margin="0 20">

@@ -82,7 +82,6 @@ namespace GoodsSupply.ViewModels
         }
         private void OnSendCheckByEmailCommandExecuted(object p)
         {
-            bool flag = true;
             int orderId = Convert.ToInt32(p);
             var order = context.ORDERS.FirstOrDefault(f => f.OrderId == orderId);
             var OrderedProductsList = new ObservableCollection<ORDERED_PRODUCTS>(context.ORDERED_PRODUCTS.Where(f => f.LinkToOrderId == orderId));
