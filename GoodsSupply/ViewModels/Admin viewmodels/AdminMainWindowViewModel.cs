@@ -171,6 +171,7 @@ namespace GoodsSupply.ViewModels.Admin_viewmodels
                                                         {
                                                             if (elementDetail[0].BigDescription.Length <= 200 && elementDetail[0].BigDescription != "")
                                                                 flag = true;
+                                                            else flag = false;
                                                         }
                                                         else flag = false;
                                                     }

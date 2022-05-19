@@ -61,7 +61,7 @@
             <Label Content="КАТЕГОРИИ" FontWeight="SemiBold" FontSize="16" Margin="-4 0 0 10"></Label>
             <Button Command="{Binding AddCategoryCommand}" Style="{DynamicResource DefaultButtonStyle}" Height="26" Margin="0 0 20 15" Content="Добавить новую" FontSize="10" BorderBrush="#0058A3" Background="Transparent" BorderThickness="1"></Button>
             <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                <ListView ScrollViewer.CanContentScroll="False" ItemsSource="{Binding CategoriesList}" Width="140" Height="375"  Margin="-5 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                <ListView ScrollViewer.CanContentScroll="False" HorizontalAlignment="Left" ItemsSource="{Binding CategoriesList}" Width="120" Height="375"  Margin="0 0 0 0" ItemContainerStyle="{DynamicResource ListViewItemStyle}" SelectedItem="{Binding SelectedItem, UpdateSourceTrigger=PropertyChanged}" BorderBrush="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}" FontSize="10" Margin="-5 0 0 10" Padding="5 5 5 0" TextWrapping="Wrap" Width="111"></TextBlock>
