@@ -83,11 +83,11 @@
                     <Image Source="Assets/sortAlphabet.png" Height="10"></Image>
                 </Button>
             </StackPanel>
-            <!--<StackPanel Grid.Row="2" Margin="0 100" Visibility="{Binding NoCategoryselectedFlag}">
+            <StackPanel Grid.Row="2" Margin="0 100" Visibility="{Binding NoCategoryselectedFlag}">
                 <Image Source="Assets/notSelected.png" Width="85"></Image>
                 <TextBlock Text="Здесь пока пусто! Для начала выберите категорию" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
             </StackPanel>
-            <StackPanel Grid.Row="2" Margin="0 20" Visibility="{Binding IsEmptySearch}">
+            <!--<StackPanel Grid.Row="2" Margin="0 20" Visibility="{Binding IsEmptySearch}">
                 <Image Source="Assets/questionIcon.png" Width="35"></Image>
                 <TextBlock Text="Увы, по вашему запросу не было найдено товаров" Margin="10" FontStyle="Italic" FontSize="10" Width="122" TextWrapping="Wrap" TextAlignment="Center"></TextBlock>
             </StackPanel>-->
@@ -227,7 +227,6 @@
             </StackPanel>
             <Image Source="Assets/checkEnd.png" Width="180" Margin="0 -1"></Image>
             <Rectangle Height="1" Width="180" Fill="#E6E6E6" Margin="0 -141 0 0"></Rectangle>
-            <!--<Label Margin="10 30" Content="БЫСТРЫЕ КОМАНДЫ" Foreground="#fff" FontWeight="SemiBold" FontSize="16"></Label>-->
         </StackPanel>
     </Grid>
 </Window>

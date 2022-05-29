@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="GoodsSupply.ViewModels.AuthorizationViewModel" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAgSAAAIlCsACAAgggAUgAQEogAEBDICABQwSgCCEgA=</HashCode>
+      <FileName>ViewModels\AuthorizationViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoodsSupply.ViewModels.BaseViewModel" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAIAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\BaseViewModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GoodsSupply.ViewModels.CartWindowViewModel" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ADFHQAERBgQAIQBQAGACEAAQEEgIIAAIIRJCSCSCEUg=</HashCode>
+      <FileName>ViewModels\CartWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoodsSupply.ViewModels.CouponsWindowViewModel" Collapsed="true">
+    <Position X="2.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAgAAAAIAAAAAAAAAAABAAAAAQAAA=</HashCode>
+      <FileName>ViewModels\CouponsWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoodsSupply.ViewModels.MainWindowViewModel" Collapsed="true">
+    <Position X="2.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>Ao3HsACztMCBEVwCYEiKQoIYe2AIEFFBwhxAyE4UaFA=</HashCode>
+      <FileName>ViewModels\MainWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoodsSupply.ViewModels.MyOrdersWindowViewModel" Collapsed="true">
+    <Position X="4.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAgAAQAAAAAAAEAIAAAAAAAAIAEAACAIQAAAAkA=</HashCode>
+      <FileName>ViewModels\MyOrdersWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoodsSupply.ViewModels.MyReviewsWindowViewModel" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAEAIAAAACAAAAAAAAkAAAAIAAQAAAAEA=</HashCode>
+      <FileName>ViewModels\MyReviewsWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoodsSupply.ViewModels.ReviewWindowViewModel" Collapsed="true">
+    <Position X="2.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAiAAABAgAFCAgAgAKAAIAAACAAAAAAAAoAQARIIGA=</HashCode>
+      <FileName>ViewModels\ReviewWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoodsSupply.ViewModels.Admin_viewmodels.AdminCouponsWindowViewModel" Collapsed="true">
+    <Position X="10" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEACQYNEAEQAQAAAoAAAAIAGEYIADBAAAAAABAQgAIA=</HashCode>
+      <FileName>ViewModels\Admin viewmodels\AdminCouponsWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoodsSupply.ViewModels.Admin_viewmodels.AdminMainWindowViewModel" Collapsed="true">
+    <Position X="10" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEwChAAiAZACIQQBgEgSAAAIQ4BCIEMCAjxDgA4wRAE=</HashCode>
+      <FileName>ViewModels\Admin viewmodels\AdminMainWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoodsSupply.ViewModels.Admin_viewmodels.AdminOrdersWindowViewModel" Collapsed="true">
+    <Position X="10" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAGAAAAAQAgAAAAIAAIQAAAAAACIAEAgCAIACAAAAA=</HashCode>
+      <FileName>ViewModels\Admin viewmodels\AdminOrdersWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GoodsSupply.ViewModels.Admin_viewmodels.AdminReviewsWindowViewModel" Collapsed="true">
+    <Position X="10" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAICAAAAAAAAECIAAAAKgQAAEgAAkBAAAIAAAAAAAAA=</HashCode>
+      <FileName>ViewModels\Admin viewmodels\AdminReviewsWindowViewModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

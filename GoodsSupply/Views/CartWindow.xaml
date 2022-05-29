@@ -95,6 +95,8 @@
             </CheckBox>
         </StackPanel>
         <TextBox Grid.Row="3" Text="{Binding Adress, UpdateSourceTrigger=PropertyChanged}" FontSize="10" Grid.Column="1" Grid.ColumnSpan="2" Padding="10 7" Width="288" Height="27" HorizontalAlignment="Left" Margin="20" BorderBrush="Transparent" BorderThickness="0" Background="#EFEFEF" VerticalAlignment="Top"></TextBox>
+        <Label Grid.Row="3" Grid.Column="1" Padding="0" FontSize="8" Content="Адрес" Margin="34 47 0 0"></Label>
+        <Label Grid.Row="2" Grid.Column="0" Padding="0" FontSize="8" Content="Купон" VerticalAlignment="Bottom" Margin="34 0 0 -12"></Label>
         <Image Grid.Row="3" ToolTip="Поле обязательное к заполнению" Grid.Column="2" Source="/Assets/requiredField.png" Width="13" Margin="0 27 30 0" HorizontalAlignment="Right" VerticalAlignment="Top"></Image>
         <Button Command="{Binding AddOrderCommand}" Grid.Row="3" Grid.Column="3" Content="Оформить" Margin="0 20 20 0" Background="#fff" Style="{DynamicResource DefaultButtonStyle}" BorderBrush="#0058A3" FontSize="10" Width="90" Height="26" HorizontalAlignment="Right" VerticalAlignment="Top"></Button>
         <StackPanel Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Orientation="Horizontal">
